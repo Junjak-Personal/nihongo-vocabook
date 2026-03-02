@@ -256,6 +256,7 @@ function QuizContent() {
     }
     const newStreak = await repo.study.getStreakDays();
     setStreak(newStreak);
+    requestDueCountRefresh();
   };
 
   const advanceToNext = async () => {

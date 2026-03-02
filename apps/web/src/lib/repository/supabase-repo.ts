@@ -665,7 +665,8 @@ class SupabaseStudyRepository implements StudyRepository {
     const totalDue = reviewDue + cappedNew;
     const remainingReviews = Math.max(0, settings.maxReviewsPerDay - (todayStats?.reviewCount ?? 0));
 
-    return Math.min(totalDue, remainingReviews);
+    // Cap to sessionSize so badge matches what the next session would actually contain
+    return Math.min(totalDue, remainingReviews, settings.sessionSize);
   }
 
   async getDueWords(limit = 20): Promise<WordWithProgress[]> {
