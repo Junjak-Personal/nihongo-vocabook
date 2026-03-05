@@ -268,14 +268,14 @@ export default function WordsPage() {
 
       <div className={bottomBar}>
         <div className={bottomSep} />
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           {loading || totalCount === 0 ? (
-            <Button variant="outline" className="flex-1" disabled data-testid="words-start-quiz-button">
+            <Button variant="secondary" className="flex-1" disabled data-testid="words-start-quiz-button">
               {t.words.startQuiz}
             </Button>
           ) : (
             <Button
-              variant="outline"
+              variant="secondary"
               className="flex-1"
               onClick={() => {
                 if (!user) {

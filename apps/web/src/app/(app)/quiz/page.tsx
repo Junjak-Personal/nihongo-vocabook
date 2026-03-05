@@ -361,12 +361,12 @@ function QuizContent() {
         </div>
         <div className={bottomBar}>
           <div className={bottomSep} />
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Link href="/login" className="flex-1">
               <Button className="w-full">{t.auth.signIn}</Button>
             </Link>
             <Link href="/signup" className="flex-1">
-              <Button variant="outline" className="w-full">{t.auth.signUp}</Button>
+              <Button variant="secondary" className="w-full">{t.auth.signUp}</Button>
             </Link>
           </div>
         </div>
@@ -414,8 +414,8 @@ function QuizContent() {
                   </span>
                 )}
                 {progressCount && (
-                  <span className="inline-flex h-7 items-center rounded-full border border-border/60 bg-muted/30 px-2.5 text-xs">
-                    <span className="tabular-nums font-medium text-foreground/90">{progressCount}</span>
+                  <span className="inline-flex h-7 items-center rounded-full bg-secondary px-3 text-xs font-semibold tabular-nums text-primary">
+                    {progressCount}
                   </span>
                 )}
               </>

@@ -154,7 +154,7 @@ export default function BrowseSharedPage() {
           {loading ? (
             <div className="animate-page flex-1 space-y-2 overflow-y-auto px-4 pt-2">
               {Array.from({ length: 20 }).map((_, i) => (
-                <Skeleton key={i} className="h-[88px] w-full rounded-lg" />
+                <Skeleton key={i} className="h-[88px] w-full rounded-xl" />
               ))}
             </div>
           ) : userItems.length === 0 ? (
@@ -188,7 +188,7 @@ export default function BrowseSharedPage() {
           {loading ? (
             <div className="animate-page flex-1 space-y-2 overflow-y-auto px-4 pt-2">
               {Array.from({ length: 20 }).map((_, i) => (
-                <Skeleton key={i} className="h-[88px] w-full rounded-lg" />
+                <Skeleton key={i} className="h-[88px] w-full rounded-xl" />
               ))}
             </div>
           ) : systemItems.length === 0 ? (
@@ -240,7 +240,7 @@ function SharedWordbookCard({
   return (
     <button
       onClick={onSelect}
-      className="block w-full rounded-lg border p-4 text-left transition-colors hover:bg-accent"
+      className="block w-full rounded-xl border bg-card p-4 text-left transition-colors hover:bg-accent"
       data-testid="shared-wordbook-card"
     >
       <div className="flex items-center justify-between">

@@ -84,11 +84,11 @@ export default function AchievementsPage() {
           {t.common.loading}
         </div>
       ) : (
-        <div className="animate-page flex-1 overflow-y-auto p-4">
+        <div className="animate-page flex-1 overflow-y-auto px-5">
           {/* Summary with progress bar */}
-          <div className="mb-5 flex flex-col items-center gap-2 text-sm text-muted-foreground">
-            <Trophy className="size-6 text-yellow-500" />
-            <span className="font-medium tabular-nums">{unlockedCount} / {totalCount}</span>
+          <div className="mb-6 flex flex-col items-center gap-2 py-4 text-sm text-muted-foreground">
+            <Trophy className="size-12 text-yellow-500" />
+            <span className="text-xl font-bold tabular-nums text-foreground">{unlockedCount} / {totalCount}</span>
             <div className="h-2 w-32 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full bg-yellow-500 transition-all"
@@ -106,7 +106,7 @@ export default function AchievementsPage() {
 
                 return (
                   <section key={category}>
-                    <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <h2 className="mb-3 text-base font-bold">
                       {categoryLabels[category]}
                     </h2>
                     <div className="space-y-2">
@@ -126,7 +126,7 @@ export default function AchievementsPage() {
                         return (
                           <div
                             key={def.type}
-                            className="animate-stagger flex items-center gap-3 rounded-lg border p-3"
+                            className="animate-stagger flex items-center gap-3 rounded-xl border bg-card p-4"
                             style={{ '--stagger': stagger } as React.CSSProperties}
                           >
                             <div

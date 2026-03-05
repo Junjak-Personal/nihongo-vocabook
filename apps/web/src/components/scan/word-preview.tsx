@@ -171,13 +171,11 @@ export function WordPreview({
     <div className="relative flex min-h-0 flex-1 flex-col">
       {/* Sticky selection toolbar */}
       <div className="animate-slide-down-fade sticky top-14 z-9 bg-background">
-        <div className="flex items-center gap-2 px-4 py-2.5">
-          {/* Selection count — prominent pill */}
-          <div className="flex shrink-0 items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
-            <Check className="size-3" />
-            <span className="tabular-nums">{selectedCount}</span>
-            <span className="text-primary/60">/</span>
-            <span className="tabular-nums text-primary/60">{newCount}</span>
+        <div className="flex items-center justify-between px-5 py-2">
+          {/* Selection count */}
+          <div className="flex shrink-0 items-center gap-1.5 text-sm font-semibold">
+            <Check className="size-[18px] text-primary" />
+            <span className="tabular-nums">{selectedCount} / {newCount}</span>
           </div>
 
           {/* Selection actions */}
@@ -223,15 +221,14 @@ export function WordPreview({
           </ButtonGroup>
         </div>
         {existingCount > 0 && (
-          <div className="px-4 pb-2 text-xs text-muted-foreground">
+          <div className="px-5 pb-2 text-xs text-tertiary">
             {t.scan.alreadyRegistered(existingCount)}
           </div>
         )}
-        <div className="mx-4 h-px bg-border" />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-1">
+      <div className="flex-1 overflow-y-auto">
+        <div>
           {words.map((word, i) => {
             const isExisting = existingTerms.has(word.term);
             const isChecked = checked[i];
@@ -242,12 +239,12 @@ export function WordPreview({
                 aria-checked={isChecked}
                 aria-disabled={isExisting}
                 tabIndex={isExisting ? -1 : 0}
-                className={`animate-stagger flex items-center gap-3 rounded-md border p-3 transition-colors ${
+                className={`animate-stagger flex items-center gap-3 border-b border-secondary px-5 py-3 transition-colors ${
                   isExisting
-                    ? 'border-transparent opacity-40'
+                    ? 'opacity-40'
                     : isChecked
-                      ? 'cursor-pointer border-primary/20 bg-primary/3'
-                      : 'cursor-pointer border-transparent opacity-60'
+                      ? 'cursor-pointer bg-accent-muted/10'
+                      : 'cursor-pointer opacity-60'
                 }`}
                 style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
                 onClick={() => toggle(i)}

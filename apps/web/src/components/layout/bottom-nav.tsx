@@ -70,12 +70,12 @@ export function BottomNav() {
   return (
     <nav
       className={cn(
-        'sticky bottom-0 z-10 border-t bg-background transition-opacity',
+        'sticky bottom-0 z-10 bg-background px-3 pt-3 pb-6 transition-opacity',
         navLocked && 'pointer-events-none opacity-70',
       )}
       aria-busy={navLocked}
     >
-      <div className="flex h-16">
+      <div className="flex h-14 rounded-full border border-border bg-background p-1 shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname.startsWith(href);
           const showBadge = href === '/quiz' && dueCount > 0;
@@ -83,28 +83,32 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={cn(
-                'flex flex-1 items-center justify-center text-xs transition-colors',
-                isActive
-                  ? 'text-primary font-medium'
-                  : 'text-muted-foreground hover:text-foreground',
-              )}
+              className="flex flex-1"
             >
               <div
                 className={cn(
-                  'flex h-12.5 w-16 flex-col items-center justify-center gap-0.5 rounded-md transition-colors',
-                  isActive && 'bg-primary/15',
+                  'flex w-full flex-col items-center justify-center gap-0.5 rounded-full transition-colors',
+                  isActive
+                    ? 'bg-primary'
+                    : 'bg-transparent',
                 )}
               >
                 <div className="relative">
-                  <Icon className="h-5 w-5" />
+                  <Icon className={cn('size-[18px]', isActive ? 'text-primary-foreground' : 'text-tertiary')} />
                   {showBadge && (
-                    <span className="absolute -top-1 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+                    <span className="absolute -top-1 -right-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-[10px] font-medium text-white">
                       {dueCount > 99 ? '99' : dueCount}
                     </span>
                   )}
                 </div>
-                <span>{label}</span>
+                <span
+                  className={cn(
+                    'text-[9px] font-semibold uppercase tracking-wide',
+                    isActive ? 'text-primary-foreground' : 'text-tertiary',
+                  )}
+                >
+                  {label}
+                </span>
               </div>
             </Link>
           );

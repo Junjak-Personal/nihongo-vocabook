@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Check } from '@/components/ui/icons';
 
@@ -59,79 +59,88 @@ export function ListToolbar({
 
   return (
     <div className="animate-slide-down-fade sticky top-14 z-[9] bg-background">
-      <div className="flex items-center gap-2 px-4 py-2">
-      <div className="relative flex-1">
-        <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={searchValue}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={searchPlaceholder}
-          className="pl-8 pr-8"
-          data-testid="list-toolbar-search-input"
-        />
-        {searchValue && (
-          <button
-            type="button"
-            onClick={onSearchClear}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            data-testid="list-toolbar-search-clear"
-          >
-            <XIcon className="size-4" />
-          </button>
-        )}
-      </div>
-      <Button
-        variant={showReading ? 'default' : 'ghost'}
-        size="icon"
-        onClick={onToggleReading}
-        data-testid="list-toolbar-toggle-reading"
-        aria-label="Toggle reading"
-      >
-        <span className="text-sm font-bold">あ</span>
-      </Button>
-      <Button
-        variant={showMeaning ? 'default' : 'ghost'}
-        size="icon"
-        onClick={onToggleMeaning}
-        data-testid="list-toolbar-toggle-meaning"
-        aria-label="Toggle meaning"
-      >
-        <span className="text-sm font-bold">意</span>
-      </Button>
-      {sortOptions && sortValue && onSortChange && (
-        <div className="relative" ref={sortRef}>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSortOpen((v) => !v)}
-            data-testid="list-toolbar-sort"
-            aria-label="Sort"
-          >
-            <ArrowUpDownIcon className="size-4" />
-          </Button>
-          {sortOpen && (
-            <div className="absolute right-0 top-full z-50 mt-1 min-w-36 rounded-md border bg-popover py-1 shadow-md">
-              {sortOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => {
-                    onSortChange(opt.value);
-                    setSortOpen(false);
-                  }}
-                  className="flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-accent"
-                  data-testid={`list-toolbar-sort-${opt.value}`}
-                >
-                  <Check className={`size-4 ${sortValue === opt.value ? 'opacity-100' : 'opacity-0'}`} />
-                  {opt.label}
-                </button>
-              ))}
-            </div>
+      <div className="flex items-center gap-2 px-5 py-2">
+        <div className="relative flex-1">
+          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-tertiary" />
+          <Input
+            value={searchValue}
+            onChange={(e) => onSearchChange(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={searchPlaceholder}
+            className="h-11 rounded-lg border-none bg-secondary pl-10 pr-8 text-[15px] shadow-none placeholder:text-tertiary"
+            data-testid="list-toolbar-search-input"
+          />
+          {searchValue && (
+            <button
+              type="button"
+              onClick={onSearchClear}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              data-testid="list-toolbar-search-clear"
+            >
+              <XIcon className="size-4" />
+            </button>
           )}
         </div>
-      )}
+        <button
+          type="button"
+          onClick={onToggleReading}
+          className={cn(
+            'flex size-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-semibold transition-colors',
+            showReading
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-secondary text-muted-foreground',
+          )}
+          data-testid="list-toolbar-toggle-reading"
+          aria-label="Toggle reading"
+        >
+          あ
+        </button>
+        <button
+          type="button"
+          onClick={onToggleMeaning}
+          className={cn(
+            'flex size-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-semibold transition-colors',
+            showMeaning
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-secondary text-muted-foreground',
+          )}
+          data-testid="list-toolbar-toggle-meaning"
+          aria-label="Toggle meaning"
+        >
+          意
+        </button>
+        {sortOptions && sortValue && onSortChange && (
+          <div className="relative" ref={sortRef}>
+            <button
+              type="button"
+              onClick={() => setSortOpen((v) => !v)}
+              className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors"
+              data-testid="list-toolbar-sort"
+              aria-label="Sort"
+            >
+              <ArrowUpDownIcon className="size-[18px]" />
+            </button>
+            {sortOpen && (
+              <div className="absolute right-0 top-full z-50 mt-1 min-w-36 rounded-lg border bg-popover py-1 shadow-md">
+                {sortOptions.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      onSortChange(opt.value);
+                      setSortOpen(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-accent"
+                    data-testid={`list-toolbar-sort-${opt.value}`}
+                  >
+                    <Check className={`size-4 ${sortValue === opt.value ? 'opacity-100' : 'opacity-0'}`} />
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      <div className="mx-4 h-px bg-border" />
     </div>
   );
 }

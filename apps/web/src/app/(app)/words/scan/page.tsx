@@ -246,7 +246,7 @@ export default function ScanPage() {
             )}
           </div>
           {/* Bottom actions */}
-          <div className="sticky bottom-0 bg-background px-4 pb-6 pt-2">
+          <div className="sticky bottom-0 bg-background px-5 pb-6 pt-3">
             <div className="mb-3 h-px bg-border" />
             <div className="flex gap-2">
               <Button className="flex-1" variant="outline" onClick={handleCancelExtract}>

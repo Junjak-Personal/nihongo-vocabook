@@ -76,7 +76,7 @@ export default function OcrSettingsPage() {
   return (
     <>
       <Header title={t.settings.ocrSettings} showBack />
-      <div className="animate-page space-y-6 p-4">
+      <div className="animate-page space-y-6 px-5 pt-3">
         {/* Mode selector */}
         <section className="space-y-2">
           <h2 className="text-sm font-medium text-muted-foreground">

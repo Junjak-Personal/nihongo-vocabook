@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from '@/lib/i18n';
 import { useAuthStore } from '@/stores/auth-store';
 import { createClient } from '@/lib/supabase/client';
@@ -95,14 +94,10 @@ export function ConsentGate({ children }: { children: ReactNode }) {
   // Show consent form
   if (!consented) {
     return (
-      <div className="flex flex-1 items-center justify-center p-6">
-        <Card className="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle className="text-center text-lg">
-              {t.consent.storageTitle}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      <div className="flex flex-1 items-center justify-center bg-secondary px-6">
+        <div className="w-full max-w-sm rounded-2xl bg-card px-6 py-8 shadow-lg">
+          <div className="space-y-5">
+            <h2 className="text-xl font-bold">{t.consent.storageTitle}</h2>
             <p className="text-sm leading-relaxed text-muted-foreground">
               {t.consent.storageDescription}
             </p>
@@ -113,20 +108,20 @@ export function ConsentGate({ children }: { children: ReactNode }) {
               </p>
             )}
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2.5">
               <Button onClick={handleAgree} className="w-full">
                 {t.consent.storageAgree}
               </Button>
               <Button
-                variant="ghost"
+                variant="outline"
                 className="w-full text-muted-foreground"
                 onClick={() => setDeclined(true)}
               >
                 {t.consent.storageDecline}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }

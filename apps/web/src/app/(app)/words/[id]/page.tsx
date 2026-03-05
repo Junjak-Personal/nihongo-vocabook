@@ -17,7 +17,7 @@ import { useRepository } from '@/lib/repository/provider';
 import { useAuthStore } from '@/stores/auth-store';
 import { useTranslation } from '@/lib/i18n';
 import { getListCache, invalidateListCache } from '@/lib/list-cache';
-import { scrollArea, bottomBar, bottomSep, emptyState } from '@/lib/styles';
+import { scrollArea, bottomBar, bottomSep, emptyState, sectionLabel } from '@/lib/styles';
 import type { WordSortOrder } from '@/lib/repository/types';
 import type { Word, StudyProgress } from '@/types/word';
 
@@ -263,9 +263,9 @@ export default function WordDetailPage({
         </div>
         <div className={bottomBar}>
           <div className={bottomSep} />
-          <div className="flex gap-2">
-            <Button variant="outline" className="flex-1" disabled>{t.wordDetail.markMastered}</Button>
-            <Button className="flex-1" disabled>{t.wordDetail.addToWordbook}</Button>
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" disabled>{t.wordDetail.addToWordbook}</Button>
+            <Button className="flex-1" disabled>{t.wordDetail.markMastered}</Button>
           </div>
         </div>
       </>
@@ -353,8 +353,8 @@ export default function WordDetailPage({
         ) : undefined}
       />
 
-      <div className="min-h-0 flex-1 overflow-y-auto p-4">
-        <div className="animate-page space-y-5">
+      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+        <div className="animate-page space-y-6">
           {/* Term + Reading */}
           <div>
             <div className="flex items-center gap-2">
@@ -393,7 +393,7 @@ export default function WordDetailPage({
 
           {/* Meaning */}
           <div>
-            <div className="text-xs font-medium uppercase text-muted-foreground">
+            <div className={sectionLabel}>
               {t.wordDetail.meaning}
             </div>
             <div className="mt-1 flex items-start justify-between gap-2">
@@ -427,7 +427,7 @@ export default function WordDetailPage({
           {/* Difficulty + Priority — compact row */}
           <div className="flex gap-6">
             <div className="shrink-0">
-              <div className="text-xs font-medium uppercase text-muted-foreground">
+              <div className={sectionLabel}>
                 {t.wordDetail.difficulty}
               </div>
               <div className="mt-1 text-sm font-medium">
@@ -435,14 +435,14 @@ export default function WordDetailPage({
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-medium uppercase text-muted-foreground">
+              <div className={sectionLabel}>
                 {t.priority.title}
               </div>
               <div className="mt-1 flex gap-1.5">
                 {[
                   { value: 1, label: t.priority.high, color: 'bg-red-500' },
                   { value: 2, label: t.priority.medium, color: 'bg-primary' },
-                  { value: 3, label: t.priority.low, color: 'bg-gray-300' },
+                  { value: 3, label: t.priority.low, color: 'bg-border-strong' },
                 ].map((p) => (
                   <button
                     key={p.value}
@@ -465,7 +465,7 @@ export default function WordDetailPage({
           {/* Tags */}
           {word.tags.length > 0 && (
             <div>
-              <div className="text-xs font-medium uppercase text-muted-foreground">
+              <div className={sectionLabel}>
                 {t.wordDetail.tags}
               </div>
               <div className="mt-1 flex flex-wrap gap-1">
@@ -481,7 +481,7 @@ export default function WordDetailPage({
           {/* Notes */}
           {word.notes && (
             <div>
-              <div className="text-xs font-medium uppercase text-muted-foreground">
+              <div className={sectionLabel}>
                 {t.wordDetail.notes}
               </div>
               <div className="mt-1 rounded-md bg-muted p-3 text-sm">
@@ -495,7 +495,7 @@ export default function WordDetailPage({
           {/* Study Progress + Created At — compact row */}
           <div className="flex gap-6 text-sm">
             <div className="flex-1">
-              <div className="text-xs font-medium uppercase text-muted-foreground">
+              <div className={sectionLabel}>
                 {t.wordDetail.studyProgress}
               </div>
               <div className="mt-1 space-y-0.5">
@@ -512,7 +512,7 @@ export default function WordDetailPage({
               </div>
             </div>
             <div className="shrink-0 text-right">
-              <div className="text-xs font-medium uppercase text-muted-foreground">
+              <div className={sectionLabel}>
                 {t.common.createdAt}
               </div>
               <div className="mt-1 font-medium">
@@ -550,10 +550,10 @@ export default function WordDetailPage({
       {/* Action Buttons — fixed outside scroll */}
       <div className={bottomBar}>
         <div className={bottomSep} />
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           {!word.mastered && (
             <Button
-              variant="outline"
+              variant="secondary"
               className="flex-1"
               onClick={() => setWordbookDialogOpen(true)}
               data-testid="word-add-to-wordbook-button"

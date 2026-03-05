@@ -129,7 +129,7 @@ export default function QuizStatsPage() {
           {t.common.loading}
         </div>
       ) : (
-        <div className="animate-page flex-1 space-y-4 overflow-y-auto p-4">
+        <div className="animate-page flex-1 space-y-4 overflow-y-auto px-4 pt-2">
           {/* Summary Cards */}
           <div className="grid grid-cols-2 gap-3">
             {[

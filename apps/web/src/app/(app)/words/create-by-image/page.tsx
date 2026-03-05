@@ -148,10 +148,10 @@ export default function CreateByImagePage() {
         title={t.scan.title}
         showBack
         actions={
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             {t.scan.editWordProgress(currentIndex + 1, words.length)}
             {skippedCount > 0 && (
-              <span className="ml-1.5 text-xs">({t.scan.skippedCount(skippedCount)})</span>
+              <span className="ml-1.5 text-xs font-normal">({t.scan.skippedCount(skippedCount)})</span>
             )}
           </span>
         }

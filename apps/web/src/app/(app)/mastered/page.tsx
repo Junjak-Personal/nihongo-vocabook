@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Flag, Trash2 } from '@/components/ui/icons';
+import { CheckCircle, Flag, Trash2 } from '@/components/ui/icons';
 import { Header } from '@/components/layout/header';
 import { ListToolbar } from '@/components/layout/list-toolbar';
 import { SwipeableWordCard } from '@/components/word/swipeable-word-card';
@@ -130,7 +130,14 @@ export default function MasteredPage() {
     <>
       <Header
         title={t.masteredPage.title}
-        desc={!loading && totalCount > 0 ? t.words.totalWordCount(totalCount) : undefined}
+        actions={
+          !loading && totalCount > 0 ? (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-tertiary">
+              <CheckCircle className="size-3.5 text-green-500" />
+              {t.words.totalWordCount(totalCount)}
+            </span>
+          ) : undefined
+        }
       />
 
       <ListToolbar

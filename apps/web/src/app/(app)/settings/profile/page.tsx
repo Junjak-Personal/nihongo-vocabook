@@ -187,7 +187,7 @@ export default function ProfilePage() {
     <>
       <Header title={t.profile.title} showBack />
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex-1 space-y-6 overflow-y-auto p-4">
+        <div className="flex-1 space-y-4 overflow-y-auto px-5 pt-2">
           {/* Avatar */}
           <section className="flex items-center gap-4">
             <div className="relative size-16 shrink-0 overflow-hidden rounded-full bg-muted">

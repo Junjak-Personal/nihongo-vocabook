@@ -83,10 +83,10 @@ export default function QuizSettingsPage() {
     <>
       <Header title={t.settings.quizSettings} showBack />
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex-1 space-y-6 overflow-y-auto p-4">
+        <div className="flex-1 space-y-5 overflow-y-auto px-5 pt-2">
           {/* New cards per day */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.newPerDay}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.newPerDay}</h2>
             <div className="flex flex-wrap gap-2">
               {NEW_PER_DAY_OPTIONS.map((n) => (
                 <Button
@@ -103,7 +103,7 @@ export default function QuizSettingsPage() {
 
           {/* Max reviews per day */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.maxReviewsPerDay}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.maxReviewsPerDay}</h2>
             <div className="flex flex-wrap gap-2">
               {MAX_REVIEWS_OPTIONS.map((n) => (
                 <Button
@@ -120,7 +120,7 @@ export default function QuizSettingsPage() {
 
           {/* JLPT filter */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.jlptFilter}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.jlptFilter}</h2>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={settings.jlptFilter === null ? 'secondary' : 'outline'}
@@ -144,7 +144,7 @@ export default function QuizSettingsPage() {
 
           {/* Session size */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.sessionSize}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.sessionSize}</h2>
             <div className="flex flex-wrap gap-2">
               {SESSION_SIZE_OPTIONS.map((n) => (
                 <Button
@@ -161,7 +161,7 @@ export default function QuizSettingsPage() {
 
           {/* Leech threshold */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.leechThreshold}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.leechThreshold}</h2>
             <p className="text-xs text-muted-foreground">{t.settings.leechThresholdDesc}</p>
             <div className="flex flex-wrap gap-2">
               {LEECH_THRESHOLD_OPTIONS.map((n) => (
@@ -179,7 +179,7 @@ export default function QuizSettingsPage() {
 
           {/* Card direction */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.cardDirection}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.cardDirection}</h2>
             <div className="flex flex-wrap gap-2">
               {([
                 { value: 'term_first' as const, label: t.settings.termFirst },
@@ -200,7 +200,7 @@ export default function QuizSettingsPage() {
 
           {/* Priority filter */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.priorityFilter}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.priorityFilter}</h2>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={settings.priorityFilter === null ? 'secondary' : 'outline'}
@@ -228,7 +228,7 @@ export default function QuizSettingsPage() {
 
           {/* Notifications */}
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">{t.settings.notifications}</h2>
+            <h2 className="text-[15px] font-semibold">{t.settings.notifications}</h2>
             <div
               role="checkbox"
               aria-checked={settings.notificationEnabled}

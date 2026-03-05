@@ -45,13 +45,13 @@ export function BaseFlashcard({
   if (isLoading) {
     return (
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="h-0.5 w-full bg-muted" />
+        <div className="h-[3px] w-full bg-secondary" />
         <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 px-4">
           <Skeleton className="h-5 w-24 rounded" />
           <Skeleton className="h-10 w-48 rounded" />
           <Skeleton className="mt-2 h-5 w-32 rounded" />
         </div>
-        <div className="shrink-0 px-4 pb-3 pt-3">
+        <div className="shrink-0 px-5 pb-2 pt-3">
           <div className={bottomSep} />
           {renderLoadingActions()}
         </div>
@@ -70,7 +70,7 @@ export function BaseFlashcard({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Progress bar */}
-      <div className="h-0.5 w-full bg-muted">
+      <div className="h-[3px] w-full bg-secondary">
         <div
           className="h-full bg-primary transition-all duration-300 ease-out"
           style={{ width: `${pct}%` }}
@@ -85,7 +85,7 @@ export function BaseFlashcard({
       >
         {/* Front text — absolutely centered, never moves */}
         <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 text-center">
-          <div className={isTermFirst ? 'text-4xl font-bold md:text-5xl' : 'text-2xl font-bold md:text-3xl'}>
+          <div className={isTermFirst ? 'text-5xl font-medium' : 'text-2xl font-medium md:text-3xl'}>
             {frontText}
           </div>
         </div>
@@ -119,7 +119,7 @@ export function BaseFlashcard({
               )}
             </>
           ) : (
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-tertiary">
               {t.quiz.tapToReveal}
             </div>
           )}
@@ -127,7 +127,7 @@ export function BaseFlashcard({
       </div>
 
       {/* Actions */}
-      <div className="shrink-0 px-4 pb-3 pt-3">
+      <div className="shrink-0 px-5 pb-2 pt-3">
         <div className={bottomSep} />
         {renderActions({ word, onAdvance: () => setRevealed(false), revealed })}
       </div>

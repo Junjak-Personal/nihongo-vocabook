@@ -17,8 +17,8 @@ export const pageWrapper = 'flex min-h-0 flex-1 flex-col';
 export const scrollArea = 'flex-1 overflow-y-auto';
 
 // ─── Bottom Action Bar ───────────────────────────────────
-/** Fixed bottom bar container (outside scroll area). */
-export const bottomBar = 'shrink-0 bg-background px-4 pb-3';
+/** Fixed bottom bar container (outside scroll area). Design: padding [12,20,8,20]. */
+export const bottomBar = 'shrink-0 bg-background px-5 pb-2 pt-3';
 
 /** Separator line inside the bottom bar, placed above buttons. */
 export const bottomSep = 'mb-3 h-px bg-border';
@@ -38,7 +38,7 @@ export const tabsBar = 'shrink-0 px-4 pt-2';
 export const inlineSep = 'mx-4 h-px bg-border';
 
 /** Search + sort toolbar row. */
-export const toolbarRow = 'flex items-center gap-2 px-4 py-2';
+export const toolbarRow = 'flex items-center gap-2 px-5 py-2';
 
 // ─── Skeleton Loading ────────────────────────────────────
 /** Skeleton list container for word-height items (60px). */
@@ -55,19 +55,25 @@ export const emptyState =
 /** Decorative icon inside empty state. */
 export const emptyIcon = 'mb-3 size-10 text-muted-foreground/50';
 
+// ─── Section Label (design: 11px/600/tracking-2/ABABAB) ─
+/** Uppercase section label used in detail & settings pages. */
+export const sectionLabel =
+  'text-[11px] font-semibold uppercase tracking-[2px] text-text-tertiary';
+
 // ─── Settings Page ───────────────────────────────────────
 /** Settings page scroll area with section spacing. */
-export const settingsScroll = 'animate-page flex-1 space-y-6 overflow-y-auto p-4';
+export const settingsScroll = 'animate-page flex-1 space-y-5 overflow-y-auto px-5 py-3';
 
 /** Settings section container. */
 export const settingsSection = 'space-y-3';
 
-/** Settings section heading. */
-export const settingsHeading = 'text-sm font-semibold text-foreground';
+/** Settings section heading (matches design: 11px/600/tracking-2/muted). */
+export const settingsHeading =
+  'text-[11px] font-semibold uppercase tracking-[2px] text-text-tertiary';
 
-/** Settings navigation link row. */
+/** Settings navigation link row (design: rounded-12, bg-secondary, p-16, gap-12). */
 export const settingsNavLink =
-  'flex items-center justify-between rounded-lg border p-3 active:bg-accent/50';
+  'flex items-center justify-between rounded-xl bg-secondary p-4 active:bg-accent/50';
 
 // ─── Namespace export ────────────────────────────────────
 export const styles = {
@@ -84,6 +90,7 @@ export const styles = {
   skeletonCardList,
   emptyState,
   emptyIcon,
+  sectionLabel,
   settingsScroll,
   settingsSection,
   settingsHeading,

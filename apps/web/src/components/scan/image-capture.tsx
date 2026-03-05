@@ -143,15 +143,15 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
         />
 
         {/* Scrollable image area — fills remaining space */}
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-3">
           {images.length === 0 && !converting ? (
             <button
               type="button"
               onClick={openGallery}
-              className="flex flex-1 flex-col items-center justify-center gap-2 rounded-lg border border-dashed text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              className="flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border-[1.5px] border-dashed border-border bg-secondary text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
               data-testid="scan-choose-gallery"
             >
-              <ImagePlus className="size-10" />
+              <ImagePlus className="size-12" />
               <span className="text-sm">{t.scan.chooseFromGallery}</span>
             </button>
           ) : images.length === 0 ? (
@@ -180,7 +180,7 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
                 type="button"
                 onClick={openGallery}
                 disabled={converting}
-                className="flex h-40 flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary disabled:opacity-50"
+                className="flex h-40 flex-col items-center justify-center gap-1.5 rounded-2xl border-[1.5px] border-dashed border-border bg-secondary text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary disabled:opacity-50"
               >
                 <ImagePlus className="size-6" />
                 <span className="text-xs">{t.common.add}</span>
@@ -227,7 +227,7 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
                 </div>
               )}
             </div>
-            <div className="bg-background px-4 pb-6 pt-2">
+            <div className="bg-background px-5 pb-6 pt-3">
               <div className="mb-3 h-px bg-border" />
               <Button className="w-full" variant="outline" onClick={handleCancelConvert}>
                 {t.common.cancel}

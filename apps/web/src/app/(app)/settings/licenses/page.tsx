@@ -26,15 +26,15 @@ export default function LicensesPage() {
   return (
     <>
       <Header title={t.settings.openSource} showBack />
-      <div className="animate-page flex-1 overflow-y-auto p-4">
-        <div className="space-y-2">
+      <div className="animate-page flex-1 overflow-y-auto">
+        <div>
           {OPEN_SOURCE_LIBS.map((lib, i) => (
             <a
               key={lib.name}
               href={lib.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="animate-stagger flex items-center justify-between rounded-lg border p-3 active:bg-accent/50"
+              className="animate-stagger flex items-center gap-3 border-b border-secondary px-5 py-3.5 active:bg-accent/50"
               style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
             >
               <div className="min-w-0 flex-1">
@@ -44,11 +44,11 @@ export default function LicensesPage() {
                     {lib.license}
                   </span>
                 </div>
-                <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                <div className="mt-1 truncate text-xs text-muted-foreground">
                   {lib.description}
                 </div>
               </div>
-              <ExternalLink className="ml-3 size-4 shrink-0 text-muted-foreground" />
+              <ExternalLink className="size-[18px] shrink-0 text-tertiary" />
             </a>
           ))}
         </div>

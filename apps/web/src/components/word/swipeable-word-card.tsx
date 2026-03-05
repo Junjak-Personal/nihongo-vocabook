@@ -99,12 +99,12 @@ export function SwipeableWordCard({
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
-        <div className="relative overflow-hidden rounded-lg">
+        <div className="relative overflow-hidden rounded-xl">
           {/* Action panel behind the card — only visible during swipe */}
           {offsetX < 0 && (
             <div
               className={cn(
-                'absolute inset-0 flex items-center justify-end rounded-lg px-4 text-white',
+                'absolute inset-0 flex items-center justify-end rounded-xl px-4 text-white',
                 swipeBg,
               )}
             >
@@ -117,7 +117,7 @@ export function SwipeableWordCard({
 
           {/* Sliding card */}
           <div
-            className="relative rounded-lg bg-background"
+            className="relative rounded-xl bg-background"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}

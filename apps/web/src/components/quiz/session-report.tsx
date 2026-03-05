@@ -79,7 +79,7 @@ export function SessionReport({
 
         <div className="w-full max-w-sm space-y-4">
           <div
-            className="animate-stagger flex items-center justify-between rounded-lg border p-4"
+            className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center gap-3">
@@ -90,7 +90,7 @@ export function SessionReport({
           </div>
 
           <div
-            className="animate-stagger flex items-center justify-between rounded-lg border p-4"
+            className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export function SessionReport({
           </div>
 
           <div
-            className="animate-stagger flex flex-col rounded-lg border p-4"
+            className="animate-stagger flex flex-col rounded-xl border border-secondary bg-card p-4"
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center justify-between">
@@ -136,7 +136,7 @@ export function SessionReport({
 
           {stats.masteredCount > 0 && (
             <div
-              className="animate-stagger flex items-center justify-between rounded-lg border p-4"
+              className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
               style={{ '--stagger': stagger++ } as React.CSSProperties}
             >
               <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ export function SessionReport({
 
           {streak > 0 && (
             <div
-              className="animate-stagger flex items-center justify-between rounded-lg border p-4"
+              className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
               style={{ '--stagger': stagger++ } as React.CSSProperties}
             >
               <div className="flex items-center gap-3">

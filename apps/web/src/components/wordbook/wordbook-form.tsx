@@ -123,7 +123,7 @@ export function WordbookForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div className="flex-1 space-y-5 overflow-y-auto px-5 py-4">
         <div className="space-y-2">
           <Label htmlFor="wordbook-name">{t.wordbooks.name}</Label>
           <Input
@@ -180,16 +180,17 @@ export function WordbookForm({
           </div>
         </div>
         {showShareToggle && (
-          <div className="flex items-center gap-3">
-            <Switch
-              id="wordbook-shared"
-              checked={isShared}
-              onCheckedChange={setIsShared}
-              data-testid="wordbook-share-toggle"
-            />
-            <Label htmlFor="wordbook-shared" className="cursor-pointer">
-              {t.wordbooks.shareToggle}
-            </Label>
+          <div className="space-y-2">
+            <Label htmlFor="wordbook-shared">{t.wordbooks.shareToggle}</Label>
+            <div className="flex h-12 items-center justify-between rounded-lg bg-secondary px-4">
+              <span className="text-[15px]">{t.wordbooks.shareToggle}</span>
+              <Switch
+                id="wordbook-shared"
+                checked={isShared}
+                onCheckedChange={setIsShared}
+                data-testid="wordbook-share-toggle"
+              />
+            </div>
           </div>
         )}
         {createdAt && (

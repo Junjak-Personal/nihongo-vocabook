@@ -85,10 +85,11 @@ export function ImportWordbookDialog({ wordbook, open, onClose, onDone }: Import
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="fixed inset-0 bg-black/50" onClick={loading ? undefined : handleClose} />
-      <div className="relative z-50 w-full max-w-md rounded-t-xl bg-background p-6 shadow-lg sm:rounded-xl">
+      <div className="relative z-50 w-full max-w-md rounded-t-[20px] bg-background px-5 pb-7 pt-5 shadow-lg sm:rounded-[20px]">
+        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border-strong" />
         {copyMode ? (
           <form onSubmit={handleCopySubmit}>
-            <h2 className="mb-4 text-lg font-semibold">{t.wordbooks.copyToMine}</h2>
+            <h2 className="mb-4 text-xl font-bold">{t.wordbooks.copyToMine}</h2>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="copy-wordbook-name">{t.wordbooks.name}</Label>
@@ -134,11 +135,11 @@ export function ImportWordbookDialog({ wordbook, open, onClose, onDone }: Import
           </form>
         ) : (
           <>
-            <h2 className="mb-1 text-lg font-semibold">{t.wordbooks.importTitle}</h2>
-            <p className="mb-4 text-sm text-muted-foreground">{wordbook.name}</p>
-            <p className="mb-4 text-sm text-muted-foreground">{t.wordbooks.importDescription}</p>
+            <h2 className="text-xl font-bold">{t.wordbooks.importTitle}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{wordbook.name}</p>
+            <p className="mt-2 text-[13px] leading-relaxed text-tertiary">{t.wordbooks.importDescription}</p>
 
-            <div className="space-y-2">
+            <div className="mt-3 space-y-2">
               {!wordbook.isSubscribed && (
                 <Button
                   className="w-full"
@@ -158,16 +159,15 @@ export function ImportWordbookDialog({ wordbook, open, onClose, onDone }: Import
               >
                 {t.wordbooks.copyToMine}
               </Button>
+              <Button
+                variant="outline"
+                className="w-full text-muted-foreground"
+                onClick={handleClose}
+                disabled={loading}
+              >
+                {t.common.cancel}
+              </Button>
             </div>
-
-            <Button
-              variant="ghost"
-              className="mt-3 w-full"
-              onClick={handleClose}
-              disabled={loading}
-            >
-              {t.common.cancel}
-            </Button>
           </>
         )}
       </div>

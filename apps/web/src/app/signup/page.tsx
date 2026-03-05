@@ -7,8 +7,6 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { bottomSep } from '@/lib/styles';
 import { createClient } from '@/lib/supabase/client';
 import { useTranslation } from '@/lib/i18n';
 
@@ -70,26 +68,16 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-      {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[20%] h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/8 blur-[80px]" />
-      </div>
-
+    <div className="flex min-h-0 flex-1 flex-col">
       {/* Branding */}
-      <div className="relative shrink-0 pb-8 pt-12 text-center">
-        <div className="text-4xl font-bold tracking-tight text-primary">NiVoca</div>
-        <p className="mt-2 text-xs text-muted-foreground">{t.landing.subtitle}</p>
+      <div className="shrink-0 px-8 pb-6 pt-16">
+        <div className="text-4xl font-bold tracking-tight text-primary" style={{ letterSpacing: '-1px' }}>NiVoca</div>
+        <p className="mt-2 text-[15px] text-muted-foreground">{t.landing.subtitle}</p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="relative flex min-h-0 flex-1 flex-col">
-        <div className="flex-1 overflow-y-auto px-6 py-6">
-          <Card className="mx-auto max-w-[360px]">
-            <CardHeader>
-              <CardTitle className="text-center text-lg">{t.auth.signUp}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+      <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+        <div className="flex-1 space-y-3.5 overflow-y-auto px-6 pt-2">
               <div className="space-y-2">
                 <Label htmlFor="email">{t.auth.email}</Label>
                 <Input
@@ -174,26 +162,22 @@ export default function SignupPage() {
                   </Link>
                 </div>
               </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Bottom buttons */}
-        <div className="relative shrink-0 px-4 pb-3">
-          <div className={bottomSep} />
-          <div className="flex flex-col gap-2">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading || !canSubmit}
-              data-testid="signup-submit-button"
-            >
-              {loading ? t.auth.creatingAccount : t.auth.createAccount}
-            </Button>
-            <Link href="/login">
-              <Button type="button" variant="outline" className="w-full" data-testid="signup-goto-login">
-                {t.auth.goToLogin}
-              </Button>
+        <div className="shrink-0 space-y-3 px-6 pb-8 pt-8">
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={loading || !canSubmit}
+            data-testid="signup-submit-button"
+          >
+            {loading ? t.auth.creatingAccount : t.auth.createAccount}
+          </Button>
+          <div className="flex items-center justify-center gap-1 text-sm">
+            <span className="text-muted-foreground">{t.auth.hasAccount}</span>
+            <Link href="/login" className="font-semibold text-primary" data-testid="signup-goto-login">
+              {t.auth.signIn}
             </Link>
           </div>
         </div>
