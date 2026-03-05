@@ -7,8 +7,11 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Check } from '@/components/ui/icons';
 import { createClient } from '@/lib/supabase/client';
 import { useTranslation } from '@/lib/i18n';
+import { btnLg } from '@/lib/styles';
+import { cn } from '@/lib/utils';
 
 const REMEMBERED_EMAIL_KEY = 'vocabook_remembered_email';
 
@@ -58,16 +61,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col justify-end overflow-y-auto">
       {/* Branding */}
-      <div className="shrink-0 px-8 pb-6 pt-[137px]">
-        <div className="text-4xl font-bold tracking-tight text-primary" style={{ letterSpacing: '-1px' }}>NiVoca</div>
-        <p className="mt-2 text-[15px] text-muted-foreground">{t.landing.subtitle}</p>
+      <div className="flex shrink-0 flex-col items-center gap-2 px-8 pb-6 pt-8">
+        <div className="font-ja text-kanji font-bold tracking-[-1px] text-primary">NiVoca</div>
+        <p className="text-body text-muted-foreground">{t.auth.welcomeBack}</p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-        <div className="flex-1 space-y-4 overflow-y-auto px-6 pt-2">
+      <form onSubmit={handleSubmit} className="shrink-0">
+        <div className="space-y-4 px-6 pt-2">
           <div className="space-y-2">
             <Label htmlFor="email">{t.auth.email}</Label>
             <Input
@@ -95,33 +98,42 @@ export default function LoginPage() {
           </div>
 
           <div className="flex items-center justify-between">
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
+            <label className="flex cursor-pointer items-center gap-2 text-caption text-muted-foreground">
+              <span className={cn(
+                'flex size-[18px] shrink-0 items-center justify-center rounded-sm border-[1.5px]',
+                rememberEmail ? 'border-primary bg-primary' : 'border-border bg-background'
+              )}>
+                {rememberEmail && <Check className="size-3 text-white" />}
+              </span>
               <input
                 type="checkbox"
                 checked={rememberEmail}
                 onChange={(e) => setRememberEmail(e.target.checked)}
-                className="size-[18px] rounded border-border-strong accent-primary"
+                className="sr-only"
                 data-testid="login-remember-email"
               />
               {t.auth.rememberEmail}
             </label>
-            <Link href="/words" className="text-sm text-primary underline">
+            <Link href="/words" className="text-caption font-medium text-primary">
               {t.auth.continueAsGuest}
             </Link>
           </div>
         </div>
 
+        {/* Spacer — equalizes content height with signup so email position matches */}
+        <div className="h-[191px] shrink-0" />
+
         {/* Bottom buttons */}
-        <div className="shrink-0 space-y-3 px-6 pb-8 pt-8">
+        <div className="shrink-0 space-y-3 px-6 pb-8 pt-[30px]">
           <Button
             type="submit"
-            className="w-full"
+            className={cn(btnLg, 'w-full text-title-sm font-semibold')}
             disabled={loading}
             data-testid="login-submit-button"
           >
             {loading ? t.auth.signingIn : t.auth.signIn}
           </Button>
-          <div className="flex items-center justify-center gap-1 text-sm">
+          <div className="flex items-center justify-center gap-1 text-reading">
             <span className="text-muted-foreground">{t.auth.noAccount}</span>
             <Link href="/signup" className="font-semibold text-primary" data-testid="login-goto-signup">
               {t.auth.signUp}

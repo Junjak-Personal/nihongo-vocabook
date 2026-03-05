@@ -3,7 +3,7 @@
 import { useState, useEffect, use, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
-import { Pencil, Trash2, X, LinkIcon, AlertTriangle, ChevronLeft, ChevronRight, Eye, EyeOff } from '@/components/ui/icons';
+import { Pencil, Trash2, X, LinkIcon, AlertTriangle, ChevronLeft, ChevronRight, Eye } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
@@ -330,16 +330,6 @@ export default function WordDetailPage({
             <Button
               variant="ghost"
               size="icon-sm"
-              className="text-destructive"
-              onClick={() => setShowDeleteConfirm(true)}
-              data-testid="word-delete-button"
-              aria-label={t.common.delete}
-            >
-              <Trash2 className="size-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon-sm"
               onClick={() => {
                 setEditDirty(false);
                 setEditing(true);
@@ -349,96 +339,118 @@ export default function WordDetailPage({
             >
               <Pencil className="size-5" />
             </Button>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setShowDeleteConfirm(true)}
+              data-testid="word-delete-button"
+              aria-label={t.common.delete}
+            >
+              <Trash2 className="size-5" />
+            </Button>
           </div>
         ) : undefined}
       />
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
-        <div className="animate-page space-y-6">
-          {/* Term + Reading */}
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="text-3xl font-bold">{word.term}</div>
-              {word.mastered && (
-                <Badge variant="secondary" className="bg-green-100 text-green-700">
-                  {t.nav.mastered}
-                </Badge>
-              )}
-              {word.isLeech && (
-                <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
-                  <AlertTriangle className="mr-1 size-3" />
-                  {t.wordDetail.leech}
-                </Badge>
-              )}
-              {!word.isOwned && (
-                <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                  <LinkIcon className="mr-1 size-3" />
-                  {t.wordDetail.subscribedWord}
-                </Badge>
-              )}
-            </div>
-            <div
-              className={cn(
-                'text-lg text-muted-foreground transition-[opacity,filter,transform] duration-300 ease-out',
-                showWordInfo
-                  ? 'translate-y-0 scale-100 opacity-100 blur-0'
-                  : '-translate-y-0.5 scale-[0.99] opacity-70 blur-[1px]',
-              )}
+      <div className={cn(scrollArea, 'px-5 py-4')}>
+        <div className="animate-page flex flex-col gap-6">
+
+          {/* Word block — kanji/reading/meaning card */}
+          <div className="relative overflow-hidden rounded-xl bg-secondary" style={{ minHeight: 180 }}>
+            {/* Prev/Next navigation arrows */}
+            <button
+              className="absolute left-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center disabled:opacity-30"
+              onClick={() => handleMoveWord(prevWordId)}
+              disabled={!prevWordId}
+              data-testid="word-prev-button"
+              aria-label={t.common.previous}
             >
-              {showWordInfo ? word.reading : '•••'}
-            </div>
-          </div>
+              <ChevronLeft className="size-5 text-text-tertiary" />
+            </button>
+            <button
+              className="absolute right-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center disabled:opacity-30"
+              onClick={() => handleMoveWord(nextWordId)}
+              disabled={!nextWordId}
+              data-testid="word-next-button"
+              aria-label={t.common.next}
+            >
+              <ChevronRight className="size-5 text-text-tertiary" />
+            </button>
 
-          <Separator />
+            {/* Eye toggle button — top-right inside card */}
+            <button
+              className="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-border"
+              onClick={() => setShowWordInfo((prev) => !prev)}
+              data-testid="word-toggle-info-button"
+              aria-label={`${t.words.showReading} / ${t.words.showMeaning}`}
+            >
+              <Eye className="size-icon text-text-secondary" />
+            </button>
 
-          {/* Meaning */}
-          <div>
-            <div className={sectionLabel}>
-              {t.wordDetail.meaning}
-            </div>
-            <div className="mt-1 flex items-start justify-between gap-2">
+            {/* Center content */}
+            <div className="flex flex-col items-center py-6 text-center">
+              {/* Reading */}
               <div
                 className={cn(
-                  'text-2xl font-semibold text-primary transition-[opacity,filter,transform] duration-300 ease-out',
-                  showWordInfo
-                    ? 'translate-y-0 scale-100 opacity-100 blur-0'
-                    : '-translate-y-0.5 scale-[0.99] opacity-70 blur-[1px]',
+                  'text-reading text-text-secondary transition-[opacity,filter] duration-300 ease-out',
+                  showWordInfo ? 'opacity-100 blur-0' : 'opacity-70 blur-[2px]',
+                )}
+              >
+                {showWordInfo ? word.reading : '•••'}
+              </div>
+              {/* Kanji */}
+              <div className="mt-1 text-kanji-lg font-medium leading-tight text-foreground">
+                {word.term}
+              </div>
+              {/* Meaning */}
+              <div
+                className={cn(
+                  'text-section font-medium text-primary transition-[opacity,filter] duration-300 ease-out',
+                  showWordInfo ? 'opacity-100 blur-0' : 'opacity-70 blur-[2px]',
                 )}
               >
                 {showWordInfo ? word.meaning : '•••'}
               </div>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="shrink-0"
-                onClick={() => setShowWordInfo((prev) => !prev)}
-                data-testid="word-toggle-info-button"
-                aria-label={`${t.words.showReading} / ${t.words.showMeaning}`}
-              >
-                {showWordInfo ? (
-                  <Eye className="size-5 transition-transform duration-300 ease-out" />
-                ) : (
-                  <EyeOff className="size-5 transition-transform duration-300 ease-out" />
-                )}
-              </Button>
+
+              {/* Status badges */}
+              {(word.mastered || word.isLeech || !word.isOwned) && (
+                <div className="mt-2 flex flex-wrap justify-center gap-1">
+                  {word.mastered && (
+                    <Badge variant="secondary" className="bg-green-100 text-green-700">
+                      {t.nav.mastered}
+                    </Badge>
+                  )}
+                  {word.isLeech && (
+                    <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                      <AlertTriangle className="mr-1 size-3" />
+                      {t.wordDetail.leech}
+                    </Badge>
+                  )}
+                  {!word.isOwned && (
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                      <LinkIcon className="mr-1 size-3" />
+                      {t.wordDetail.subscribedWord}
+                    </Badge>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Difficulty + Priority — compact row */}
-          <div className="flex gap-6">
-            <div className="shrink-0">
-              <div className={sectionLabel}>
-                {t.wordDetail.difficulty}
-              </div>
-              <div className="mt-1 text-sm font-medium">
+          {/* Divider */}
+          <div className="h-px bg-secondary" />
+
+          {/* Meta grid — LEVEL / PRIORITY / CREATED */}
+          <div className="flex gap-4">
+            <div className="flex flex-1 flex-col gap-1">
+              <div className={sectionLabel}>{t.wordDetail.difficulty}</div>
+              <div className="text-body font-medium">
                 {word.jlptLevel ? `JLPT N${word.jlptLevel}` : t.wordDetail.unclassified}
               </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <div className={sectionLabel}>
-                {t.priority.title}
-              </div>
-              <div className="mt-1 flex gap-1.5">
+            <div className="flex flex-1 flex-col gap-1">
+              <div className={sectionLabel}>{t.priority.title}</div>
+              <div className="flex gap-1.5">
                 {[
                   { value: 1, label: t.priority.high, color: 'bg-primary' },
                   { value: 2, label: t.priority.medium, color: 'bg-accent-muted' },
@@ -448,10 +460,10 @@ export default function WordDetailPage({
                     key={p.value}
                     onClick={() => handleSetPriority(p.value)}
                     className={cn(
-                      'flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs transition-colors',
+                      'flex items-center gap-1 rounded-full border px-2 py-0.5 text-badge font-medium transition-colors',
                       word.priority === p.value
-                        ? 'border-primary bg-primary/10 font-medium text-primary'
-                        : 'border-border text-muted-foreground hover:bg-accent',
+                        ? 'border-primary bg-primary/10 text-primary'
+                        : 'border-border text-text-secondary hover:bg-accent',
                     )}
                   >
                     <span className={cn('size-1.5 rounded-full', p.color)} />
@@ -460,19 +472,49 @@ export default function WordDetailPage({
                 ))}
               </div>
             </div>
+            <div className="flex flex-1 flex-col gap-1">
+              <div className={sectionLabel}>{t.common.createdAt}</div>
+              <div className="text-reading font-semibold">
+                {word.createdAt.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-US')}
+              </div>
+            </div>
           </div>
+
+          {/* Divider */}
+          <div className="h-px bg-secondary" />
+
+          {/* Study Progress */}
+          <div className="flex flex-col gap-3">
+            <div className={sectionLabel}>{t.wordDetail.studyProgress}</div>
+            <div className="flex gap-4">
+              <div className="flex flex-1 flex-col gap-1 rounded-lg bg-secondary p-3">
+                <div className={sectionLabel}>{t.wordDetail.reviews}</div>
+                <div className="text-body font-medium">{progress?.reviewCount ?? 0}</div>
+              </div>
+              <div className="flex flex-1 flex-col gap-1 rounded-lg bg-secondary p-3">
+                <div className={sectionLabel}>{t.wordDetail.nextReview}</div>
+                <div className="text-body font-medium">
+                  {progress ? formatNextReview(progress.nextReview) : t.wordDetail.notStarted}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-secondary" />
 
           {/* Tags */}
           {word.tags.length > 0 && (
-            <div>
-              <div className={sectionLabel}>
-                {t.wordDetail.tags}
-              </div>
-              <div className="mt-1 flex flex-wrap gap-1">
+            <div className="flex flex-col gap-2">
+              <div className={sectionLabel}>{t.wordDetail.tags}</div>
+              <div className="flex flex-wrap gap-2">
                 {word.tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
-                    #{tag}
-                  </Badge>
+                  <span
+                    key={tag}
+                    className="rounded-md bg-secondary px-3 py-2 text-caption font-medium text-text-secondary"
+                  >
+                    {tag}
+                  </span>
                 ))}
               </div>
             </div>
@@ -480,72 +522,13 @@ export default function WordDetailPage({
 
           {/* Notes */}
           {word.notes && (
-            <div>
-              <div className={sectionLabel}>
-                {t.wordDetail.notes}
-              </div>
-              <div className="mt-1 rounded-md bg-muted p-3 text-sm">
-                {word.notes}
-              </div>
+            <div className="flex flex-col gap-2">
+              <div className={sectionLabel}>{t.wordDetail.notes}</div>
+              <div className="rounded-lg bg-secondary p-3 text-body">{word.notes}</div>
             </div>
           )}
-
-          <Separator />
-
-          {/* Study Progress + Created At — compact row */}
-          <div className="flex gap-6 text-sm">
-            <div className="flex-1">
-              <div className={sectionLabel}>
-                {t.wordDetail.studyProgress}
-              </div>
-              <div className="mt-1 space-y-0.5">
-                <div>
-                  <span className="text-muted-foreground">{t.wordDetail.reviews}: </span>
-                  <span className="font-medium">{progress?.reviewCount ?? 0}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">{t.wordDetail.nextReview}: </span>
-                  <span className="font-medium">
-                    {progress ? formatNextReview(progress.nextReview) : t.wordDetail.notStarted}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="shrink-0 text-right">
-              <div className={sectionLabel}>
-                {t.common.createdAt}
-              </div>
-              <div className="mt-1 font-medium">
-                {word.createdAt.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-US')}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-
-      <Button
-        variant="outline"
-        size="icon"
-        className="fixed top-[60%] left-1 z-20 -translate-y-1/2 rounded-r-xl rounded-l-none border-l-0 shadow-md md:left-[calc(50%-14rem+0.25rem)]"
-        onClick={() => handleMoveWord(prevWordId)}
-        disabled={!prevWordId}
-        data-testid="word-prev-button"
-        aria-label={t.common.previous}
-      >
-        <ChevronLeft className="size-5" />
-      </Button>
-
-      <Button
-        variant="outline"
-        size="icon"
-        className="fixed top-[60%] right-1 z-20 -translate-y-1/2 rounded-l-xl rounded-r-none border-r-0 shadow-md md:right-[calc(50%-14rem+0.25rem)]"
-        onClick={() => handleMoveWord(nextWordId)}
-        disabled={!nextWordId}
-        data-testid="word-next-button"
-        aria-label={t.common.next}
-      >
-        <ChevronRight className="size-5" />
-      </Button>
 
       {/* Action Buttons — fixed outside scroll */}
       <div className={bottomBar}>
@@ -553,7 +536,7 @@ export default function WordDetailPage({
         <div className="flex gap-3">
           {!word.mastered && (
             <Button
-              variant="secondary"
+              variant="outline"
               className="flex-1"
               onClick={() => setWordbookDialogOpen(true)}
               data-testid="word-add-to-wordbook-button"

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import {Share2, PhotoScan, FolderOpen, Search, X } from '@/components/ui/icons';
+import { Share2, FolderOpen, Search, X } from '@/components/ui/icons';
 import { Header } from '@/components/layout/header';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,6 @@ import {
   tabsBar,
   inlineSep,
   toolbarRow,
-  listContainer,
 } from '@/lib/styles';
 import type { WordbookWithCount } from '@/types/wordbook';
 
@@ -93,7 +92,7 @@ export default function WordbooksPage() {
         title={t.wordbooks.title}
         actions={
           <Link href="/wordbooks/browse">
-            <Button variant="ghost" size="icon-sm" data-testid="wordbooks-browse-button" aria-label="Browse shared">
+            <Button variant="ghost" size="icon-sm" data-testid="wordbooks-browse-button" aria-label="Browse shared wordbooks">
               <Share2 className="size-5" />
             </Button>
           </Link>
@@ -106,7 +105,7 @@ export default function WordbooksPage() {
             <TabsTrigger value="owned" className="flex-1">
               {t.wordbooks.myWordbooks}
               {wordbooks.length > 0 && (
-                <span className="ml-1.5 rounded-full bg-foreground/10 px-1.5 py-px text-[10px] font-medium tabular-nums">
+                <span className="ml-1.5 rounded-full bg-foreground/10 px-1.5 py-px text-micro font-medium tabular-nums">
                   {wordbooks.length}
                 </span>
               )}
@@ -114,7 +113,7 @@ export default function WordbooksPage() {
             <TabsTrigger value="subscribed" className="flex-1">
               {t.wordbooks.subscribedWordbooks}
               {subscribed.length > 0 && (
-                <span className="ml-1.5 rounded-full bg-foreground/10 px-1.5 py-px text-[10px] font-medium tabular-nums">
+                <span className="ml-1.5 rounded-full bg-foreground/10 px-1.5 py-px text-micro font-medium tabular-nums">
                   {subscribed.length}
                 </span>
               )}
@@ -181,7 +180,7 @@ export default function WordbooksPage() {
                 </div>
               ) : (
                 <div className="flex-1 overflow-y-auto">
-                  <div className={listContainer}>
+                  <div className="space-y-3 px-5 pt-2 pb-3">
                     {filteredOwned.map((wb, i) => (
                       <div
                         key={wb.id}
@@ -206,7 +205,7 @@ export default function WordbooksPage() {
                 </div>
               ) : (
                 <div className="flex-1 overflow-y-auto">
-                  <div className={listContainer}>
+                  <div className="space-y-3 px-5 pt-2 pb-3">
                     {filteredSubscribed.map((wb, i) => (
                       <div
                         key={wb.id}

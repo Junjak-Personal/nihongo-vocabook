@@ -31,7 +31,7 @@ const en: Translations = {
   },
   landing: {
     title: 'NiVoca',
-    subtitle: 'Learn · Review · Share Japanese words',
+    subtitle: 'Japanese Vocabulary\nStudy · Review · Share',
     startLearning: 'Start Learning',
     signIn: 'Sign In',
     feature1: 'Search and save Japanese words with Jisho dictionary',
@@ -40,6 +40,8 @@ const en: Translations = {
     feature4: 'Extract words from images via OCR/AI',
   },
   auth: {
+    welcomeBack: 'Welcome back',
+    createYourAccount: 'Create your account',
     signIn: 'Sign In',
     signUp: 'Sign Up',
     email: 'Email',

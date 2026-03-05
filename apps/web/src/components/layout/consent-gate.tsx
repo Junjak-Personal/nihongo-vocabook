@@ -94,32 +94,30 @@ export function ConsentGate({ children }: { children: ReactNode }) {
   // Show consent form
   if (!consented) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-secondary px-6">
-        <div className="w-full max-w-sm rounded-2xl bg-card px-6 py-8 shadow-lg">
-          <div className="space-y-5">
-            <h2 className="text-xl font-bold">{t.consent.storageTitle}</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {t.consent.storageDescription}
+      <div className="flex flex-1 items-center justify-center bg-[#F5F5F5] px-6">
+        <div className="flex w-full flex-col gap-5 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+          <h2 className="text-xl font-bold">{t.consent.storageTitle}</h2>
+          <p className="text-center text-reading leading-[1.5] text-muted-foreground">
+            {t.consent.storageDescription}
+          </p>
+
+          {declined && (
+            <p className="text-sm text-destructive">
+              {t.consent.storageDeclinedMessage}
             </p>
+          )}
 
-            {declined && (
-              <p className="text-sm text-destructive">
-                {t.consent.storageDeclinedMessage}
-              </p>
-            )}
-
-            <div className="flex flex-col gap-2.5">
-              <Button onClick={handleAgree} className="w-full">
-                {t.consent.storageAgree}
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full text-muted-foreground"
-                onClick={() => setDeclined(true)}
-              >
-                {t.consent.storageDecline}
-              </Button>
-            </div>
+          <div className="flex flex-col gap-[10px]">
+            <Button onClick={handleAgree} className="w-full">
+              {t.consent.storageAgree}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full text-muted-foreground"
+              onClick={() => setDeclined(true)}
+            >
+              {t.consent.storageDecline}
+            </Button>
           </div>
         </div>
       </div>

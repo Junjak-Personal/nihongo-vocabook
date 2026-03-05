@@ -239,17 +239,17 @@ export default function SettingsPage() {
         {/* Language */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.language}</h2>
-          <div className="flex gap-2">
+          <div className="flex gap-2 rounded-lg bg-secondary p-1">
             {languageOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setLocale(opt.value)}
                 data-testid={`settings-lang-${opt.value}`}
                 className={cn(
-                  'h-9 rounded-lg px-4 text-[13px] transition-colors',
+                  'flex h-9 flex-1 items-center justify-center rounded-lg text-caption transition-colors',
                   locale === opt.value
-                    ? 'bg-primary font-semibold text-primary-foreground'
-                    : 'border border-border bg-background font-medium text-muted-foreground',
+                    ? 'bg-background font-semibold shadow-sm'
+                    : 'font-medium text-muted-foreground',
                 )}
               >
                 {opt.label}
@@ -261,7 +261,7 @@ export default function SettingsPage() {
         {/* Theme */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.theme}</h2>
-          <div className="flex gap-2">
+          <div className="flex gap-2 rounded-lg bg-secondary p-1">
             {([
               { value: 'system', label: t.settings.themeSystem },
               { value: 'light', label: t.settings.themeLight },
@@ -272,10 +272,10 @@ export default function SettingsPage() {
                 onClick={() => setTheme(opt.value)}
                 data-testid={`settings-theme-${opt.value}`}
                 className={cn(
-                  'h-9 rounded-lg px-4 text-[13px] transition-colors',
+                  'flex h-9 flex-1 items-center justify-center rounded-lg text-caption transition-colors',
                   theme === opt.value
-                    ? 'bg-primary font-semibold text-primary-foreground'
-                    : 'border border-border bg-background font-medium text-muted-foreground',
+                    ? 'bg-background font-semibold shadow-sm'
+                    : 'font-medium text-muted-foreground',
                 )}
               >
                 {opt.label}
@@ -296,8 +296,8 @@ export default function SettingsPage() {
                   data-testid="settings-quiz-link"
                 >
                   <div className="flex items-center gap-3">
-                    <SlidersHorizontal className="size-[18px] text-muted-foreground" />
-                    <span className="text-[15px] font-medium">{t.settings.quizSettings}</span>
+                    <SlidersHorizontal className="size-icon text-muted-foreground" />
+                    <span className="text-body font-medium">{t.settings.quizSettings}</span>
                   </div>
                   <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
                 </Link>
@@ -307,8 +307,8 @@ export default function SettingsPage() {
                   data-testid="settings-achievements-link"
                 >
                   <div className="flex items-center gap-3">
-                    <Trophy className="size-[18px] text-muted-foreground" />
-                    <span className="text-[15px] font-medium">{t.settings.achievements}</span>
+                    <Trophy className="size-icon text-muted-foreground" />
+                    <span className="text-body font-medium">{t.settings.achievements}</span>
                   </div>
                   <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
                 </Link>
@@ -318,8 +318,8 @@ export default function SettingsPage() {
                   data-testid="settings-quiz-stats-link"
                 >
                   <div className="flex items-center gap-3">
-                    <BarChart3 className="size-[18px] text-muted-foreground" />
-                    <span className="text-[15px] font-medium">{t.settings.quizStats}</span>
+                    <BarChart3 className="size-icon text-muted-foreground" />
+                    <span className="text-body font-medium">{t.settings.quizStats}</span>
                   </div>
                   <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
                 </Link>

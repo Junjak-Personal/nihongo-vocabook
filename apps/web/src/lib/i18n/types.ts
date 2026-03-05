@@ -38,6 +38,8 @@ export interface Translations {
     feature4: string;
   };
   auth: {
+    welcomeBack: string;
+    createYourAccount: string;
     signIn: string;
     signUp: string;
     email: string;

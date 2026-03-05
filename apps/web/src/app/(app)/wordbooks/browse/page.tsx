@@ -240,46 +240,30 @@ function SharedWordbookCard({
   return (
     <button
       onClick={onSelect}
-      className="block w-full rounded-xl border bg-card p-4 text-left transition-colors hover:bg-accent"
+      className="flex w-full flex-col gap-2 rounded-xl border bg-card p-4 text-left transition-colors active:bg-accent/50"
       data-testid="shared-wordbook-card"
     >
       <div className="flex items-center justify-between">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-semibold">{item.name}</span>
-            {item.isSubscribed && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                {t.wordbooks.subscribedWordbooks}
-              </span>
-            )}
-          </div>
-          {item.description && (
-            <div className="mt-0.5 truncate text-sm text-muted-foreground">
-              {item.description}
-            </div>
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <span className="truncate text-body font-semibold">{item.name}</span>
+          {item.isSubscribed && (
+            <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+              {t.wordbooks.subscribedWordbooks}
+            </span>
           )}
-          {item.tags.length > 0 && (
-            <div className="mt-1 flex flex-wrap gap-1">
-              {item.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
-          <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
-            <span>{t.wordbooks.ownerLabel}: {item.ownerEmail}</span>
-            {item.importCount > 0 && (
-              <span>{t.wordbooks.importCount(item.importCount)}</span>
-            )}
-          </div>
         </div>
-        <div className="ml-4 shrink-0 text-sm text-muted-foreground">
+        <span className="ml-3 shrink-0 text-caption text-muted-foreground">
           {t.wordbooks.wordCount(item.wordCount)}
+        </span>
+      </div>
+      {item.description && (
+        <div className="truncate text-caption text-muted-foreground">
+          {item.description}
         </div>
+      )}
+      <div className="text-overline text-muted-foreground/70">
+        {t.wordbooks.ownerLabel}: {item.ownerEmail}
+        {item.importCount > 0 && ` · ${t.wordbooks.importCount(item.importCount)}`}
       </div>
     </button>
   );

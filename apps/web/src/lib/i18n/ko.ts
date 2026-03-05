@@ -31,7 +31,7 @@ const ko: Translations = {
   },
   landing: {
     title: 'NiVoca',
-    subtitle: '일본어 단어 학습 · 복습 · 공유',
+    subtitle: '일본어 단어\n학습 · 복습 · 공유',
     startLearning: '학습 시작',
     signIn: '로그인',
     feature1: 'Jisho 사전으로 일본어 단어 검색 및 저장',
@@ -40,6 +40,8 @@ const ko: Translations = {
     feature4: '이미지에서 OCR/AI로 단어 자동 추출',
   },
   auth: {
+    welcomeBack: '다시 오셨군요',
+    createYourAccount: '계정을 만들어보세요',
     signIn: '로그인',
     signUp: '회원가입',
     email: '이메일',

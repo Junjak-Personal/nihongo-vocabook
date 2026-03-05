@@ -174,7 +174,7 @@ export function WordPreview({
         <div className="flex items-center justify-between px-5 py-2">
           {/* Selection count */}
           <div className="flex shrink-0 items-center gap-1.5 text-sm font-semibold">
-            <Check className="size-[18px] text-primary" />
+            <Check className="size-icon text-primary" />
             <span className="tabular-nums">{selectedCount} / {newCount}</span>
           </div>
 
@@ -239,7 +239,7 @@ export function WordPreview({
                 aria-checked={isChecked}
                 aria-disabled={isExisting}
                 tabIndex={isExisting ? -1 : 0}
-                className={`animate-stagger flex items-center gap-3 border-b border-secondary px-5 py-3 transition-colors ${
+                className={`animate-stagger flex items-center gap-3 border-b border-[#F5F5F5] px-5 py-3 transition-colors ${
                   isExisting
                     ? 'opacity-40'
                     : isChecked
@@ -251,12 +251,12 @@ export function WordPreview({
                 onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(i); } }}
               >
                 <div
-                  className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
+                  className={`flex size-[22px] shrink-0 items-center justify-center rounded-full border transition-colors ${
                     isExisting
                       ? 'border-muted-foreground/20 bg-muted'
                       : isChecked
                         ? 'border-primary bg-primary text-primary-foreground'
-                        : 'border-muted-foreground/30'
+                        : 'border-[#D0D0D0]'
                   }`}
                 >
                   {isChecked && <Check className="size-3.5" strokeWidth={3} />}

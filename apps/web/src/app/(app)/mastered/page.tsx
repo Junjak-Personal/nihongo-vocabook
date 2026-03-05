@@ -18,6 +18,7 @@ import { invalidateListCache } from '@/lib/list-cache';
 import { requestDueCountRefresh } from '@/lib/quiz/due-count-sync';
 import { PAGE_SIZE, getWordSortOptions } from '@/lib/constants';
 import {
+  pageWrapper,
   skeletonWordList,
   emptyState,
   emptyIcon,
@@ -127,12 +128,12 @@ export default function MasteredPage() {
   };
 
   return (
-    <>
+    <div className={pageWrapper}>
       <Header
         title={t.masteredPage.title}
         actions={
           !loading && totalCount > 0 ? (
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-tertiary">
+            <span className="inline-flex items-center gap-1 text-badge font-medium text-text-tertiary">
               <CheckCircle className="size-3.5 text-green-500" />
               {t.words.totalWordCount(totalCount)}
             </span>
@@ -169,7 +170,7 @@ export default function MasteredPage() {
       ) : (
         <div ref={parentRef} className="flex-1 overflow-y-auto" onScroll={handleScroll}>
           <div
-            className="relative px-4 pt-2 pb-2"
+            className="relative px-5 pt-1 pb-4"
             style={{ height: virtualizer.getTotalSize() }}
           >
             {virtualizer.getVirtualItems().map((vr) => {
@@ -179,7 +180,7 @@ export default function MasteredPage() {
                   key={word.id}
                   ref={virtualizer.measureElement}
                   data-index={vr.index}
-                  className="absolute left-4 right-4 pb-2"
+                  className="absolute left-5 right-5 pb-2"
                   style={{ transform: `translateY(${vr.start}px)` }}
                 >
                   <SwipeableWordCard
@@ -220,6 +221,6 @@ export default function MasteredPage() {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteTarget(null)}
       />
-    </>
+    </div>
   );
 }

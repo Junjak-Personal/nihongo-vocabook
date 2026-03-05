@@ -376,7 +376,7 @@ function QuizContent() {
 
   const currentSrsWord = dueWords[currentIndex];
   const progressCount = !loading && totalSessionSize > 0 && dueWords.length > 0
-    ? `${completed + 1}/${totalSessionSize}`
+    ? `${completed + 1} / ${totalSessionSize}`
     : undefined;
   const headerStatsLoading = loading || streak === null;
 

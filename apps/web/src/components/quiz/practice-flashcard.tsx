@@ -32,7 +32,7 @@ export function PracticeFlashcard({ word, onRecall, onMaster, progress, isLoadin
             <Button variant="outline" disabled className="h-12 flex-1 rounded-lg text-sm font-medium text-tertiary">{t.quiz.didntKnow}</Button>
             <Button disabled className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground">{t.quiz.knewIt}</Button>
           </div>
-          <Button variant="outline" disabled className="mt-3 h-12 w-full rounded-lg text-sm">
+          <Button variant="outline" disabled className="h-12 w-full rounded-lg text-sm">
             <Crown className="size-4" />
             {t.wordDetail.markMastered}
           </Button>
@@ -59,7 +59,7 @@ export function PracticeFlashcard({ word, onRecall, onMaster, progress, isLoadin
           </div>
           <Button
             variant="outline"
-            className="mt-3 h-12 w-full rounded-lg text-sm"
+            className="h-12 w-full rounded-lg text-sm"
             onClick={() => onMaster(w.id)}
             data-testid="practice-master"
           >

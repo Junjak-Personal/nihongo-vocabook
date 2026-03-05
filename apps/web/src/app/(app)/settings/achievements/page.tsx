@@ -85,19 +85,13 @@ export default function AchievementsPage() {
         </div>
       ) : (
         <div className="animate-page flex-1 overflow-y-auto px-5">
-          {/* Summary with progress bar */}
-          <div className="mb-6 flex flex-col items-center gap-2 py-4 text-sm text-muted-foreground">
-            <Trophy className="size-12 text-yellow-500" />
-            <span className="text-xl font-bold tabular-nums text-foreground">{unlockedCount} / {totalCount}</span>
-            <div className="h-2 w-32 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-yellow-500 transition-all"
-                style={{ width: `${(unlockedCount / totalCount) * 100}%` }}
-              />
-            </div>
+          {/* Hero summary */}
+          <div className="flex flex-col items-center gap-2 py-4 pb-6">
+            <Trophy className="size-12 text-amber-500" />
+            <span className="text-xl font-bold tabular-nums">{unlockedCount} / {totalCount}</span>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {(() => {
               let runningIndex = 0;
               return CATEGORY_ORDER.map((category) => {
@@ -109,7 +103,7 @@ export default function AchievementsPage() {
                     <h2 className="mb-3 text-base font-bold">
                       {categoryLabels[category]}
                     </h2>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {defs.map((def) => {
                         const stagger = Math.min(runningIndex++, 15);
                         const isUnlocked = unlockedTypes.has(def.type);
@@ -126,7 +120,7 @@ export default function AchievementsPage() {
                         return (
                           <div
                             key={def.type}
-                            className="animate-stagger flex items-center gap-3 rounded-xl border bg-card p-4"
+                            className="animate-stagger flex items-center gap-3 rounded-lg border bg-card p-4"
                             style={{ '--stagger': stagger } as React.CSSProperties}
                           >
                             <div
@@ -155,7 +149,7 @@ export default function AchievementsPage() {
                                       }}
                                     />
                                   </div>
-                                  <span className="text-[10px] tabular-nums text-muted-foreground">
+                                  <span className="text-micro tabular-nums text-muted-foreground">
                                     {t.achievements.progress(
                                       Math.min(currentProgress, threshold),
                                       threshold,

@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { BookOpen, FileImage, Loader2, PhotoScan } from '@/components/ui/icons';
+import { BookOpen, Loader2, PhotoScan, Plus as PlusIcon } from '@/components/ui/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Header } from '@/components/layout/header';
 import { ListToolbar } from '@/components/layout/list-toolbar';
@@ -172,7 +172,7 @@ export default function WordsPage() {
         title={t.words.title}
         desc={!loading && totalCount > 0 ? t.words.totalWordCount(totalCount) : undefined}
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {(scanStatus === 'extracting' || scanStatus === 'enriching') && (
               <Link href="/words/scan" className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Loader2 className="size-3.5 animate-spin" />
@@ -185,6 +185,11 @@ export default function WordsPage() {
                 {scanStatus === 'preview' && (
                   <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-primary" />
                 )}
+              </Button>
+            </Link>
+            <Link href="/words/create">
+              <Button variant="ghost" size="icon-sm" data-testid="words-add-header-button" aria-label="Add word">
+                <PlusIcon className="size-5" />
               </Button>
             </Link>
           </div>
@@ -225,7 +230,7 @@ export default function WordsPage() {
       ) : (
         <div ref={parentRef} className="flex-1 overflow-y-auto" onScroll={handleScroll}>
           <div
-            className="relative px-4 pt-2 pb-2"
+            className="relative px-5 pt-1 pb-4"
             style={{ height: virtualizer.getTotalSize() }}
           >
             {virtualizer.getVirtualItems().map((vr) => {
@@ -235,7 +240,7 @@ export default function WordsPage() {
                   key={word.id}
                   ref={virtualizer.measureElement}
                   data-index={vr.index}
-                  className="absolute left-4 right-4 pb-2"
+                  className="absolute left-5 right-5 pb-2"
                   style={{ transform: `translateY(${vr.start}px)` }}
                 >
                   <SwipeableWordCard

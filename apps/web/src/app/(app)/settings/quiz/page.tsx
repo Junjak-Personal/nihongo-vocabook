@@ -86,14 +86,14 @@ export default function QuizSettingsPage() {
         <div className="flex-1 space-y-5 overflow-y-auto px-5 pt-2">
           {/* New cards per day */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.newPerDay}</h2>
+            <h2 className="text-body font-semibold">{t.settings.newPerDay}</h2>
             <div className="flex flex-wrap gap-2">
               {NEW_PER_DAY_OPTIONS.map((n) => (
                 <Button
                   key={n}
                   variant={settings.newPerDay === n ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, newPerDay: n }))}
                 >
                   {n}
@@ -104,14 +104,14 @@ export default function QuizSettingsPage() {
 
           {/* Max reviews per day */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.maxReviewsPerDay}</h2>
+            <h2 className="text-body font-semibold">{t.settings.maxReviewsPerDay}</h2>
             <div className="flex flex-wrap gap-2">
               {MAX_REVIEWS_OPTIONS.map((n) => (
                 <Button
                   key={n}
                   variant={settings.maxReviewsPerDay === n ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, maxReviewsPerDay: n }))}
                 >
                   {n === 9999 ? '∞' : n}
@@ -122,12 +122,12 @@ export default function QuizSettingsPage() {
 
           {/* JLPT filter */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.jlptFilter}</h2>
+            <h2 className="text-body font-semibold">{t.settings.jlptFilter}</h2>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={settings.jlptFilter === null ? 'default' : 'secondary'}
                 size="sm"
-                className="rounded-full text-[13px]"
+                className="rounded-lg text-caption"
                 onClick={() => setSettings((s) => ({ ...s, jlptFilter: null }))}
               >
                 {t.settings.allLevels}
@@ -137,7 +137,7 @@ export default function QuizSettingsPage() {
                   key={n}
                   variant={settings.jlptFilter === n ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, jlptFilter: n }))}
                 >
                   N{n}
@@ -148,14 +148,14 @@ export default function QuizSettingsPage() {
 
           {/* Session size */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.sessionSize}</h2>
+            <h2 className="text-body font-semibold">{t.settings.sessionSize}</h2>
             <div className="flex flex-wrap gap-2">
               {SESSION_SIZE_OPTIONS.map((n) => (
                 <Button
                   key={n}
                   variant={settings.sessionSize === n ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, sessionSize: n }))}
                 >
                   {n}
@@ -166,7 +166,7 @@ export default function QuizSettingsPage() {
 
           {/* Leech threshold */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.leechThreshold}</h2>
+            <h2 className="text-body font-semibold">{t.settings.leechThreshold}</h2>
             <p className="text-xs text-muted-foreground">{t.settings.leechThresholdDesc}</p>
             <div className="flex flex-wrap gap-2">
               {LEECH_THRESHOLD_OPTIONS.map((n) => (
@@ -174,7 +174,7 @@ export default function QuizSettingsPage() {
                   key={n}
                   variant={settings.leechThreshold === n ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, leechThreshold: n }))}
                 >
                   {n}
@@ -185,7 +185,7 @@ export default function QuizSettingsPage() {
 
           {/* Card direction */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.cardDirection}</h2>
+            <h2 className="text-body font-semibold">{t.settings.cardDirection}</h2>
             <div className="flex flex-wrap gap-2">
               {([
                 { value: 'term_first' as const, label: t.settings.termFirst },
@@ -196,7 +196,7 @@ export default function QuizSettingsPage() {
                   key={value}
                   variant={settings.cardDirection === value ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, cardDirection: value }))}
                 >
                   {label}
@@ -207,12 +207,12 @@ export default function QuizSettingsPage() {
 
           {/* Priority filter */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.priorityFilter}</h2>
+            <h2 className="text-body font-semibold">{t.settings.priorityFilter}</h2>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={settings.priorityFilter === null ? 'default' : 'secondary'}
                 size="sm"
-                className="rounded-full text-[13px]"
+                className="rounded-lg text-caption"
                 onClick={() => setSettings((s) => ({ ...s, priorityFilter: null }))}
               >
                 {t.settings.allPriorities}
@@ -226,7 +226,7 @@ export default function QuizSettingsPage() {
                   key={value}
                   variant={settings.priorityFilter === value ? 'default' : 'secondary'}
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className="rounded-lg text-caption"
                   onClick={() => setSettings((s) => ({ ...s, priorityFilter: value }))}
                 >
                   {label}
@@ -237,7 +237,7 @@ export default function QuizSettingsPage() {
 
           {/* Notifications */}
           <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.notifications}</h2>
+            <h2 className="text-body font-semibold">{t.settings.notifications}</h2>
             <div
               role="checkbox"
               aria-checked={settings.notificationEnabled}
@@ -270,7 +270,7 @@ export default function QuizSettingsPage() {
                         key={h}
                         variant={settings.notificationHour === h ? 'default' : 'secondary'}
                         size="sm"
-                        className="min-w-[2.5rem] rounded-full text-[13px]"
+                        className="min-w-[2.5rem] rounded-lg text-caption"
                         onClick={() => setSettings((s) => ({ ...s, notificationHour: h }))}
                       >
                         {h}
@@ -286,7 +286,7 @@ export default function QuizSettingsPage() {
                         key={m}
                         variant={settings.notificationMinute === m ? 'default' : 'secondary'}
                         size="sm"
-                        className="rounded-full text-[13px]"
+                        className="rounded-lg text-caption"
                         onClick={() => setSettings((s) => ({ ...s, notificationMinute: m }))}
                       >
                         {String(m).padStart(2, '0')}

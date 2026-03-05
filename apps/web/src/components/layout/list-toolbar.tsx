@@ -61,13 +61,13 @@ export function ListToolbar({
     <div className="animate-slide-down-fade sticky top-14 z-[9] bg-background">
       <div className="flex items-center gap-2 px-5 py-2">
         <div className="relative flex-1">
-          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-tertiary" />
+          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-icon -translate-y-1/2 text-tertiary" />
           <Input
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={searchPlaceholder}
-            className="h-11 rounded-lg border-none bg-secondary pl-10 pr-8 text-[15px] shadow-none placeholder:text-tertiary"
+            className="h-11 rounded-md border-none bg-secondary pl-10 pr-8 text-body shadow-none placeholder:text-tertiary"
             data-testid="list-toolbar-search-input"
           />
           {searchValue && (
@@ -85,7 +85,7 @@ export function ListToolbar({
           type="button"
           onClick={onToggleReading}
           className={cn(
-            'flex size-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-semibold transition-colors',
+            'flex size-9 shrink-0 items-center justify-center rounded-lg text-body font-semibold transition-colors',
             showReading
               ? 'bg-primary text-primary-foreground'
               : 'bg-secondary text-muted-foreground',
@@ -99,7 +99,7 @@ export function ListToolbar({
           type="button"
           onClick={onToggleMeaning}
           className={cn(
-            'flex size-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-semibold transition-colors',
+            'flex size-9 shrink-0 items-center justify-center rounded-lg text-body font-semibold transition-colors',
             showMeaning
               ? 'bg-primary text-primary-foreground'
               : 'bg-secondary text-muted-foreground',
@@ -118,7 +118,7 @@ export function ListToolbar({
               data-testid="list-toolbar-sort"
               aria-label="Sort"
             >
-              <ArrowUpDownIcon className="size-[18px]" />
+              <ArrowUpDownIcon className="size-icon" />
             </button>
             {sortOpen && (
               <div className="absolute right-0 top-full z-50 mt-1 min-w-36 rounded-lg border bg-popover py-1 shadow-md">

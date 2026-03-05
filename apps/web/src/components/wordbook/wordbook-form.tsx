@@ -183,7 +183,7 @@ export function WordbookForm({
           <div className="space-y-2">
             <Label htmlFor="wordbook-shared">{t.wordbooks.shareToggle}</Label>
             <div className="flex h-12 items-center justify-between rounded-lg bg-secondary px-4">
-              <span className="text-[15px]">{t.wordbooks.shareToggle}</span>
+              <span className="text-body">{t.wordbooks.shareToggle}</span>
               <Switch
                 id="wordbook-shared"
                 checked={isShared}

@@ -189,12 +189,12 @@ export default function ProfilePage() {
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="flex-1 space-y-4 overflow-y-auto px-5 pt-2">
           {/* Avatar */}
-          <section className="flex items-center gap-4">
-            <div className="relative size-16 shrink-0 overflow-hidden rounded-full bg-muted">
+          <section className="flex items-center gap-3 py-2">
+            <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-[#F5F5F5]">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="size-full object-cover" />
               ) : (
-                <div className="flex size-full items-center justify-center text-2xl text-muted-foreground">
+                <div className="flex size-full items-center justify-center text-lg text-muted-foreground">
                   {nickname?.[0]?.toUpperCase() ?? '?'}
                 </div>
               )}
@@ -224,8 +224,8 @@ export default function ProfilePage() {
           <section className="space-y-5">
             {/* Email (read-only) */}
             <div className="space-y-1.5">
-              <Label>{t.profile.email}</Label>
-              <div className="text-sm text-muted-foreground">
+              <Label className="text-caption font-semibold">{t.profile.email}</Label>
+              <div className="text-reading text-muted-foreground">
                 {user?.email}
               </div>
             </div>
