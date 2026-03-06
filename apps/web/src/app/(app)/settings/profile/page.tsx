@@ -191,7 +191,7 @@ export default function ProfilePage() {
         <div className="flex-1 space-y-4 overflow-y-auto px-5 pt-2">
           {/* Avatar + Email */}
           <section className="flex items-center gap-3 py-2">
-            <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-[#F5F5F5]">
+            <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-secondary">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="size-full object-cover" />
               ) : (

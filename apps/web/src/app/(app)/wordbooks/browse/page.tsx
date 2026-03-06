@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { FolderOpen, LogIn, Search, X } from '@/components/ui/icons';
+import { FolderOpen, LogIn } from '@/components/ui/icons';
 import { Header } from '@/components/layout/header';
+import { ListToolbar } from '@/components/layout/list-toolbar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { SortDropdown } from '@/components/ui/sort-dropdown';
 import { ImportWordbookDialog } from '@/components/wordbook/import-wordbook-dialog';
 import { useRepository } from '@/lib/repository/provider';
 import { useAuthStore } from '@/stores/auth-store';
@@ -20,9 +19,6 @@ import {
   bottomSep,
   emptyState,
   emptyIcon,
-  inlineSep,
-  toolbarRow,
-  listContainer,
 } from '@/lib/styles';
 import type { SharedWordbookListItem } from '@/types/wordbook';
 
@@ -47,10 +43,6 @@ export default function BrowseSharedPage() {
   const [sortBy, setSortBy] = useState<SharedSort>('imports');
 
   const { searchInput, appliedQuery, setSearchInput, handleSearch, handleSearchClear } = useSearch();
-
-  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleSearch();
-  };
 
   const [loading, reload] = useLoader(async () => {
     if (!user) return true; // no user → skip delay, just set loading false
@@ -104,115 +96,95 @@ export default function BrowseSharedPage() {
       <Header title={t.wordbooks.findShared} showBack />
 
       <Tabs defaultValue="user" className="flex min-h-0 flex-1 flex-col gap-0">
-        <div className="animate-slide-down-fade sticky top-14 z-[9] bg-background px-4 pt-2">
-          <TabsList className="w-full">
-            <TabsTrigger value="user" data-testid="browse-tab-user">
+        <div className="shrink-0 px-3 pt-2">
+          <TabsList className="!h-[52px] w-full gap-1 rounded-[10px] bg-secondary p-2 dark:bg-border">
+            <TabsTrigger value="user" className="h-full flex-1 rounded-lg text-[13px] font-medium data-[state=active]:shadow-sm dark:data-[state=active]:!bg-secondary" data-testid="browse-tab-user">
               {t.wordbooks.tabUserWordbooks}
             </TabsTrigger>
-            <TabsTrigger value="system" data-testid="browse-tab-system">
+            <TabsTrigger value="system" className="h-full flex-1 rounded-lg text-[13px] font-medium data-[state=active]:shadow-sm dark:data-[state=active]:!bg-secondary" data-testid="browse-tab-system">
               {t.wordbooks.tabSystemWordbooks}
             </TabsTrigger>
           </TabsList>
         </div>
 
-        <TabsContent value="user" className="flex min-h-0 flex-1 flex-col">
-          {/* Search + sort toolbar */}
-          <div className={toolbarRow}>
-            <div className="relative flex-1">
-              <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={handleSearchKeyDown}
-                placeholder={t.wordbooks.searchPlaceholder}
-                className="pl-8 pr-8"
-                data-testid="browse-search-input"
-              />
-              {searchInput && (
-                <button
-                  type="button"
-                  onClick={handleSearchClear}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  data-testid="browse-search-clear"
-                >
-                  <X className="size-4" />
-                </button>
-              )}
-            </div>
-            <SortDropdown
-              value={sortBy}
-              options={[
-                { value: 'imports', label: t.wordbooks.sortByImports },
-                { value: 'newest', label: t.wordbooks.sortByNewest },
-                { value: 'name', label: t.wordbooks.sortByName },
-              ]}
-              onChange={(v) => setSortBy(v as SharedSort)}
-            />
+        <ListToolbar
+          searchValue={searchInput}
+          onSearchChange={setSearchInput}
+          onSearchSubmit={handleSearch}
+          onSearchClear={handleSearchClear}
+          searchPlaceholder={t.wordbooks.searchPlaceholder}
+          sortValue={sortBy}
+          sortOptions={[
+            { value: 'imports', label: t.wordbooks.sortByImports },
+            { value: 'newest', label: t.wordbooks.sortByNewest },
+            { value: 'name', label: t.wordbooks.sortByName },
+          ]}
+          onSortChange={(v) => setSortBy(v as SharedSort)}
+        />
+
+        {loading ? (
+          <div className="animate-page flex-1 space-y-2 overflow-y-auto px-4 pt-2">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <Skeleton key={i} className="h-[48px] w-full rounded-lg" />
+            ))}
           </div>
-          <div className={inlineSep} />
-
-          {loading ? (
-            <div className="animate-page flex-1 space-y-2 overflow-y-auto px-4 pt-2">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <Skeleton key={i} className="h-[88px] w-full rounded-xl" />
-              ))}
-            </div>
-          ) : userItems.length === 0 ? (
-            <div className={emptyState}>
-              <FolderOpen className={emptyIcon} />
-              <div className="font-medium">
-                {appliedQuery ? t.wordbooks.noWordbooks : t.wordbooks.noSharedWordbooks}
-              </div>
-            </div>
-          ) : (
-            <div className="flex-1 overflow-y-auto">
-              <div className={`animate-fade-in ${listContainer}`}>
-                {userItems.map((item, i) => (
-                  <div
-                    key={item.id}
-                    className="animate-stagger"
-                    style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
-                  >
-                    <SharedWordbookCard
-                      item={item}
-                      onSelect={() => setSelected(item)}
-                    />
+        ) : (
+          <>
+            <TabsContent value="user" className="flex min-h-0 flex-1 flex-col">
+              {userItems.length === 0 ? (
+                <div className={emptyState}>
+                  <FolderOpen className={emptyIcon} />
+                  <div className="font-medium">
+                    {appliedQuery ? t.wordbooks.noWordbooks : t.wordbooks.noSharedWordbooks}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="system" className="flex-1 overflow-y-auto">
-          {loading ? (
-            <div className="animate-page flex-1 space-y-2 overflow-y-auto px-4 pt-2">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <Skeleton key={i} className="h-[88px] w-full rounded-xl" />
-              ))}
-            </div>
-          ) : systemItems.length === 0 ? (
-            <div className={emptyState}>
-              <FolderOpen className={emptyIcon} />
-              <div className="font-medium">{t.wordbooks.noWordbooks}</div>
-            </div>
-          ) : (
-            <div className={`animate-fade-in ${listContainer}`}>
-              {systemItems.map((item, i) => (
-                <div
-                  key={item.id}
-                  className="animate-stagger"
-                  style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
-                >
-                  <SharedWordbookCard
-                    item={item}
-                    onSelect={() => setSelected(item)}
-                  />
                 </div>
-              ))}
-            </div>
-          )}
-        </TabsContent>
+              ) : (
+                <div className="flex-1 overflow-y-auto">
+                  <div className="space-y-3 px-5 pt-2 pb-3">
+                    {userItems.map((item, i) => (
+                      <div
+                        key={item.id}
+                        className="animate-stagger"
+                        style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
+                      >
+                        <SharedWordbookCard
+                          item={item}
+                          onSelect={() => setSelected(item)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="system" className="flex min-h-0 flex-1 flex-col">
+              {systemItems.length === 0 ? (
+                <div className={emptyState}>
+                  <FolderOpen className={emptyIcon} />
+                  <div className="font-medium">{t.wordbooks.noWordbooks}</div>
+                </div>
+              ) : (
+                <div className="flex-1 overflow-y-auto">
+                  <div className="space-y-3 px-5 pt-2 pb-3">
+                    {systemItems.map((item, i) => (
+                      <div
+                        key={item.id}
+                        className="animate-stagger"
+                        style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
+                      >
+                        <SharedWordbookCard
+                          item={item}
+                          onSelect={() => setSelected(item)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+          </>
+        )}
       </Tabs>
 
       <ImportWordbookDialog
@@ -240,27 +212,41 @@ function SharedWordbookCard({
   return (
     <button
       onClick={onSelect}
-      className="flex w-full flex-col gap-2 rounded-xl border bg-card p-4 text-left transition-colors active:bg-accent/50"
+      className="flex w-full flex-col gap-3 rounded-lg border border-secondary bg-card p-4 text-left transition-colors active:bg-accent/50"
       data-testid="shared-wordbook-card"
     >
-      <div className="flex items-center justify-between">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          <span className="truncate text-body font-semibold">{item.name}</span>
+      {/* Top row: title + count badge */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="truncate text-title-sm font-semibold">{item.name}</span>
           {item.isSubscribed && (
-            <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="shrink-0 rounded bg-primary/10 px-1.5 py-0.5 text-overline font-medium text-primary">
               {t.wordbooks.subscribedWordbooks}
             </span>
           )}
         </div>
-        <span className="ml-3 shrink-0 text-caption text-muted-foreground">
+        <span className="shrink-0 rounded bg-secondary px-1.5 py-0.5 text-badge font-medium text-muted-foreground">
           {t.wordbooks.wordCount(item.wordCount)}
         </span>
       </div>
-      {item.description && (
-        <div className="truncate text-caption text-muted-foreground">
-          {item.description}
-        </div>
-      )}
+      {/* Tags / description */}
+      <div className="flex min-w-0 gap-1.5 overflow-hidden">
+        {item.tags && item.tags.length > 0 ? (
+          item.tags.map((tag) => (
+            <span
+              key={tag}
+              className="shrink-0 rounded bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
+            >
+              {tag}
+            </span>
+          ))
+        ) : item.description ? (
+          <span className="truncate text-xs text-muted-foreground">{item.description}</span>
+        ) : (
+          <span className="text-xs text-text-tertiary">{t.wordDetail.noTags}</span>
+        )}
+      </div>
+      {/* Owner info */}
       <div className="text-overline text-muted-foreground/70">
         {t.wordbooks.ownerLabel}: {item.ownerEmail}
         {item.importCount > 0 && ` · ${t.wordbooks.importCount(item.importCount)}`}

@@ -219,11 +219,12 @@ export default function SettingsPage() {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="!h-9 rounded-md"
                   onClick={() => router.push('/login')}
                 >
                   {t.auth.signIn}
                 </Button>
-                <Button size="sm" onClick={() => router.push('/signup')}>
+                <Button size="sm" className="!h-9 rounded-md" onClick={() => router.push('/signup')}>
                   {t.auth.signUp}
                 </Button>
               </div>
@@ -334,7 +335,7 @@ export default function SettingsPage() {
             <Button
               variant="outline"
               size="sm"
-              className="h-10 border-0 bg-destructive/10 text-destructive hover:bg-destructive/20"
+              className="!h-9 rounded-md border-0 bg-destructive/10 text-destructive hover:bg-destructive/20"
               onClick={() => setShowResetConfirm(true)}
               disabled={resetting}
               data-testid="settings-reset-study-button"
@@ -355,7 +356,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="text-sm">{ocrModeLabel}</div>
               <Link href="/settings/ocr">
-                <Button variant="outline" size="sm" className="h-10" data-testid="settings-ocr-link">
+                <Button variant="outline" size="sm" className="!h-9 rounded-md" data-testid="settings-ocr-link">
                   {t.settings.goToSettings}
                 </Button>
               </Link>
@@ -382,7 +383,7 @@ export default function SettingsPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="h-10"
+                className="!h-9 rounded-md"
                 onClick={handleMigrateRequest}
                 disabled={migrating || importing}
                 data-testid="settings-migrate-button"
@@ -393,7 +394,7 @@ export default function SettingsPage() {
             <Button
               variant="outline"
               size="sm"
-              className="h-10"
+              className="!h-9 rounded-md"
               onClick={() => fileInputRef.current?.click()}
               disabled={importing || migrating}
               data-testid="settings-import-button"
@@ -410,10 +411,10 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        <div className="h-px bg-border" />
-
         {/* Logout */}
         {user && (
+          <>
+          <div className="h-px bg-border" />
           <button
             onClick={handleLogout}
             className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-destructive/10 text-body font-semibold text-destructive transition-colors active:bg-destructive/20"
@@ -422,6 +423,7 @@ export default function SettingsPage() {
             <LogOut className="size-[18px]" />
             {t.settings.signOut}
           </button>
+          </>
         )}
 
         <div className="h-px bg-border" />

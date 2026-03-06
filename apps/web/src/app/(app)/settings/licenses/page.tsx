@@ -33,7 +33,7 @@ export default function LicensesPage() {
             href={lib.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="animate-stagger flex items-center gap-3 border-b border-[#F5F5F5] px-5 py-[14px] active:bg-accent/50"
+            className="animate-stagger flex items-center gap-3 border-b border-border px-5 py-[14px] active:bg-accent/50"
             style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
           >
             <div className="min-w-0 flex-1 space-y-1">

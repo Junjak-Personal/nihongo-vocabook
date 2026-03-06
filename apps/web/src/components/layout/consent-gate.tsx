@@ -94,8 +94,8 @@ export function ConsentGate({ children }: { children: ReactNode }) {
   // Show consent form
   if (!consented) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-[#F5F5F5] px-6">
-        <div className="flex w-full flex-col gap-5 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+      <div className="flex flex-1 items-center justify-center bg-secondary px-6">
+        <div className="flex w-full flex-col gap-5 rounded-2xl bg-background px-6 py-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
           <h2 className="text-xl font-bold">{t.consent.storageTitle}</h2>
           <p className="text-center text-reading leading-[1.5] text-muted-foreground">
             {t.consent.storageDescription}

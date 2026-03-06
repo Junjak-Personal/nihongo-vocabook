@@ -242,7 +242,7 @@ export function WordPreview({
                 aria-checked={isChecked}
                 aria-disabled={isExisting}
                 tabIndex={isExisting ? -1 : 0}
-                className={`animate-stagger flex items-center gap-3 border-b border-[#F5F5F5] px-5 py-3 transition-colors ${
+                className={`animate-stagger flex items-center gap-3 border-b border-border px-5 py-3 transition-colors ${
                   isExisting
                     ? 'opacity-40'
                     : isChecked
@@ -259,7 +259,7 @@ export function WordPreview({
                       ? 'border-muted-foreground/20 bg-muted'
                       : isChecked
                         ? 'border-primary bg-primary text-primary-foreground'
-                        : 'border-[#D0D0D0]'
+                        : 'border-border-strong'
                   }`}
                 >
                   {isChecked && <Check className="size-3.5" strokeWidth={3} />}

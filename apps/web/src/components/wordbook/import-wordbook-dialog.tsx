@@ -86,7 +86,7 @@ export function ImportWordbookDialog({ wordbook, open, onClose, onDone }: Import
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="fixed inset-0 bg-black/50" onClick={loading ? undefined : handleClose} />
       <div className="relative z-50 w-full max-w-md rounded-t-2xl bg-background px-5 pb-7 pt-5 shadow-lg sm:rounded-2xl">
-        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#D0D0D0]" />
+        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border-strong" />
         {copyMode ? (
           <form onSubmit={handleCopySubmit}>
             <h2 className="mb-4 text-xl font-bold">{t.wordbooks.copyToMine}</h2>

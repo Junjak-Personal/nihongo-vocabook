@@ -148,7 +148,7 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
             <button
               type="button"
               onClick={openGallery}
-              className="flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border border-[#E5E5E5] bg-secondary text-muted-foreground transition-colors active:bg-secondary/70"
+              className="flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-secondary text-muted-foreground transition-colors active:bg-secondary/70"
               data-testid="scan-choose-gallery"
             >
               <ImagePlus className="size-12" />
