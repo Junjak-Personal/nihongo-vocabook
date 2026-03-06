@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { BookOpen, FileImage, Loader2, PhotoScan } from '@/components/ui/icons';
+import { BookOpen, Loader2, PhotoScan } from '@/components/ui/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Header } from '@/components/layout/header';
 import { ListToolbar } from '@/components/layout/list-toolbar';
@@ -172,7 +172,7 @@ export default function WordsPage() {
         title={t.words.title}
         desc={!loading && totalCount > 0 ? t.words.totalWordCount(totalCount) : undefined}
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {(scanStatus === 'extracting' || scanStatus === 'enriching') && (
               <Link href="/words/scan" className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Loader2 className="size-3.5 animate-spin" />
@@ -225,7 +225,7 @@ export default function WordsPage() {
       ) : (
         <div ref={parentRef} className="flex-1 overflow-y-auto" onScroll={handleScroll}>
           <div
-            className="relative px-4 pt-2 pb-2"
+            className="relative px-5 pt-1 pb-4"
             style={{ height: virtualizer.getTotalSize() }}
           >
             {virtualizer.getVirtualItems().map((vr) => {
@@ -235,7 +235,7 @@ export default function WordsPage() {
                   key={word.id}
                   ref={virtualizer.measureElement}
                   data-index={vr.index}
-                  className="absolute left-4 right-4 pb-2"
+                  className="absolute left-5 right-5 pb-2"
                   style={{ transform: `translateY(${vr.start}px)` }}
                 >
                   <SwipeableWordCard
@@ -289,17 +289,14 @@ export default function WordsPage() {
               {t.words.startQuiz}
             </Button>
           )}
-          {loading ? (
-            <Button className="flex-1" disabled data-testid="words-add-button">
-              {t.words.addWord}
-            </Button>
-          ) : (
-            <Link href="/words/create" className="flex-1">
-              <Button className="w-full" data-testid="words-add-button">
-                {t.words.addWord}
-              </Button>
-            </Link>
-          )}
+          <Button
+            className="flex-1"
+            disabled={loading}
+            onClick={() => router.push('/words/create')}
+            data-testid="words-add-button"
+          >
+            {t.words.addWord}
+          </Button>
         </div>
       </div>
 

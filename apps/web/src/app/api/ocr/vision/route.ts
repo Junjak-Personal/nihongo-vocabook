@@ -16,7 +16,7 @@ interface ExtractedWord {
   jlptLevel: number | null;
 }
 
-const PROVIDER_TIMEOUT_MS = 60_000;
+const PROVIDER_TIMEOUT_MS = 180_000;
 
 function buildSystemPrompt(locale: string): string {
   const meaningLang = locale === 'ko' ? 'Korean' : 'English';
@@ -162,7 +162,7 @@ async function callOpenAI(
           ],
         },
       ],
-      reasoning_effort: 'medium',
+      reasoning_effort: 'low',
       max_completion_tokens: 8192,
     }),
   }, signal);

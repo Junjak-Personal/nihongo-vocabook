@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { BookOpen, Brain, Camera, Share2 } from '@/components/ui/icons';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/lib/i18n';
-// styles not needed for landing — inline
+import { btnCta } from '@/lib/styles';
+import { cn } from '@/lib/utils';
 
 export default function LandingPage() {
   const { t } = useTranslation();
@@ -17,14 +18,16 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center overflow-hidden px-8">
-      {/* Hero */}
+    <div className="relative flex min-h-0 flex-1 flex-col items-center overflow-hidden px-8">
+      {/* Top spacer */}
       <div className="h-20 shrink-0" />
-      <div className="animate-fade-in text-center">
-        <div className="text-5xl font-bold tracking-[-1.5px] text-primary">
+
+      {/* Hero */}
+      <div className="animate-fade-in flex w-full flex-col items-center gap-3 text-center">
+        <div className="font-ja text-display font-bold leading-none tracking-[-1.5px] text-primary">
           NiVoca
         </div>
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+        <p className="w-[260px] whitespace-pre-line text-title-sm leading-[1.5] text-muted-foreground">
           {t.landing.subtitle}
         </p>
       </div>
@@ -32,14 +35,14 @@ export default function LandingPage() {
       <div className="h-12 shrink-0" />
 
       {/* Features */}
-      <div className="w-full space-y-0">
+      <div className="w-[300px]">
         {features.map((feature, i) => (
           <div
             key={i}
-            className="animate-stagger flex items-center gap-4 py-4 text-sm leading-relaxed text-muted-foreground"
+            className="animate-stagger flex items-center gap-4 py-4 text-reading leading-[1.5] text-muted-foreground"
             style={{ '--stagger': i + 3 } as React.CSSProperties}
           >
-            <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-secondary">
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-secondary dark:bg-card">
               <feature.icon className="size-5 text-primary" />
             </div>
             <span>{feature.text}</span>
@@ -53,12 +56,12 @@ export default function LandingPage() {
       <div className="animate-slide-up w-full shrink-0 pb-12" style={{ animationDelay: '200ms' }}>
         <div className="flex flex-col gap-3">
           <Link href="/words">
-            <Button className="h-[52px] w-full rounded-[14px] text-base font-semibold" data-testid="landing-start-button">
+            <Button className={cn(btnCta, 'text-primary-foreground')} data-testid="landing-start-button">
               {t.landing.startLearning}
             </Button>
           </Link>
           <Link href="/login">
-            <Button variant="ghost" className="h-11 w-full rounded-[14px] text-[15px] font-medium text-muted-foreground">
+            <Button variant="ghost" className={cn(btnCta, 'font-medium text-muted-foreground')}>
               {t.landing.signIn}
             </Button>
           </Link>

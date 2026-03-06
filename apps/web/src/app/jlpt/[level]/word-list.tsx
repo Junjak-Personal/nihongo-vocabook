@@ -166,7 +166,7 @@ export function JlptWordList({
         )}
 
         {/* Footer */}
-        <p className="mt-3 text-center text-[11px] text-muted-foreground/50">
+        <p className="mt-3 text-center text-overline text-muted-foreground/50">
           &copy; 2025 NiVoca
         </p>
       </div>

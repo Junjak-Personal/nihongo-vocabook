@@ -1,9 +1,19 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { bind, unbind } from 'wanakana';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
-import { Check } from '@/components/ui/icons';
+import { Check, Star, Clock, SortAZ } from '@/components/ui/icons';
+import { useTranslation } from '@/lib/i18n';
+import type { ComponentType } from 'react';
+
+const sortIconMap: Record<string, ComponentType<{ className?: string }>> = {
+  priority: Star,
+  newest: Clock,
+  alphabetical: SortAZ,
+  name: SortAZ,
+};
 
 interface SortOption {
   value: string;
@@ -16,10 +26,10 @@ interface ListToolbarProps {
   onSearchSubmit: () => void;
   onSearchClear: () => void;
   searchPlaceholder: string;
-  showReading: boolean;
-  onToggleReading: () => void;
-  showMeaning: boolean;
-  onToggleMeaning: () => void;
+  showReading?: boolean;
+  onToggleReading?: () => void;
+  showMeaning?: boolean;
+  onToggleMeaning?: () => void;
   sortValue?: string;
   sortOptions?: SortOption[];
   onSortChange?: (value: string) => void;
@@ -39,6 +49,16 @@ export function ListToolbar({
   sortOptions,
   onSortChange,
 }: ListToolbarProps) {
+  const { t } = useTranslation();
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const el = searchRef.current;
+    if (!el) return;
+    bind(el, { IMEMode: 'toHiragana' });
+    return () => unbind(el);
+  }, []);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') onSearchSubmit();
   };
@@ -61,13 +81,14 @@ export function ListToolbar({
     <div className="animate-slide-down-fade sticky top-14 z-[9] bg-background">
       <div className="flex items-center gap-2 px-5 py-2">
         <div className="relative flex-1">
-          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-tertiary" />
+          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-icon -translate-y-1/2 text-text-tertiary" />
           <Input
+            ref={searchRef}
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={searchPlaceholder}
-            className="h-11 rounded-lg border-none bg-secondary pl-10 pr-8 text-[15px] shadow-none placeholder:text-tertiary"
+            className="rounded-md border-none bg-secondary pl-10 pr-8 text-body shadow-none placeholder:text-text-tertiary"
             data-testid="list-toolbar-search-input"
           />
           {searchValue && (
@@ -81,65 +102,83 @@ export function ListToolbar({
             </button>
           )}
         </div>
-        <button
-          type="button"
-          onClick={onToggleReading}
-          className={cn(
-            'flex size-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-semibold transition-colors',
-            showReading
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary text-muted-foreground',
+        <div className="flex shrink-0 items-end gap-2">
+          {onToggleReading && (
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-[8px] leading-none text-text-tertiary">{t.common.hideReading}</span>
+              <button
+                type="button"
+                onClick={onToggleReading}
+                className={cn(
+                  'flex size-[34px] items-center justify-center rounded-md text-xs font-semibold transition-colors',
+                  showReading
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-secondary text-muted-foreground',
+                )}
+                data-testid="list-toolbar-toggle-reading"
+                aria-label="Toggle reading"
+              >
+                あ
+              </button>
+            </div>
           )}
-          data-testid="list-toolbar-toggle-reading"
-          aria-label="Toggle reading"
-        >
-          あ
-        </button>
-        <button
-          type="button"
-          onClick={onToggleMeaning}
-          className={cn(
-            'flex size-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-semibold transition-colors',
-            showMeaning
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary text-muted-foreground',
+          {onToggleMeaning && (
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-[8px] leading-none text-text-tertiary">{t.common.hideMeaning}</span>
+              <button
+                type="button"
+                onClick={onToggleMeaning}
+                className={cn(
+                  'flex size-[34px] items-center justify-center rounded-md text-xs font-semibold transition-colors',
+                  showMeaning
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-secondary text-muted-foreground',
+                )}
+                data-testid="list-toolbar-toggle-meaning"
+                aria-label="Toggle meaning"
+              >
+                意
+              </button>
+            </div>
           )}
-          data-testid="list-toolbar-toggle-meaning"
-          aria-label="Toggle meaning"
-        >
-          意
-        </button>
-        {sortOptions && sortValue && onSortChange && (
-          <div className="relative" ref={sortRef}>
-            <button
-              type="button"
-              onClick={() => setSortOpen((v) => !v)}
-              className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors"
-              data-testid="list-toolbar-sort"
-              aria-label="Sort"
-            >
-              <ArrowUpDownIcon className="size-[18px]" />
-            </button>
-            {sortOpen && (
-              <div className="absolute right-0 top-full z-50 mt-1 min-w-36 rounded-lg border bg-popover py-1 shadow-md">
-                {sortOptions.map((opt) => (
+          {sortOptions && sortValue && onSortChange && (() => {
+            const SortIcon = sortIconMap[sortValue] ?? Star;
+            return (
+              <div className="flex flex-col items-center gap-0.5">
+                <span className="text-[8px] leading-none text-text-tertiary">{t.common.sort}</span>
+                <div className="relative" ref={sortRef}>
                   <button
-                    key={opt.value}
-                    onClick={() => {
-                      onSortChange(opt.value);
-                      setSortOpen(false);
-                    }}
-                    className="flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-accent"
-                    data-testid={`list-toolbar-sort-${opt.value}`}
+                    type="button"
+                    onClick={() => setSortOpen((v) => !v)}
+                    className="flex size-[34px] items-center justify-center rounded-md bg-secondary text-muted-foreground transition-colors"
+                    data-testid="list-toolbar-sort"
+                    aria-label="Sort"
                   >
-                    <Check className={`size-4 ${sortValue === opt.value ? 'opacity-100' : 'opacity-0'}`} />
-                    {opt.label}
+                    <SortIcon className="size-icon" />
                   </button>
-                ))}
+                  {sortOpen && (
+                    <div className="absolute right-0 top-full z-50 mt-1 min-w-36 rounded-lg border bg-popover py-1 shadow-md">
+                      {sortOptions.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => {
+                            onSortChange(opt.value);
+                            setSortOpen(false);
+                          }}
+                          className="flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-accent"
+                          data-testid={`list-toolbar-sort-${opt.value}`}
+                        >
+                          <Check className={`size-4 ${sortValue === opt.value ? 'opacity-100' : 'opacity-0'}`} />
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-        )}
+            );
+          })()}
+        </div>
       </div>
     </div>
   );
@@ -159,26 +198,6 @@ function SearchIcon({ className }: { className?: string }) {
     >
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function ArrowUpDownIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="m21 16-4 4-4-4" />
-      <path d="M17 20V4" />
-      <path d="m3 8 4-4 4 4" />
-      <path d="M7 4v16" />
     </svg>
   );
 }

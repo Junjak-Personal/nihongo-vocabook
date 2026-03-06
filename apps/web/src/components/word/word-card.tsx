@@ -9,11 +9,13 @@ interface WordCardProps {
   word: Word;
   showReading: boolean;
   showMeaning: boolean;
+  /** Override the detail link path (default: /words/{id}) */
+  detailHref?: string;
   /** When provided, renders a clickable div instead of a Link */
   onClick?: () => void;
 }
 
-export function WordCard({ word, showReading, showMeaning, onClick }: WordCardProps) {
+export function WordCard({ word, showReading, showMeaning, detailHref, onClick }: WordCardProps) {
   const [revealed, setRevealed] = useState(false);
 
   const readingVisible = showReading || revealed;
@@ -22,63 +24,61 @@ export function WordCard({ word, showReading, showMeaning, onClick }: WordCardPr
   const Wrapper = onClick ? 'button' : Link;
   const wrapperProps = onClick
     ? { onClick, type: 'button' as const, className: 'min-w-0 flex-1 text-left', 'data-testid': 'word-card' }
-    : { href: `/words/${word.id}`, className: 'min-w-0 flex-1', 'data-testid': 'word-card' };
+    : { href: detailHref ?? `/words/${word.id}`, className: 'min-w-0 flex-1', 'data-testid': 'word-card' };
+
+  const priorityDotColor =
+    word.priority === 1
+      ? 'bg-destructive'
+      : word.priority === 2
+        ? 'bg-primary'
+        : 'bg-text-tertiary';
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-xl border border-secondary bg-card p-4 transition-colors hover:bg-accent">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col rounded-lg border border-secondary bg-card p-4 transition-colors hover:bg-accent">
+      <div className="flex items-center justify-between gap-2">
         <Wrapper {...(wrapperProps as any)}>
-          <div className="flex items-center gap-2.5">
-            {word.priority === 1 && (
-              <span className="size-[7px] shrink-0 rounded-full bg-primary" />
-            )}
-            {word.priority === 2 && (
-              <span className="size-[7px] shrink-0 rounded-full bg-primary/50" />
-            )}
-            {word.priority === 3 && (
-              <span className="size-[7px] shrink-0 rounded-full bg-border-strong" />
-            )}
-            {word.isLeech && (
-              <span className="size-[7px] shrink-0 rounded-full bg-orange-500" title="Leech" />
-            )}
-            <span className="text-lg font-medium">{word.term}</span>
+          <div className="flex items-center gap-[10px]">
+            <span className={cn('size-[7px] shrink-0 rounded-full', priorityDotColor)} />
+            <span className="text-section font-medium leading-tight">{word.term}</span>
           </div>
         </Wrapper>
-        {(!showReading || !showMeaning) && (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setRevealed((v) => !v);
-            }}
-            className={cn(
-              'shrink-0',
-              revealed ? 'text-primary' : 'text-tertiary',
-            )}
-            data-testid="word-card-reveal"
-            aria-label={revealed ? 'Hide details' : 'Reveal details'}
-          >
-            {revealed ? (
-              <EyeOffIcon className="size-[18px]" />
-            ) : (
-              <EyeIcon className="size-[18px]" />
-            )}
-          </button>
-        )}
+        <div className="flex shrink-0 items-center gap-2">
+          {(!showReading || !showMeaning) && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setRevealed((v) => !v);
+              }}
+              className={cn(
+                'shrink-0',
+                revealed ? 'text-primary' : 'text-text-tertiary',
+              )}
+              data-testid="word-card-reveal"
+              aria-label={revealed ? 'Hide details' : 'Reveal details'}
+            >
+              {revealed ? (
+                <EyeOffIcon className="size-icon" />
+              ) : (
+                <EyeIcon className="size-icon" />
+              )}
+            </button>
+          )}
+        </div>
       </div>
       <div
         className={cn(
-          'overflow-hidden pl-[18px] transition-[max-height,opacity,transform] duration-300 ease-out',
+          'overflow-hidden transition-[max-height,opacity,transform] duration-300 ease-out',
           readingVisible || meaningVisible
-            ? 'max-h-16 translate-y-0 opacity-100'
+            ? 'mt-[6px] max-h-16 translate-y-0 opacity-100'
             : 'max-h-0 -translate-y-0.5 opacity-0',
         )}
       >
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col gap-0.5 pl-[17px]">
           {readingVisible && (
-            <div className="text-[13px] text-muted-foreground">{word.reading}</div>
+            <div className="text-caption text-muted-foreground">{word.reading}</div>
           )}
           {meaningVisible && (
-            <div className="text-xs text-muted-foreground">{word.meaning}</div>
+            <div className="text-badge text-muted-foreground">{word.meaning}</div>
           )}
         </div>
       </div>

@@ -27,31 +27,24 @@ export default function LicensesPage() {
     <>
       <Header title={t.settings.openSource} showBack />
       <div className="animate-page flex-1 overflow-y-auto">
-        <div>
-          {OPEN_SOURCE_LIBS.map((lib, i) => (
-            <a
-              key={lib.name}
-              href={lib.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="animate-stagger flex items-center gap-3 border-b border-secondary px-5 py-3.5 active:bg-accent/50"
-              style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
-            >
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">{lib.name}</span>
-                  <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                    {lib.license}
-                  </span>
-                </div>
-                <div className="mt-1 truncate text-xs text-muted-foreground">
-                  {lib.description}
-                </div>
+        {OPEN_SOURCE_LIBS.map((lib, i) => (
+          <a
+            key={lib.name}
+            href={lib.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="animate-stagger flex items-center gap-3 border-b border-border px-5 py-[14px] active:bg-accent/50"
+            style={{ '--stagger': Math.min(i, 15) } as React.CSSProperties}
+          >
+            <div className="min-w-0 flex-1 space-y-1">
+              <div className="text-body font-medium">{lib.name}</div>
+              <div className="truncate text-caption text-muted-foreground">
+                {lib.description}
               </div>
-              <ExternalLink className="size-[18px] shrink-0 text-tertiary" />
-            </a>
-          ))}
-        </div>
+            </div>
+            <ExternalLink className="size-icon shrink-0 text-muted-foreground" />
+          </a>
+        ))}
       </div>
     </>
   );

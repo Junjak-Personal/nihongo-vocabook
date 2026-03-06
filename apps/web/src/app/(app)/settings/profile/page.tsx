@@ -8,6 +8,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { useTranslation } from '@/lib/i18n';
 import { useAuthStore } from '@/stores/auth-store';
@@ -188,21 +189,23 @@ export default function ProfilePage() {
       <Header title={t.profile.title} showBack />
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="flex-1 space-y-4 overflow-y-auto px-5 pt-2">
-          {/* Avatar */}
-          <section className="flex items-center gap-4">
-            <div className="relative size-16 shrink-0 overflow-hidden rounded-full bg-muted">
+          {/* Avatar + Email */}
+          <section className="flex items-center gap-3 py-2">
+            <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-secondary">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="size-full object-cover" />
               ) : (
-                <div className="flex size-full items-center justify-center text-2xl text-muted-foreground">
+                <div className="flex size-full items-center justify-center text-lg text-muted-foreground">
                   {nickname?.[0]?.toUpperCase() ?? '?'}
                 </div>
               )}
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm text-muted-foreground">{user?.email}</div>
               <Button
                 variant="outline"
                 size="sm"
+                className="mt-1.5"
                 onClick={() => fileInputRef.current?.click()}
                 data-testid="profile-change-avatar"
               >
@@ -222,13 +225,6 @@ export default function ProfilePage() {
 
           {/* Profile fields — grouped without separators */}
           <section className="space-y-5">
-            {/* Email (read-only) */}
-            <div className="space-y-1.5">
-              <Label>{t.profile.email}</Label>
-              <div className="text-sm text-muted-foreground">
-                {user?.email}
-              </div>
-            </div>
 
             {/* Nickname */}
             <div className="space-y-1.5">
@@ -275,8 +271,12 @@ export default function ProfilePage() {
                   <Button
                     key={opt.value}
                     type="button"
-                    variant={studyPurpose === opt.value ? 'default' : 'outline'}
+                    variant="outline"
                     size="sm"
+                    className={cn(
+                      '!h-9 rounded-md text-muted-foreground',
+                      studyPurpose === opt.value && '!bg-primary !text-primary-foreground !border-primary',
+                    )}
                     onClick={() => setStudyPurpose(opt.value)}
                     data-testid={`profile-purpose-${opt.value}`}
                   >

@@ -73,24 +73,24 @@ export function SessionReport({
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex flex-1 flex-col items-center justify-center px-6">
         <div className="animate-scale-in mb-6 flex flex-col items-center gap-2 text-center">
-          <FeedbackIcon className="size-8 text-primary" />
+          <FeedbackIcon className="size-8 text-primary dark:text-accent-muted" />
           <div className="text-3xl font-bold">{feedbackMessage}</div>
         </div>
 
         <div className="w-full max-w-sm space-y-4">
           <div
-            className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
+            className="animate-stagger flex items-center justify-between rounded-lg border border-secondary bg-card p-4"
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center gap-3">
-              <BookOpenCheck className="size-5 text-primary" />
+              <BookOpenCheck className="size-5 text-primary dark:text-accent-muted" />
               <span className="text-sm">{t.quiz.cardsReviewed}</span>
             </div>
             <span className="text-lg font-semibold">{totalReviewed}</span>
           </div>
 
           <div
-            className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
+            className="animate-stagger flex items-center justify-between rounded-lg border border-secondary bg-card p-4"
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export function SessionReport({
           </div>
 
           <div
-            className="animate-stagger flex flex-col rounded-xl border border-secondary bg-card p-4"
+            className="animate-stagger flex flex-col rounded-lg border border-secondary bg-card p-4"
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center justify-between">
@@ -122,7 +122,7 @@ export function SessionReport({
                     />
                   ))}
                 </div>
-                <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-muted-foreground">
+                <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-micro text-muted-foreground">
                   {ratingSegments.map((s) => (
                     <span key={s.key} className="flex items-center gap-1">
                       <span className={`inline-block size-1.5 rounded-full ${s.color}`} />
@@ -136,7 +136,7 @@ export function SessionReport({
 
           {stats.masteredCount > 0 && (
             <div
-              className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
+              className="animate-stagger flex items-center justify-between rounded-lg border border-secondary bg-card p-4"
               style={{ '--stagger': stagger++ } as React.CSSProperties}
             >
               <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ export function SessionReport({
 
           {streak > 0 && (
             <div
-              className="animate-stagger flex items-center justify-between rounded-xl border border-secondary bg-card p-4"
+              className="animate-stagger flex items-center justify-between rounded-lg border border-secondary bg-card p-4"
               style={{ '--stagger': stagger++ } as React.CSSProperties}
             >
               <div className="flex items-center gap-3">

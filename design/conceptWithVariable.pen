@@ -5211,7 +5211,7 @@
       "type": "frame",
       "id": "904N9",
       "x": 1500,
-      "y": 2730,
+      "y": 2727,
       "name": "Screen Row 1",
       "gap": 40,
       "children": [
@@ -5323,12 +5323,6 @@
                       "type": "frame",
                       "id": "JjRga",
                       "name": "wrapL",
-                      "padding": [
-                        0,
-                        0,
-                        4,
-                        0
-                      ],
                       "children": [
                         {
                           "type": "text",
@@ -5358,18 +5352,6 @@
                       "descendants": {
                         "TMSfg": {
                           "iconFontName": "camera",
-                          "iconFontFamily": "phosphor"
-                        }
-                      }
-                    },
-                    {
-                      "id": "GCjPY",
-                      "type": "ref",
-                      "ref": "rVWsR",
-                      "name": "wlAdd",
-                      "descendants": {
-                        "TMSfg": {
-                          "iconFontName": "plus",
                           "iconFontFamily": "phosphor"
                         }
                       }
@@ -5563,6 +5545,7 @@
                       "name": "sub1",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -5672,6 +5655,7 @@
                       "name": "sub2",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -5781,6 +5765,7 @@
                       "name": "sub3",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -5890,6 +5875,7 @@
                       "name": "sub4",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -9249,7 +9235,7 @@
           "name": "Landing",
           "clip": true,
           "width": 390,
-          "height": 844,
+          "height": 845,
           "fill": "#FFFFFF",
           "cornerRadius": 16,
           "layout": "vertical",
@@ -9314,7 +9300,7 @@
               "type": "frame",
               "id": "wnKZG",
               "name": "Features",
-              "width": "fill_container",
+              "width": 300,
               "layout": "vertical",
               "children": [
                 {
@@ -9358,8 +9344,6 @@
                       "id": "JluRQ",
                       "name": "f1text",
                       "fill": "$text-secondary",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
                       "content": "Search & save Japanese words\nvia Jisho dictionary",
                       "lineHeight": 1.5,
                       "fontFamily": "Zen Kaku Gothic New",
@@ -9968,6 +9952,7 @@
                       "name": "dsub1",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -10077,6 +10062,7 @@
                       "name": "dsub2",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -10186,6 +10172,7 @@
                       "name": "dsub3",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -10295,6 +10282,7 @@
                       "name": "dsub4",
                       "enabled": false,
                       "width": "fill_container",
+                      "height": "fit_content(0)",
                       "layout": "vertical",
                       "gap": 2,
                       "padding": [
@@ -13779,7 +13767,7 @@
               "type": "frame",
               "id": "4GVBt",
               "name": "Features",
-              "width": "fill_container",
+              "width": 300,
               "layout": "vertical",
               "children": [
                 {

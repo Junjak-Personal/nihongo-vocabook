@@ -29,45 +29,45 @@ export function Flashcard({ word, onRate, onMaster, progress, isLoading = false,
       renderLoadingActions={() => (
         <>
           <div className="flex gap-2">
-            <Button variant="outline" disabled className="h-12 flex-1 rounded-lg border-border text-sm font-medium text-muted-foreground">{t.quiz.again}</Button>
-            <Button variant="outline" disabled className="h-12 flex-1 rounded-lg border-border text-sm font-medium text-muted-foreground">{t.quiz.hard}</Button>
-            <Button disabled className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary">{t.quiz.good}</Button>
-            <Button disabled className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground">{t.quiz.easy}</Button>
+            <Button variant="outline" disabled className="h-12 flex-1 rounded-lg border-destructive/40 text-sm font-medium text-destructive">{t.quiz.again}</Button>
+            <Button disabled className="h-12 flex-1 rounded-lg bg-secondary text-sm font-medium text-muted-foreground">{t.quiz.hard}</Button>
+            <Button disabled className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground">{t.quiz.good}</Button>
+            <Button disabled className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary dark:text-accent-muted">{t.quiz.easy}</Button>
           </div>
-          <Button variant="outline" disabled className="mt-3 h-12 w-full rounded-lg border-border text-sm">
+          <Button variant="outline" disabled className="h-12 w-full rounded-lg text-sm">
             <Crown className="size-4" />
             {t.wordDetail.markMastered}
           </Button>
         </>
       )}
-      renderActions={({ onAdvance }) => (
+      renderActions={({ onAdvance, revealed }) => (
         <>
           <div className="flex gap-2" data-testid="flashcard-rating">
             <Button
               variant="outline"
-              className="h-12 flex-1 rounded-lg border-border text-sm font-medium text-muted-foreground hover:bg-secondary/50"
+              className="h-12 flex-1 rounded-lg border-destructive/40 text-sm font-medium text-destructive hover:bg-destructive/10"
               onClick={() => { onRate(0); onAdvance(); }}
               data-testid="flashcard-rate-0"
             >
               {t.quiz.again}
             </Button>
             <Button
-              variant="outline"
-              className="h-12 flex-1 rounded-lg border-border text-sm font-medium text-muted-foreground hover:bg-secondary/50"
+              variant="secondary"
+              className="h-12 flex-1 rounded-lg text-sm font-medium text-muted-foreground"
               onClick={() => { onRate(3); onAdvance(); }}
               data-testid="flashcard-rate-3"
             >
               {t.quiz.hard}
             </Button>
             <Button
-              className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary hover:bg-accent/80"
+              className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90"
               onClick={() => { onRate(4); onAdvance(); }}
               data-testid="flashcard-rate-4"
             >
               {t.quiz.good}
             </Button>
             <Button
-              className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+              className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary hover:bg-accent/80 dark:text-accent-muted"
               onClick={() => { onRate(5); onAdvance(); }}
               data-testid="flashcard-rate-5"
             >
@@ -76,7 +76,7 @@ export function Flashcard({ word, onRate, onMaster, progress, isLoading = false,
           </div>
           <Button
             variant="outline"
-            className="mt-3 h-12 w-full rounded-lg border-border text-sm"
+            className="h-12 w-full rounded-lg text-sm"
             onClick={() => { onMaster(); onAdvance(); }}
             data-testid="flashcard-rate-master"
           >

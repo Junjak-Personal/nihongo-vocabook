@@ -25,24 +25,37 @@ export function Header({
   const router = useRouter();
   const navLocked = useNavigationLockStore((s) => s.lockCount > 0);
 
+  const isSubHeader = showBack || !!onBack;
+
+  if (isSubHeader) {
+    return (
+      <header className="sticky top-0 z-10 flex h-14 items-center bg-background pl-3 pr-5 gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onBack ?? (() => router.back())}
+          disabled={navLocked && !allowBackWhenLocked}
+          aria-label="Go back"
+        >
+          <ArrowLeftIcon className="size-5" />
+        </Button>
+        <div className="flex items-end gap-2.5">
+          <h1 className="text-section font-semibold text-foreground">{title}</h1>
+          {desc && (
+            <span className="text-badge font-medium text-text-tertiary">{desc}</span>
+          )}
+        </div>
+        {actions && <div className="ml-auto flex items-center gap-1">{actions}</div>}
+      </header>
+    );
+  }
+
   return (
     <header className="sticky top-0 z-10 flex h-14 items-center justify-between bg-background px-5">
-      <div className="flex items-center gap-2">
-        {(showBack || onBack) && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onBack ?? (() => router.back())}
-            disabled={navLocked && !allowBackWhenLocked}
-            aria-label="Go back"
-            className="-ml-2"
-          >
-            <ArrowLeftIcon className="size-5" />
-          </Button>
-        )}
-        <h1 className="text-lg font-semibold">{title}</h1>
+      <div className="flex items-end gap-2.5">
+        <h1 className="text-section font-semibold text-foreground">{title}</h1>
         {desc && (
-          <span className="self-end pb-0.5 text-xs text-muted-foreground">{desc}</span>
+          <span className="text-badge font-medium text-text-tertiary pb-0.5">{desc}</span>
         )}
       </div>
       {actions && <div className="flex items-center gap-1">{actions}</div>}

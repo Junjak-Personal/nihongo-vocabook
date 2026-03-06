@@ -6,6 +6,7 @@ import { Info } from '@/components/ui/icons';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useRepository } from '@/lib/repository/provider';
 import { useTranslation } from '@/lib/i18n';
 import { useLoader } from '@/hooks/use-loader';
@@ -20,6 +21,9 @@ const SESSION_SIZE_OPTIONS = [10, 15, 20, 30, 50];
 const LEECH_THRESHOLD_OPTIONS = [4, 6, 8, 10, 15];
 const NOTIFICATION_HOUR_OPTIONS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 const NOTIFICATION_MINUTE_OPTIONS = [0, 15, 30, 45];
+
+const chipBase = 'text-muted-foreground';
+const chipSelected = '!bg-foreground !text-background !border-foreground';
 
 export default function QuizSettingsPage() {
   const repo = useRepository();
@@ -85,15 +89,15 @@ export default function QuizSettingsPage() {
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="flex-1 space-y-5 overflow-y-auto px-5 pt-2">
           {/* New cards per day */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.newPerDay}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.newPerDay}</h2>
             <div className="flex flex-wrap gap-2">
               {NEW_PER_DAY_OPTIONS.map((n) => (
                 <Button
                   key={n}
-                  variant={settings.newPerDay === n ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.newPerDay === n && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, newPerDay: n }))}
                 >
                   {n}
@@ -103,15 +107,15 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* Max reviews per day */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.maxReviewsPerDay}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.maxReviewsPerDay}</h2>
             <div className="flex flex-wrap gap-2">
               {MAX_REVIEWS_OPTIONS.map((n) => (
                 <Button
                   key={n}
-                  variant={settings.maxReviewsPerDay === n ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.maxReviewsPerDay === n && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, maxReviewsPerDay: n }))}
                 >
                   {n === 9999 ? '∞' : n}
@@ -121,13 +125,13 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* JLPT filter */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.jlptFilter}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.jlptFilter}</h2>
             <div className="flex flex-wrap gap-2">
               <Button
-                variant={settings.jlptFilter === null ? 'default' : 'secondary'}
+                variant="outline"
                 size="sm"
-                className="rounded-full text-[13px]"
+                className={cn('!h-9 rounded-md text-caption', chipBase, settings.jlptFilter === null && chipSelected)}
                 onClick={() => setSettings((s) => ({ ...s, jlptFilter: null }))}
               >
                 {t.settings.allLevels}
@@ -135,9 +139,9 @@ export default function QuizSettingsPage() {
               {[5, 4, 3, 2, 1].map((n) => (
                 <Button
                   key={n}
-                  variant={settings.jlptFilter === n ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.jlptFilter === n && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, jlptFilter: n }))}
                 >
                   N{n}
@@ -147,15 +151,15 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* Session size */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.sessionSize}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.sessionSize}</h2>
             <div className="flex flex-wrap gap-2">
               {SESSION_SIZE_OPTIONS.map((n) => (
                 <Button
                   key={n}
-                  variant={settings.sessionSize === n ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.sessionSize === n && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, sessionSize: n }))}
                 >
                   {n}
@@ -165,16 +169,16 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* Leech threshold */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.leechThreshold}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.leechThreshold}</h2>
             <p className="text-xs text-muted-foreground">{t.settings.leechThresholdDesc}</p>
             <div className="flex flex-wrap gap-2">
               {LEECH_THRESHOLD_OPTIONS.map((n) => (
                 <Button
                   key={n}
-                  variant={settings.leechThreshold === n ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.leechThreshold === n && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, leechThreshold: n }))}
                 >
                   {n}
@@ -184,8 +188,8 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* Card direction */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.cardDirection}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.cardDirection}</h2>
             <div className="flex flex-wrap gap-2">
               {([
                 { value: 'term_first' as const, label: t.settings.termFirst },
@@ -194,9 +198,9 @@ export default function QuizSettingsPage() {
               ]).map(({ value, label }) => (
                 <Button
                   key={value}
-                  variant={settings.cardDirection === value ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.cardDirection === value && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, cardDirection: value }))}
                 >
                   {label}
@@ -206,13 +210,13 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* Priority filter */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.priorityFilter}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.priorityFilter}</h2>
             <div className="flex flex-wrap gap-2">
               <Button
-                variant={settings.priorityFilter === null ? 'default' : 'secondary'}
+                variant="outline"
                 size="sm"
-                className="rounded-full text-[13px]"
+                className={cn('!h-9 rounded-md text-caption', chipBase, settings.priorityFilter === null && chipSelected)}
                 onClick={() => setSettings((s) => ({ ...s, priorityFilter: null }))}
               >
                 {t.settings.allPriorities}
@@ -224,9 +228,9 @@ export default function QuizSettingsPage() {
               ].map(({ value, label }) => (
                 <Button
                   key={value}
-                  variant={settings.priorityFilter === value ? 'default' : 'secondary'}
+                  variant="outline"
                   size="sm"
-                  className="rounded-full text-[13px]"
+                  className={cn('!h-9 rounded-md text-caption', chipBase, settings.priorityFilter === value && chipSelected)}
                   onClick={() => setSettings((s) => ({ ...s, priorityFilter: value }))}
                 >
                   {label}
@@ -236,8 +240,8 @@ export default function QuizSettingsPage() {
           </section>
 
           {/* Notifications */}
-          <section className="space-y-2">
-            <h2 className="text-[15px] font-semibold">{t.settings.notifications}</h2>
+          <section className="space-y-2.5">
+            <h2 className="text-body font-semibold">{t.settings.notifications}</h2>
             <div
               role="checkbox"
               aria-checked={settings.notificationEnabled}
@@ -268,9 +272,9 @@ export default function QuizSettingsPage() {
                     {NOTIFICATION_HOUR_OPTIONS.map((h) => (
                       <Button
                         key={h}
-                        variant={settings.notificationHour === h ? 'default' : 'secondary'}
+                        variant="outline"
                         size="sm"
-                        className="min-w-[2.5rem] rounded-full text-[13px]"
+                        className={cn('min-w-[2.5rem] !h-9 rounded-md text-caption', chipBase, settings.notificationHour === h && chipSelected)}
                         onClick={() => setSettings((s) => ({ ...s, notificationHour: h }))}
                       >
                         {h}
@@ -284,9 +288,9 @@ export default function QuizSettingsPage() {
                     {NOTIFICATION_MINUTE_OPTIONS.map((m) => (
                       <Button
                         key={m}
-                        variant={settings.notificationMinute === m ? 'default' : 'secondary'}
+                        variant="outline"
                         size="sm"
-                        className="rounded-full text-[13px]"
+                        className={cn('!h-9 rounded-md text-caption', chipBase, settings.notificationMinute === m && chipSelected)}
                         onClick={() => setSettings((s) => ({ ...s, notificationMinute: m }))}
                       >
                         {String(m).padStart(2, '0')}

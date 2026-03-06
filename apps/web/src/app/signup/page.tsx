@@ -7,8 +7,11 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Check } from '@/components/ui/icons';
 import { createClient } from '@/lib/supabase/client';
 import { useTranslation } from '@/lib/i18n';
+import { btnLg } from '@/lib/styles';
+import { cn } from '@/lib/utils';
 
 const JLPT_LEVELS = [5, 4, 3, 2, 1] as const;
 
@@ -68,16 +71,16 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col justify-end overflow-y-auto">
       {/* Branding */}
-      <div className="shrink-0 px-8 pb-6 pt-16">
-        <div className="text-4xl font-bold tracking-tight text-primary" style={{ letterSpacing: '-1px' }}>NiVoca</div>
-        <p className="mt-2 text-[15px] text-muted-foreground">{t.landing.subtitle}</p>
+      <div className="flex shrink-0 flex-col items-center gap-2 px-8 pb-6 pt-8">
+        <div className="font-ja text-kanji font-bold tracking-[-1px] text-primary">NiVoca</div>
+        <p className="text-body text-muted-foreground">{t.auth.createYourAccount}</p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-        <div className="flex-1 space-y-3.5 overflow-y-auto px-6 pt-2">
+      <form onSubmit={handleSubmit} className="shrink-0">
+        <div className="space-y-3.5 px-6 pt-2">
               <div className="space-y-2">
                 <Label htmlFor="email">{t.auth.email}</Label>
                 <Input
@@ -103,7 +106,7 @@ export default function SignupPage() {
                   required
                   data-testid="signup-password-input"
                 />
-                <p className={`text-sm ${passwordTouched && !passwordValid ? 'text-destructive' : 'text-muted-foreground'}`}>
+                <p className={`text-caption ${passwordTouched && !passwordValid ? 'text-destructive' : 'text-muted-foreground'}`}>
                   {t.auth.passwordRule}
                 </p>
               </div>
@@ -120,7 +123,7 @@ export default function SignupPage() {
                   data-testid="signup-password-confirm-input"
                 />
                 {passwordMismatch && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-caption text-destructive">
                     {t.auth.passwordMismatch}
                   </p>
                 )}
@@ -134,8 +137,7 @@ export default function SignupPage() {
                       key={level}
                       type="button"
                       variant={jlptLevel === level ? 'default' : 'outline'}
-                      size="sm"
-                      className="flex-1"
+                      className="h-10 flex-1 rounded-md"
                       onClick={() => setJlptLevel(level)}
                       data-testid={`signup-jlpt-n${level}`}
                     >
@@ -146,35 +148,42 @@ export default function SignupPage() {
               </div>
               {/* Privacy consent */}
               <div className="pt-2">
-                <div className="flex items-start gap-2">
+                <label className="flex cursor-pointer items-center gap-2">
+                  <span className={cn(
+                    'flex size-[18px] shrink-0 items-center justify-center rounded-sm border-[1.5px]',
+                    privacyAgreed ? 'border-primary bg-primary' : 'border-border bg-background'
+                  )}>
+                    {privacyAgreed && <Check className="size-3 text-white" />}
+                  </span>
                   <input
                     type="checkbox"
                     checked={privacyAgreed}
                     onChange={(e) => setPrivacyAgreed(e.target.checked)}
-                    className="mt-0.5 size-4 shrink-0 accent-primary"
+                    className="sr-only"
                     data-testid="signup-privacy-checkbox"
                   />
                   <Link
                     href="/privacy?from=signup"
-                    className="text-sm text-primary underline underline-offset-2"
+                    className="text-caption font-medium text-primary"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {t.auth.privacyAgree}
                   </Link>
-                </div>
+                </label>
               </div>
         </div>
 
         {/* Bottom buttons */}
-        <div className="shrink-0 space-y-3 px-6 pb-8 pt-8">
+        <div className="shrink-0 space-y-3 px-6 pb-8 pt-[30px]">
           <Button
             type="submit"
-            className="w-full"
+            className={cn(btnLg, 'w-full text-title-sm font-semibold')}
             disabled={loading || !canSubmit}
             data-testid="signup-submit-button"
           >
             {loading ? t.auth.creatingAccount : t.auth.createAccount}
           </Button>
-          <div className="flex items-center justify-center gap-1 text-sm">
+          <div className="flex items-center justify-center gap-1 text-reading">
             <span className="text-muted-foreground">{t.auth.hasAccount}</span>
             <Link href="/login" className="font-semibold text-primary" data-testid="signup-goto-login">
               {t.auth.signIn}

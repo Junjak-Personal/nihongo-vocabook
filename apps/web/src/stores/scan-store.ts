@@ -134,13 +134,14 @@ function scorePartsOfSpeechPenalty(entry: DictionaryEntry): number {
 }
 
 function scorePreviewWord(word: ExtractedWord, existingTerms: Set<string>, sourceBoost = 0): number {
+  // Existing words always sink to the bottom
+  if (existingTerms.has(word.term)) return -1000;
   let score = sourceBoost;
   if (word.meaning) score += 8;
   if (word.reading) score += 4;
   if (KANJI_CHAR_REGEX.test(word.term)) score += 3;
   if (word.jlptLevel !== null) score += 2;
   score += Math.min(word.term.length, 8) * 0.2;
-  if (existingTerms.has(word.term)) score -= 5;
   return score;
 }
 

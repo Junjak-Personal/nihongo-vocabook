@@ -66,6 +66,7 @@ export function BaseFlashcard({
   const isTermFirst = dir === 'term_first';
   const frontText = isTermFirst ? word.term : word.meaning;
   const backPrimary = isTermFirst ? word.meaning : word.term;
+  const backReading = isTermFirst ? word.reading : undefined;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -79,39 +80,35 @@ export function BaseFlashcard({
 
       {/* Tap zone */}
       <div
-        className="animate-card-enter relative min-h-0 flex-1 cursor-pointer px-4"
+        className="animate-card-enter relative min-h-0 flex-1 cursor-pointer overflow-y-auto px-4 text-center"
         onClick={() => setRevealed((v) => !v)}
         data-testid={testId}
       >
-        {/* Front text — absolutely centered, never moves */}
-        <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 text-center">
-          <div className={isTermFirst ? 'text-5xl font-medium' : 'text-2xl font-medium md:text-3xl'}>
+        {/* Front text — fixed at 35% from top */}
+        <div className="absolute inset-x-0 top-[35%] flex flex-col items-center gap-3">
+          <div className={isTermFirst ? 'text-display font-medium leading-tight' : 'text-2xl font-medium md:text-3xl'}>
             {frontText}
           </div>
-        </div>
 
-        {/* Reading (above center) */}
-        <div className="absolute inset-x-4 top-1/2 -translate-y-[calc(100%+2rem)] text-center">
-          {revealed && word.reading ? (
-            <div className="animate-fade-in text-lg text-muted-foreground">
-              {word.reading}
+          {/* Reading — shown when revealed */}
+          {revealed && backReading ? (
+            <div className="animate-fade-in text-reading text-text-secondary">
+              {backReading}
             </div>
           ) : null}
-        </div>
 
-        {/* Back content (below center) */}
-        <div className="absolute inset-x-4 top-1/2 translate-y-8 text-center md:translate-y-10">
+          {/* Back content */}
           {revealed ? (
             <>
               <div className={isTermFirst
-                ? 'animate-reveal-up text-2xl font-semibold text-primary'
-                : 'animate-reveal-up text-3xl font-bold text-primary md:text-4xl'
+                ? 'animate-reveal-up text-subtitle font-semibold text-primary dark:text-accent-muted'
+                : 'animate-reveal-up text-3xl font-bold text-primary dark:text-accent-muted md:text-4xl'
               }>
                 {backPrimary}
               </div>
               {word.notes && (
                 <div
-                  className="animate-reveal-up mt-2 text-sm text-muted-foreground"
+                  className="animate-reveal-up text-sm text-muted-foreground"
                   style={{ animationDelay: '100ms' }}
                 >
                   {word.notes}
@@ -119,7 +116,7 @@ export function BaseFlashcard({
               )}
             </>
           ) : (
-            <div className="text-sm text-tertiary">
+            <div className="text-sm text-text-tertiary">
               {t.quiz.tapToReveal}
             </div>
           )}
@@ -129,7 +126,9 @@ export function BaseFlashcard({
       {/* Actions */}
       <div className="shrink-0 px-5 pb-2 pt-3">
         <div className={bottomSep} />
-        {renderActions({ word, onAdvance: () => setRevealed(false), revealed })}
+        <div className="flex flex-col gap-3">
+          {renderActions({ word, onAdvance: () => setRevealed(false), revealed })}
+        </div>
       </div>
     </div>
   );

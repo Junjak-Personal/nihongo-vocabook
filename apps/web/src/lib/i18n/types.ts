@@ -19,6 +19,9 @@ export interface Translations {
     unsavedChangesTitle: string;
     unsavedChangesDescription: string;
     leave: string;
+    hideReading: string;
+    hideMeaning: string;
+    sort: string;
   };
   nav: {
     words: string;
@@ -38,6 +41,8 @@ export interface Translations {
     feature4: string;
   };
   auth: {
+    welcomeBack: string;
+    createYourAccount: string;
     signIn: string;
     signUp: string;
     email: string;
@@ -136,6 +141,7 @@ export interface Translations {
     subscribedWord: string;
     leech: string;
     leechDesc: string;
+    noTags: string;
   };
   quiz: {
     title: string;

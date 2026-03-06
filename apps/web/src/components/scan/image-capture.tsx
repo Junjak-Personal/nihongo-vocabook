@@ -148,11 +148,11 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
             <button
               type="button"
               onClick={openGallery}
-              className="flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border-[1.5px] border-dashed border-border bg-secondary text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              className="flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-secondary text-muted-foreground transition-colors active:bg-secondary/70"
               data-testid="scan-choose-gallery"
             >
               <ImagePlus className="size-12" />
-              <span className="text-sm">{t.scan.chooseFromGallery}</span>
+              <span className="text-reading">{t.scan.chooseFromGallery}</span>
             </button>
           ) : images.length === 0 ? (
             <div className="flex-1" />
@@ -183,7 +183,6 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
                 className="flex h-40 flex-col items-center justify-center gap-1.5 rounded-2xl border-[1.5px] border-dashed border-border bg-secondary text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary disabled:opacity-50"
               >
                 <ImagePlus className="size-6" />
-                <span className="text-xs">{t.common.add}</span>
               </button>
             </div>
           )}

@@ -37,6 +37,7 @@
       "dependencies": {
         "@base-ui/react": "^1.2.0",
         "@fontsource/noto-sans-kr": "^5.2.9",
+        "@fontsource/pretendard": "^5.2.5",
         "@fontsource/zen-kaku-gothic-new": "^5.2.7",
         "@serwist/next": "^9.5.6",
         "@supabase/ssr": "^0.8.0",
@@ -459,6 +460,8 @@
     "@floating-ui/utils": ["@floating-ui/utils@0.2.10", "", {}, "sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ=="],
 
     "@fontsource/noto-sans-kr": ["@fontsource/noto-sans-kr@5.2.9", "", {}, "sha512-pbF8F0rUzKkDmnk/KYGAbxjgW4TrIHdFKnV6OQ+kUC9ELCn5utrAURcEgMqq3J9SRX+FvjOz+aBCmfcC8/r7cw=="],
+
+    "@fontsource/pretendard": ["@fontsource/pretendard@5.2.5", "", {}, "sha512-UAj3l+Exfx6Sq5hySbhTQhNzkZnhzBxQdHySmjo2lifXyXpMAHv7GD7hAQTLgZfBd1WixJJkmynfJbOp+TAckg=="],
 
     "@fontsource/zen-kaku-gothic-new": ["@fontsource/zen-kaku-gothic-new@5.2.7", "", {}, "sha512-tfGiyBqeeBjUURHm+RIuBJCxIKhZFp46/+LEc+zCxR4sLslKwlVpWda0ZOnX/mTvOHpfr4DYjiV/pVosRXHWaw=="],
 
