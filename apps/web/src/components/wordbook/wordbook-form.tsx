@@ -94,6 +94,7 @@ export function WordbookForm({
   };
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === 'Enter') {
       e.preventDefault();
       if (tagInput.trim()) addTag(tagInput);
@@ -148,7 +149,7 @@ export function WordbookForm({
         <div className="space-y-2">
           <Label>{t.wordbooks.tags}</Label>
           <div
-            className="border-input focus-within:border-ring focus-within:ring-ring/50 flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border px-3 py-1.5 focus-within:ring-[3px]"
+            className="border-input focus-within:border-ring focus-within:ring-ring/50 flex min-h-11 flex-wrap items-center gap-1.5 rounded-md border px-3 py-1.5 focus-within:ring-[3px]"
             onClick={() => tagInputRef.current?.focus()}
           >
             {tags.map((tag, i) => (
@@ -180,8 +181,7 @@ export function WordbookForm({
           </div>
         </div>
         {showShareToggle && (
-          <div className="space-y-2">
-            <Label htmlFor="wordbook-shared">{t.wordbooks.shareToggle}</Label>
+          <div>
             <div className="flex h-12 items-center justify-between rounded-lg bg-secondary px-4">
               <span className="text-body">{t.wordbooks.shareToggle}</span>
               <Switch

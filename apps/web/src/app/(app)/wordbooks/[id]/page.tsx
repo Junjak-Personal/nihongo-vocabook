@@ -559,14 +559,13 @@ export default function WordbookDetailPage({
                 {t.wordbooks.startQuiz}
               </Button>
             )}
-            <Link href={`/wordbooks/${id}/add-words`} className="flex-1">
-              <Button
-                className="w-full"
-                data-testid="wordbook-add-words-button"
-              >
-                {t.wordbooks.addWords}
-              </Button>
-            </Link>
+            <Button
+              className="flex-1"
+              onClick={() => router.push(`/wordbooks/${id}/add-words`)}
+              data-testid="wordbook-add-words-button"
+            >
+              {t.wordbooks.addWords}
+            </Button>
           </div>
         ) : (
           <Button

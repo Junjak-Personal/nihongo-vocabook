@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, use, useRef, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { toast } from 'sonner';
-import { Pencil, Trash2, X, LinkIcon, AlertTriangle, ChevronLeft, ChevronRight, Eye } from '@/components/ui/icons';
+import { Pencil, Trash2, X, LinkIcon, AlertTriangle, ChevronLeft, ChevronRight, Eye, EyeOff } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
@@ -34,9 +34,12 @@ export default function WordDetailPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const repo = useRepository();
   const authLoading = useAuthStore((s) => s.loading);
+  const isMasteredContext = pathname.startsWith('/mastered/');
+  const basePath = isMasteredContext ? '/mastered' : '/words';
   const { t, locale } = useTranslation();
   const [word, setWord] = useState<Word | null>(null);
   const [progress, setProgress] = useState<StudyProgress | null>(null);
@@ -63,22 +66,26 @@ export default function WordDetailPage({
 
   useEffect(() => {
     if (authLoading) return;
-    const wordsCache = getListCache<WordsCacheData>('words');
-    const cachedWords = wordsCache?.data.words ?? [];
-    const hasCurrentInCache = cachedWords.some((item) => item.id === id);
 
-    const orderedWordsPromise = hasCurrentInCache
-      ? Promise.resolve(cachedWords)
-      : repo.words.getNonMastered().then((allWords) => {
-        const sortOrder = wordsCache?.data.sortOrder ?? 'priority';
-        if (sortOrder === 'newest') {
-          return [...allWords].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-        }
-        if (sortOrder === 'alphabetical') {
-          return [...allWords].sort((a, b) => a.term.localeCompare(b.term, 'ja'));
-        }
-        return allWords;
-      });
+    const orderedWordsPromise = isMasteredContext
+      ? repo.words.getMastered()
+      : (() => {
+        const wordsCache = getListCache<WordsCacheData>('words');
+        const cachedWords = wordsCache?.data.words ?? [];
+        const hasCurrentInCache = cachedWords.some((item) => item.id === id);
+        return hasCurrentInCache
+          ? Promise.resolve(cachedWords)
+          : repo.words.getNonMastered().then((allWords) => {
+            const sortOrder = wordsCache?.data.sortOrder ?? 'priority';
+            if (sortOrder === 'newest') {
+              return [...allWords].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+            }
+            if (sortOrder === 'alphabetical') {
+              return [...allWords].sort((a, b) => a.term.localeCompare(b.term, 'ja'));
+            }
+            return allWords;
+          });
+      })();
 
     Promise.all([
       repo.words.getById(id),
@@ -173,15 +180,27 @@ export default function WordDetailPage({
     invalidateListCache('words');
     invalidateListCache('mastered');
     toast.success(t.words.wordDeleted);
-    router.push('/words');
+    router.push(basePath);
   };
 
   const handleToggleMastered = async () => {
     if (!word) return;
-    const updated = await repo.words.setMastered(id, !word.mastered);
+    const wasMastered = word.mastered;
+    await repo.words.setMastered(id, !wasMastered);
     invalidateListCache('words');
     invalidateListCache('mastered');
     invalidateListCache('wordbooks');
+    // When marking as mastered from words list, auto-advance
+    if (!wasMastered) {
+      toast.success(t.wordDetail.markMastered);
+      if (nextWordId) {
+        router.replace(`${basePath}/${nextWordId}`);
+      } else {
+        router.back();
+      }
+      return;
+    }
+    const updated = await repo.words.getById(id);
     setWord(updated);
   };
 
@@ -192,7 +211,7 @@ export default function WordDetailPage({
 
   const handleMoveWord = (targetId: string | null) => {
     if (!targetId) return;
-    router.push(`/words/${targetId}?showInfo=${showWordInfo ? '1' : '0'}`);
+    router.push(`${basePath}/${targetId}?showInfo=${showWordInfo ? '1' : '0'}`);
   };
 
   const formatNextReview = (nextReview: Date) => {
@@ -207,56 +226,50 @@ export default function WordDetailPage({
   if (loading) {
     return (
       <>
-        <Header title={t.wordDetail.title} showBack />
-        <div className={cn(scrollArea, 'min-h-0 p-4')}>
-          <div className="animate-page space-y-5">
-            {/* Term + Reading skeleton */}
-            <div>
-              <Skeleton className="h-8 w-1/3" />
-              <Skeleton className="mt-2 h-5 w-1/4" />
-            </div>
-            <Separator />
-            {/* Meaning skeleton */}
-            <div>
-              <Skeleton className="h-3 w-16" />
-              <Skeleton className="mt-2 h-7 w-2/3" />
-            </div>
-            {/* Difficulty + Priority skeleton */}
-            <div className="flex gap-6">
-              <div className="shrink-0">
-                <Skeleton className="h-3 w-16" />
-                <Skeleton className="mt-2 h-4 w-20" />
-              </div>
-              <div className="min-w-0 flex-1">
+        <Header title={t.wordDetail.title} showBack onBack={() => router.push(basePath)} />
+        <div className={cn(scrollArea, 'px-5 py-4')}>
+          <div className="animate-page flex flex-col gap-6">
+            {/* Word block card */}
+            <Skeleton className="h-[180px] w-full rounded-xl" />
+            {/* Divider */}
+            <div className="h-px bg-secondary" />
+            {/* Meta grid: LEVEL / PRIORITY / CREATED */}
+            <div className="flex justify-between">
+              <div className="flex flex-col gap-1">
                 <Skeleton className="h-3 w-12" />
-                <div className="mt-2 flex gap-1.5">
+                <Skeleton className="mt-1 h-5 w-20" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-3 w-14" />
+                <div className="mt-1 flex gap-1.5">
                   <Skeleton className="h-6 w-14 rounded-full" />
                   <Skeleton className="h-6 w-14 rounded-full" />
                   <Skeleton className="h-6 w-14 rounded-full" />
                 </div>
               </div>
-            </div>
-            {/* Tags skeleton */}
-            <div>
-              <Skeleton className="h-3 w-10" />
-              <div className="mt-2 flex gap-1">
-                <Skeleton className="h-5 w-12 rounded-full" />
-                <Skeleton className="h-5 w-16 rounded-full" />
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="mt-1 h-5 w-24" />
               </div>
             </div>
-            <Separator />
-            {/* Study progress + Created date skeleton */}
-            <div className="flex gap-6">
-              <div className="flex-1">
-                <Skeleton className="h-3 w-24" />
-                <div className="mt-2 space-y-1">
-                  <Skeleton className="h-4 w-28" />
-                  <Skeleton className="h-4 w-32" />
-                </div>
+            {/* Divider */}
+            <div className="h-px bg-secondary" />
+            {/* Study progress */}
+            <div className="flex flex-col gap-3">
+              <Skeleton className="h-3 w-20" />
+              <div className="flex gap-4">
+                <Skeleton className="h-16 flex-1 rounded-lg" />
+                <Skeleton className="h-16 flex-1 rounded-lg" />
               </div>
-              <div className="shrink-0 text-right">
-                <Skeleton className="ml-auto h-3 w-20" />
-                <Skeleton className="ml-auto mt-2 h-4 w-24" />
+            </div>
+            {/* Divider */}
+            <div className="h-px bg-secondary" />
+            {/* Tags */}
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-3 w-8" />
+              <div className="flex gap-2">
+                <Skeleton className="h-8 w-14 rounded-md" />
+                <Skeleton className="h-8 w-16 rounded-md" />
               </div>
             </div>
           </div>
@@ -275,7 +288,7 @@ export default function WordDetailPage({
   if (!word) {
     return (
       <>
-        <Header title={t.wordDetail.title} showBack />
+        <Header title={t.wordDetail.title} showBack onBack={() => router.push(basePath)} />
         <div className={emptyState}>
           {t.words.wordNotFound}
         </div>
@@ -325,6 +338,7 @@ export default function WordDetailPage({
       <Header
         title={t.wordDetail.title}
         showBack
+        onBack={() => router.push(basePath)}
         actions={word.isOwned ? (
           <div className="flex gap-1">
             <Button
@@ -356,7 +370,7 @@ export default function WordDetailPage({
         <div className="animate-page flex flex-col gap-6">
 
           {/* Word block — kanji/reading/meaning card */}
-          <div className="relative overflow-hidden rounded-xl bg-secondary" style={{ minHeight: 180 }}>
+          <div className="relative overflow-hidden rounded-xl bg-secondary">
             {/* Prev/Next navigation arrows */}
             <button
               className="absolute left-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center disabled:opacity-30"
@@ -377,18 +391,30 @@ export default function WordDetailPage({
               <ChevronRight className="size-5 text-text-tertiary" />
             </button>
 
+            {/* Subscribed badge — top-left */}
+            {!word.isOwned && (
+              <Badge variant="secondary" className="absolute left-2 top-2 rounded-md bg-background/80 text-text-tertiary">
+                <LinkIcon className="mr-1 size-3" />
+                {t.wordDetail.subscribedWord}
+              </Badge>
+            )}
+
             {/* Eye toggle button — top-right inside card */}
             <button
-              className="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-border"
+              className="absolute right-2 top-2 flex size-8 items-center justify-center rounded-[10px] border border-border bg-card"
               onClick={() => setShowWordInfo((prev) => !prev)}
               data-testid="word-toggle-info-button"
               aria-label={`${t.words.showReading} / ${t.words.showMeaning}`}
             >
-              <Eye className="size-icon text-text-secondary" />
+              {showWordInfo ? (
+                <EyeOff className="size-icon text-primary" />
+              ) : (
+                <Eye className="size-icon text-text-tertiary" />
+              )}
             </button>
 
             {/* Center content */}
-            <div className="flex flex-col items-center py-6 text-center">
+            <div className="flex min-h-[180px] flex-col items-center justify-center py-6 text-center">
               {/* Reading */}
               <div
                 className={cn(
@@ -413,23 +439,12 @@ export default function WordDetailPage({
               </div>
 
               {/* Status badges */}
-              {(word.mastered || word.isLeech || !word.isOwned) && (
+              {word.isLeech && (
                 <div className="mt-2 flex flex-wrap justify-center gap-1">
-                  {word.mastered && (
-                    <Badge variant="secondary" className="bg-green-100 text-green-700">
-                      {t.nav.mastered}
-                    </Badge>
-                  )}
                   {word.isLeech && (
                     <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
                       <AlertTriangle className="mr-1 size-3" />
                       {t.wordDetail.leech}
-                    </Badge>
-                  )}
-                  {!word.isOwned && (
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                      <LinkIcon className="mr-1 size-3" />
-                      {t.wordDetail.subscribedWord}
                     </Badge>
                   )}
                 </div>
@@ -441,20 +456,20 @@ export default function WordDetailPage({
           <div className="h-px bg-secondary" />
 
           {/* Meta grid — LEVEL / PRIORITY / CREATED */}
-          <div className="flex gap-4">
-            <div className="flex flex-1 flex-col gap-1">
+          <div className="flex justify-between">
+            <div className="flex shrink-0 flex-col gap-1">
               <div className={sectionLabel}>{t.wordDetail.difficulty}</div>
               <div className="text-body font-medium">
                 {word.jlptLevel ? `JLPT N${word.jlptLevel}` : t.wordDetail.unclassified}
               </div>
             </div>
-            <div className="flex flex-1 flex-col gap-1">
+            <div className="flex flex-col gap-1">
               <div className={sectionLabel}>{t.priority.title}</div>
               <div className="flex gap-1.5">
                 {[
-                  { value: 1, label: t.priority.high, color: 'bg-primary' },
-                  { value: 2, label: t.priority.medium, color: 'bg-accent-muted' },
-                  { value: 3, label: t.priority.low, color: 'bg-border-strong' },
+                  { value: 1, label: t.priority.high, color: 'bg-destructive' },
+                  { value: 2, label: t.priority.medium, color: 'bg-primary' },
+                  { value: 3, label: t.priority.low, color: 'bg-text-tertiary' },
                 ].map((p) => (
                   <button
                     key={p.value}
@@ -472,7 +487,7 @@ export default function WordDetailPage({
                 ))}
               </div>
             </div>
-            <div className="flex flex-1 flex-col gap-1">
+            <div className="flex shrink-0 flex-col gap-1">
               <div className={sectionLabel}>{t.common.createdAt}</div>
               <div className="text-reading font-semibold">
                 {word.createdAt.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-US')}
@@ -504,9 +519,9 @@ export default function WordDetailPage({
           <div className="h-px bg-secondary" />
 
           {/* Tags */}
-          {word.tags.length > 0 && (
-            <div className="flex flex-col gap-2">
-              <div className={sectionLabel}>{t.wordDetail.tags}</div>
+          <div className="flex flex-col gap-2">
+            <div className={sectionLabel}>{t.wordDetail.tags}</div>
+            {word.tags.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {word.tags.map((tag) => (
                   <span
@@ -517,8 +532,10 @@ export default function WordDetailPage({
                   </span>
                 ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="text-caption text-text-tertiary">{t.wordDetail.noTags}</div>
+            )}
+          </div>
 
           {/* Notes */}
           {word.notes && (

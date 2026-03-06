@@ -29,7 +29,7 @@ export function PracticeFlashcard({ word, onRecall, onMaster, progress, isLoadin
       renderLoadingActions={() => (
         <>
           <div className="flex gap-2">
-            <Button variant="outline" disabled className="h-12 flex-1 rounded-lg text-sm font-medium text-tertiary">{t.quiz.didntKnow}</Button>
+            <Button variant="outline" disabled className="h-12 flex-1 rounded-lg text-sm font-medium text-text-tertiary">{t.quiz.didntKnow}</Button>
             <Button disabled className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground">{t.quiz.knewIt}</Button>
           </div>
           <Button variant="outline" disabled className="h-12 w-full rounded-lg text-sm">
@@ -43,7 +43,7 @@ export function PracticeFlashcard({ word, onRecall, onMaster, progress, isLoadin
           <div className="flex gap-2" data-testid="practice-recall">
             <Button
               variant="outline"
-              className="h-12 flex-1 rounded-lg text-sm font-medium text-tertiary hover:bg-secondary/50"
+              className="h-12 flex-1 rounded-lg text-sm font-medium text-text-tertiary hover:bg-secondary/50"
               onClick={() => { onRecall(w.id, false); onAdvance(); }}
               data-testid="practice-recall-no"
             >

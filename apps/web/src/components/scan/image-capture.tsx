@@ -183,7 +183,6 @@ export const ImageCapture = forwardRef<ImageCaptureHandle, ImageCaptureProps>(
                 className="flex h-40 flex-col items-center justify-center gap-1.5 rounded-2xl border-[1.5px] border-dashed border-border bg-secondary text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary disabled:opacity-50"
               >
                 <ImagePlus className="size-6" />
-                <span className="text-xs">{t.common.add}</span>
               </button>
             </div>
           )}

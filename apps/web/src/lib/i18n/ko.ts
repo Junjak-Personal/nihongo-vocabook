@@ -21,6 +21,9 @@ const ko: Translations = {
     unsavedChangesTitle: '변경사항이 저장되지 않았습니다',
     unsavedChangesDescription: '지금 나가면 입력한 내용이 사라집니다.',
     leave: '나가기',
+    hideReading: '읽기',
+    hideMeaning: '뜻',
+    sort: '정렬',
   },
   nav: {
     words: '단어',
@@ -143,6 +146,7 @@ const ko: Translations = {
     subscribedWord: '구독 단어장',
     leech: '거머리 단어',
     leechDesc: '여러 번 틀린 단어입니다. 집중 학습이 필요합니다.',
+    noTags: '태그 없음',
   },
   quiz: {
     title: '퀴즈',

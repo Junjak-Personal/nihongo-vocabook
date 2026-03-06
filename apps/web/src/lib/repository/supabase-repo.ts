@@ -892,11 +892,9 @@ class SupabaseStudyRepository implements StudyRepository {
         .from('daily_stats')
         .select('*')
         .eq('stat_date', date)
-        .single();
-      if (error) {
-        if (error.code === 'PGRST116') return null;
-        throw error;
-      }
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) return null;
       return {
         id: data.id,
         date: data.stat_date,

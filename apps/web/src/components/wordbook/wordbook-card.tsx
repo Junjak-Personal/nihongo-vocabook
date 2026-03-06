@@ -12,14 +12,10 @@ interface WordbookCardProps {
 export function WordbookCard({ wordbook, subscribed }: WordbookCardProps) {
   const { t } = useTranslation();
 
-  const total = wordbook.wordCount;
-  const mastered = wordbook.masteredCount ?? 0;
-  const progressPct = total > 0 ? Math.round((mastered / total) * 100) : 0;
-
   return (
     <Link
       href={`/wordbooks/${wordbook.id}`}
-      className="flex flex-col gap-3 rounded-lg border border-[#E5E5E5] bg-card p-4 transition-colors hover:bg-accent"
+      className="flex flex-col gap-3 rounded-lg border border-secondary bg-card p-4 transition-colors hover:bg-accent"
       data-testid="wordbook-card"
     >
       {/* Top row: title + count badge */}
@@ -37,22 +33,20 @@ export function WordbookCard({ wordbook, subscribed }: WordbookCardProps) {
         </span>
       </div>
 
-      {/* Description */}
-      {wordbook.description && (
-        <div className="line-clamp-2 text-caption leading-[1.4] text-muted-foreground">
-          {wordbook.description}
-        </div>
-      )}
-
-      {/* Progress bar */}
-      <div className="flex items-center gap-2">
-        <div className="h-1 flex-1 overflow-hidden rounded-sm bg-secondary">
-          <div
-            className="h-full rounded-sm bg-primary"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-        <span className="text-badge font-semibold text-primary">{progressPct}%</span>
+      {/* Tags */}
+      <div className="flex min-w-0 gap-1.5 overflow-hidden">
+        {wordbook.tags && wordbook.tags.length > 0 ? (
+          wordbook.tags.map((tag) => (
+            <span
+              key={tag}
+              className="shrink-0 rounded bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
+            >
+              {tag}
+            </span>
+          ))
+        ) : (
+          <span className="text-xs text-text-tertiary">{t.wordDetail.noTags}</span>
+        )}
       </div>
     </Link>
   );

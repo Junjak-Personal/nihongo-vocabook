@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { BookOpen, Loader2, PhotoScan, Plus as PlusIcon } from '@/components/ui/icons';
+import { BookOpen, Loader2, PhotoScan } from '@/components/ui/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Header } from '@/components/layout/header';
 import { ListToolbar } from '@/components/layout/list-toolbar';
@@ -187,11 +187,6 @@ export default function WordsPage() {
                 )}
               </Button>
             </Link>
-            <Link href="/words/create">
-              <Button variant="ghost" size="icon-sm" data-testid="words-add-header-button" aria-label="Add word">
-                <PlusIcon className="size-5" />
-              </Button>
-            </Link>
           </div>
         }
       />
@@ -294,17 +289,14 @@ export default function WordsPage() {
               {t.words.startQuiz}
             </Button>
           )}
-          {loading ? (
-            <Button className="flex-1" disabled data-testid="words-add-button">
-              {t.words.addWord}
-            </Button>
-          ) : (
-            <Link href="/words/create" className="flex-1">
-              <Button className="w-full" data-testid="words-add-button">
-                {t.words.addWord}
-              </Button>
-            </Link>
-          )}
+          <Button
+            className="flex-1"
+            disabled={loading}
+            onClick={() => router.push('/words/create')}
+            data-testid="words-add-button"
+          >
+            {t.words.addWord}
+          </Button>
         </div>
       </div>
 

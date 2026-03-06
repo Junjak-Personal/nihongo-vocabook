@@ -10,7 +10,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { ChevronRight, ArrowRightLeft, ExternalLink, Trophy, SlidersHorizontal, BarChart3, Trash2, AlertTriangle } from '@/components/ui/icons';
+import { ChevronRight, ArrowRightLeft, ExternalLink, Trophy, SlidersHorizontal, BarChart3, Trash2, AlertTriangle, LogOut } from '@/components/ui/icons';
 import { useAuthStore } from '@/stores/auth-store';
 import { useRepository } from '@/lib/repository/provider';
 import { createClient } from '@/lib/supabase/client';
@@ -54,7 +54,9 @@ export default function SettingsPage() {
 
   useEffect(() => {
     const mode = getLocalOcrMode();
-    setOcrModeLabel(mode === 'llm' ? t.settings.llmVision : t.settings.ocrFree);
+    setOcrModeLabel(
+      mode === 'llm' ? t.settings.llmVision : mode === 'hybrid' ? t.settings.llmHybrid : t.settings.ocrFree,
+    );
   }, [t]);
 
   useEffect(() => {
@@ -181,40 +183,33 @@ export default function SettingsPage() {
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.account}</h2>
           {user ? (
-            <div className="space-y-3">
-              <Link
-                href="/settings/profile"
-                className={settingsNavLink}
-                data-testid="settings-profile-link"
-              >
-                <div>
-                  {profileLoading ? (
-                    <div className="space-y-1.5">
-                      <Skeleton className="h-4 w-24" />
-                      <Skeleton className="h-3 w-36" />
+            <Link
+              href="/settings/profile"
+              className="flex items-center gap-3 rounded-xl bg-secondary p-4 active:bg-accent/50"
+              data-testid="settings-profile-link"
+            >
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-base font-semibold text-primary-foreground">
+                {(profileNickname?.[0] ?? user.email?.[0] ?? 'U').toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                {profileLoading ? (
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-3 w-36" />
+                  </div>
+                ) : (
+                  <>
+                    {profileNickname && (
+                      <div className="truncate text-body font-semibold">{profileNickname}</div>
+                    )}
+                    <div className="truncate text-caption text-muted-foreground">
+                      {user.email}
                     </div>
-                  ) : (
-                    <>
-                      {profileNickname && (
-                        <div className="text-sm font-medium">{profileNickname}</div>
-                      )}
-                      <div className={profileNickname ? 'text-xs text-muted-foreground' : 'text-sm'}>
-                        {user.email}
-                      </div>
-                    </>
-                  )}
-                </div>
-                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
-              </Link>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleLogout}
-                data-testid="settings-logout-button"
-              >
-                {t.settings.signOut}
-              </Button>
-            </div>
+                  </>
+                )}
+              </div>
+              <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
+            </Link>
           ) : (
             <div className="space-y-2">
               <div className="text-sm text-muted-foreground">
@@ -239,17 +234,17 @@ export default function SettingsPage() {
         {/* Language */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.language}</h2>
-          <div className="flex gap-2 rounded-lg bg-secondary p-1">
+          <div className="flex gap-2">
             {languageOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setLocale(opt.value)}
                 data-testid={`settings-lang-${opt.value}`}
                 className={cn(
-                  'flex h-9 flex-1 items-center justify-center rounded-lg text-caption transition-colors',
+                  'flex !h-9 items-center justify-center rounded-md px-4 text-caption font-medium transition-colors border',
                   locale === opt.value
-                    ? 'bg-background font-semibold shadow-sm'
-                    : 'font-medium text-muted-foreground',
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'border-border text-muted-foreground',
                 )}
               >
                 {opt.label}
@@ -261,7 +256,7 @@ export default function SettingsPage() {
         {/* Theme */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.theme}</h2>
-          <div className="flex gap-2 rounded-lg bg-secondary p-1">
+          <div className="flex gap-2">
             {([
               { value: 'system', label: t.settings.themeSystem },
               { value: 'light', label: t.settings.themeLight },
@@ -272,10 +267,10 @@ export default function SettingsPage() {
                 onClick={() => setTheme(opt.value)}
                 data-testid={`settings-theme-${opt.value}`}
                 className={cn(
-                  'flex h-9 flex-1 items-center justify-center rounded-lg text-caption transition-colors',
+                  'flex !h-9 items-center justify-center rounded-md px-4 text-caption font-medium transition-colors border',
                   theme === opt.value
-                    ? 'bg-background font-semibold shadow-sm'
-                    : 'font-medium text-muted-foreground',
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'border-border text-muted-foreground',
                 )}
               >
                 {opt.label}
@@ -284,68 +279,72 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* Quiz & Achievements */}
+        {/* Quiz */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.nav.quiz}</h2>
           {user ? (
-            <>
-              <div>
-                <Link
-                  href="/settings/quiz"
-                  className={settingsRow}
-                  data-testid="settings-quiz-link"
-                >
-                  <div className="flex items-center gap-3">
-                    <SlidersHorizontal className="size-icon text-muted-foreground" />
-                    <span className="text-body font-medium">{t.settings.quizSettings}</span>
-                  </div>
-                  <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
-                </Link>
-                <Link
-                  href="/settings/achievements"
-                  className={settingsRow}
-                  data-testid="settings-achievements-link"
-                >
-                  <div className="flex items-center gap-3">
-                    <Trophy className="size-icon text-muted-foreground" />
-                    <span className="text-body font-medium">{t.settings.achievements}</span>
-                  </div>
-                  <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
-                </Link>
-                <Link
-                  href="/settings/quiz-stats"
-                  className={settingsRow}
-                  data-testid="settings-quiz-stats-link"
-                >
-                  <div className="flex items-center gap-3">
-                    <BarChart3 className="size-icon text-muted-foreground" />
-                    <span className="text-body font-medium">{t.settings.quizStats}</span>
-                  </div>
-                  <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
-                </Link>
-              </div>
-              <div className="mt-1 space-y-1.5">
-                <div className="text-xs text-muted-foreground">
-                  {t.settings.resetStudyDataDesc}
+            <div>
+              <Link
+                href="/settings/quiz"
+                className={settingsRow}
+                data-testid="settings-quiz-link"
+              >
+                <div className="flex items-center gap-3">
+                  <SlidersHorizontal className="size-[18px] text-muted-foreground" />
+                  <span className="text-body font-medium">{t.settings.quizSettings}</span>
                 </div>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => setShowResetConfirm(true)}
-                  disabled={resetting}
-                  data-testid="settings-reset-study-button"
-                >
-                  <Trash2 className="size-3.5" />
-                  {t.settings.resetStudyData}
-                </Button>
-              </div>
-            </>
+                <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
+              </Link>
+              <Link
+                href="/settings/achievements"
+                className={settingsRow}
+                data-testid="settings-achievements-link"
+              >
+                <div className="flex items-center gap-3">
+                  <Trophy className="size-[18px] text-muted-foreground" />
+                  <span className="text-body font-medium">{t.settings.achievements}</span>
+                </div>
+                <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
+              </Link>
+              <Link
+                href="/settings/quiz-stats"
+                className={settingsRow}
+                data-testid="settings-quiz-stats-link"
+              >
+                <div className="flex items-center gap-3">
+                  <BarChart3 className="size-[18px] text-muted-foreground" />
+                  <span className="text-body font-medium">{t.settings.quizStats}</span>
+                </div>
+                <ChevronRight className="size-4 shrink-0 text-text-tertiary" />
+              </Link>
+            </div>
           ) : (
             <div className="text-sm text-muted-foreground">
               {t.settings.loginRequiredQuiz}
             </div>
           )}
         </section>
+
+        {/* Reset Study Data */}
+        {user && (
+          <section className={settingsSection}>
+            <p className="text-caption leading-relaxed text-muted-foreground">
+              {t.settings.resetStudyDataDesc}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-10 border-0 bg-destructive/10 text-destructive hover:bg-destructive/20"
+              onClick={() => setShowResetConfirm(true)}
+              disabled={resetting}
+              data-testid="settings-reset-study-button"
+            >
+              {t.settings.resetStudyData}
+            </Button>
+          </section>
+        )}
+
+        <div className="h-px bg-border" />
 
         {/* OCR / AI */}
         <section className={settingsSection}>
@@ -356,7 +355,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="text-sm">{ocrModeLabel}</div>
               <Link href="/settings/ocr">
-                <Button variant="outline" size="sm" data-testid="settings-ocr-link">
+                <Button variant="outline" size="sm" className="h-10" data-testid="settings-ocr-link">
                   {t.settings.goToSettings}
                 </Button>
               </Link>
@@ -368,19 +367,22 @@ export default function SettingsPage() {
           )}
         </section>
 
+        <div className="h-px bg-border" />
+
         {/* Data Migration */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.migration}</h2>
           {user && (
-            <div className="text-sm text-muted-foreground">
+            <p className="text-caption leading-relaxed text-muted-foreground">
               {t.settings.migrationDesc}
-            </div>
+            </p>
           )}
           <div className="flex flex-wrap gap-2">
             {user && (
               <Button
                 variant="outline"
                 size="sm"
+                className="h-10"
                 onClick={handleMigrateRequest}
                 disabled={migrating || importing}
                 data-testid="settings-migrate-button"
@@ -391,6 +393,7 @@ export default function SettingsPage() {
             <Button
               variant="outline"
               size="sm"
+              className="h-10"
               onClick={() => fileInputRef.current?.click()}
               disabled={importing || migrating}
               data-testid="settings-import-button"
@@ -407,21 +410,37 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* About */}
+        <div className="h-px bg-border" />
+
+        {/* Logout */}
+        {user && (
+          <button
+            onClick={handleLogout}
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-destructive/10 text-body font-semibold text-destructive transition-colors active:bg-destructive/20"
+            data-testid="settings-logout-button"
+          >
+            <LogOut className="size-[18px]" />
+            {t.settings.signOut}
+          </button>
+        )}
+
+        <div className="h-px bg-border" />
+
+        {/* Info */}
         <section className={settingsSection}>
           <h2 className={settingsHeading}>{t.settings.about}</h2>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">{t.settings.developer}</span>
               <a
                 href="https://github.com/JunjaK"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-primary hover:underline"
+                className="inline-flex items-center gap-1 font-medium text-primary"
               >
                 JunjaK
-                <ExternalLink className="size-3" />
+                <ExternalLink className="size-3.5" />
               </a>
             </div>
 
@@ -431,10 +450,10 @@ export default function SettingsPage() {
                 href="https://github.com/JunjaK/nihongo-vocabook"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-primary hover:underline"
+                className="inline-flex items-center gap-1 font-medium text-primary"
               >
                 GitHub
-                <ExternalLink className="size-3" />
+                <ExternalLink className="size-3.5" />
               </a>
             </div>
           </div>
@@ -443,14 +462,16 @@ export default function SettingsPage() {
             href="/settings/licenses"
             className={settingsNavLink}
           >
-            <span className="text-sm">{t.settings.openSource}</span>
+            <span className="text-sm text-text-tertiary">{t.settings.openSource}</span>
             <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
           </Link>
-
-          <div className="pt-1 text-center text-xs text-muted-foreground/60">
-            v0.1.0
-          </div>
         </section>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between px-0 py-2 text-[11px] text-text-tertiary">
+          <span>v1.0.0</span>
+          <span>© 2026 NiVoca. All rights reserved.</span>
+        </div>
       </div>
 
       <ConfirmDialog

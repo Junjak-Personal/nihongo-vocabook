@@ -137,7 +137,7 @@ export function ImportWordbookDialog({ wordbook, open, onClose, onDone }: Import
           <>
             <h2 className="text-xl font-bold">{t.wordbooks.importTitle}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{wordbook.name}</p>
-            <p className="mt-2 text-caption leading-relaxed text-tertiary">{t.wordbooks.importDescription}</p>
+            <p className="mt-2 text-caption leading-relaxed text-text-tertiary">{t.wordbooks.importDescription}</p>
 
             <div className="mt-3 space-y-2">
               {!wordbook.isSubscribed && (

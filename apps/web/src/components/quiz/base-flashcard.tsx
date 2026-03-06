@@ -80,45 +80,47 @@ export function BaseFlashcard({
 
       {/* Tap zone */}
       <div
-        className="animate-card-enter flex min-h-0 flex-1 cursor-pointer flex-col items-center justify-center gap-3 px-4 text-center"
+        className="animate-card-enter relative min-h-0 flex-1 cursor-pointer overflow-y-auto px-4 text-center"
         onClick={() => setRevealed((v) => !v)}
         data-testid={testId}
       >
-        {/* Front text */}
-        <div className={isTermFirst ? 'text-display font-medium leading-tight' : 'text-2xl font-medium md:text-3xl'}>
-          {frontText}
-        </div>
-
-        {/* Reading — shown when revealed */}
-        {revealed && backReading ? (
-          <div className="animate-fade-in text-reading text-text-secondary">
-            {backReading}
+        {/* Front text — fixed at 35% from top */}
+        <div className="absolute inset-x-0 top-[35%] flex flex-col items-center gap-3">
+          <div className={isTermFirst ? 'text-display font-medium leading-tight' : 'text-2xl font-medium md:text-3xl'}>
+            {frontText}
           </div>
-        ) : null}
 
-        {/* Back content */}
-        {revealed ? (
-          <>
-            <div className={isTermFirst
-              ? 'animate-reveal-up text-subtitle font-semibold text-primary'
-              : 'animate-reveal-up text-3xl font-bold text-primary md:text-4xl'
-            }>
-              {backPrimary}
+          {/* Reading — shown when revealed */}
+          {revealed && backReading ? (
+            <div className="animate-fade-in text-reading text-text-secondary">
+              {backReading}
             </div>
-            {word.notes && (
-              <div
-                className="animate-reveal-up text-sm text-muted-foreground"
-                style={{ animationDelay: '100ms' }}
-              >
-                {word.notes}
+          ) : null}
+
+          {/* Back content */}
+          {revealed ? (
+            <>
+              <div className={isTermFirst
+                ? 'animate-reveal-up text-subtitle font-semibold text-primary'
+                : 'animate-reveal-up text-3xl font-bold text-primary md:text-4xl'
+              }>
+                {backPrimary}
               </div>
-            )}
-          </>
-        ) : (
-          <div className="text-sm text-text-tertiary">
-            {t.quiz.tapToReveal}
-          </div>
-        )}
+              {word.notes && (
+                <div
+                  className="animate-reveal-up text-sm text-muted-foreground"
+                  style={{ animationDelay: '100ms' }}
+                >
+                  {word.notes}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-sm text-text-tertiary">
+              {t.quiz.tapToReveal}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Actions */}

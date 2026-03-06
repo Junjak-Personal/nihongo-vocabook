@@ -94,7 +94,7 @@ export function BottomNav() {
                 )}
               >
                 <div className="relative">
-                  <Icon className={cn('size-icon', isActive ? 'text-primary-foreground' : 'text-tertiary')} />
+                  <Icon className={cn('size-icon', isActive ? 'text-primary-foreground' : 'text-text-tertiary')} />
                   {showBadge && (
                     <span className="absolute -top-1 -right-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-micro font-medium text-white">
                       {dueCount > 99 ? '99' : dueCount}
@@ -103,8 +103,8 @@ export function BottomNav() {
                 </div>
                 <span
                   className={cn(
-                    'text-nav font-semibold uppercase tracking-[0.5px]',
-                    isActive ? 'text-primary-foreground' : 'text-tertiary',
+                    'text-micro font-semibold tracking-[0.5px]',
+                    isActive ? 'text-primary-foreground' : 'text-text-tertiary',
                   )}
                 >
                   {label}

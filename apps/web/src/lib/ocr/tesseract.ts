@@ -127,6 +127,9 @@ function invertImageData(imageData: ImageData): ImageData {
   return imageData;
 }
 
+/** Aspect ratio threshold: images taller than wide by this ratio are likely vertical text. */
+const VERTICAL_ASPECT_RATIO = 1.3;
+
 async function buildOcrVariants(imageDataUrl: string): Promise<OcrVariant[]> {
   const original: OcrVariant = {
     id: 'original',
@@ -144,7 +147,7 @@ async function buildOcrVariants(imageDataUrl: string): Promise<OcrVariant[]> {
 
     const variants: OcrVariant[] = [original];
 
-    // Variant: grayscale + contrast
+    // Variant: grayscale + contrast (always included — best general improvement)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.filter = 'grayscale(100%) contrast(140%)';
     ctx.drawImage(source, 0, 0);
@@ -154,54 +157,7 @@ async function buildOcrVariants(imageDataUrl: string): Promise<OcrVariant[]> {
       weight: OCR_VARIANT_WEIGHTS.grayscaleContrast,
     });
 
-    // Variant: binary threshold
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.filter = 'none';
-    ctx.drawImage(source, 0, 0);
-    const rawImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const thresholdData = buildThresholdImageData(rawImageData);
-    ctx.putImageData(thresholdData, 0, 0);
-    variants.push({
-      id: 'threshold',
-      dataUrl: canvas.toDataURL('image/jpeg', 0.9),
-      weight: OCR_VARIANT_WEIGHTS.threshold,
-    });
-
-    // Variant: rotated 90 degrees counter-clockwise (for vertical Japanese text).
-    // Japanese vertical text reads top-to-bottom, right-to-left, so CCW rotation
-    // converts it to the left-to-right horizontal layout that Tesseract expects.
-    const rotCanvas = document.createElement('canvas');
-    rotCanvas.width = source.naturalHeight;
-    rotCanvas.height = source.naturalWidth;
-    const rotCtx = rotCanvas.getContext('2d');
-    if (rotCtx) {
-      rotCtx.translate(0, rotCanvas.height);
-      rotCtx.rotate(-Math.PI / 2);
-      rotCtx.drawImage(source, 0, 0);
-      variants.push({
-        id: 'rotatedCCW',
-        dataUrl: rotCanvas.toDataURL('image/jpeg', 0.9),
-        weight: OCR_VARIANT_WEIGHTS.rotatedCCW,
-      });
-    }
-
-    // Variant: rotated 90 degrees clockwise (some vertical text images need this direction)
-    const rotCWCanvas = document.createElement('canvas');
-    rotCWCanvas.width = source.naturalHeight;
-    rotCWCanvas.height = source.naturalWidth;
-    const rotCWCtx = rotCWCanvas.getContext('2d');
-    if (rotCWCtx) {
-      rotCWCtx.translate(rotCWCanvas.width, 0);
-      rotCWCtx.rotate(Math.PI / 2);
-      rotCWCtx.drawImage(source, 0, 0);
-      variants.push({
-        id: 'rotatedCW',
-        dataUrl: rotCWCanvas.toDataURL('image/jpeg', 0.9),
-        weight: OCR_VARIANT_WEIGHTS.rotatedCW,
-      });
-    }
-
-    // Variant: inverted (for dark background images)
+    // Variant: inverted (only for dark background images)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.filter = 'none';
     ctx.drawImage(source, 0, 0);
@@ -214,6 +170,25 @@ async function buildOcrVariants(imageDataUrl: string): Promise<OcrVariant[]> {
         dataUrl: canvas.toDataURL('image/jpeg', 0.9),
         weight: OCR_VARIANT_WEIGHTS.inverted,
       });
+    }
+
+    // Variant: rotated CCW (only for likely vertical text — taller than wide)
+    const isVertical = source.naturalHeight / source.naturalWidth > VERTICAL_ASPECT_RATIO;
+    if (isVertical) {
+      const rotCanvas = document.createElement('canvas');
+      rotCanvas.width = source.naturalHeight;
+      rotCanvas.height = source.naturalWidth;
+      const rotCtx = rotCanvas.getContext('2d');
+      if (rotCtx) {
+        rotCtx.translate(0, rotCanvas.height);
+        rotCtx.rotate(-Math.PI / 2);
+        rotCtx.drawImage(source, 0, 0);
+        variants.push({
+          id: 'rotatedCCW',
+          dataUrl: rotCanvas.toDataURL('image/jpeg', 0.9),
+          weight: OCR_VARIANT_WEIGHTS.rotatedCCW,
+        });
+      }
     }
 
     return variants;
@@ -394,14 +369,19 @@ export async function extractWithTesseract(
 
     const scoredWords: ScoredWord[] = [];
 
+    const totalStart = performance.now();
     for (let i = 0; i < variants.length; i++) {
       if (signal?.aborted) throw signal.reason ?? new DOMException('Aborted', 'AbortError');
 
       const variant = variants[i];
       activePass = i;
+      const variantStart = performance.now();
       const { data } = await worker.recognize(variant.dataUrl, {}, { blocks: true });
+      const variantMs = Math.round(performance.now() - variantStart);
+      logger.info('variant_timing', { id: variant.id, ms: variantMs });
       scoredWords.push(...collectScoredWords(data as RecognizeData, variant.weight));
     }
+    logger.info('total_ocr_timing', { variants: variants.length, ms: Math.round(performance.now() - totalStart) });
 
     if (onProgress) onProgress(1);
 

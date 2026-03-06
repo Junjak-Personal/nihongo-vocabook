@@ -120,7 +120,7 @@ export const btnIcon = 'size-10 rounded-md';
 
 // ─── Inputs (design: h48 r8 border) ────────────────────
 /** Standard input height + radius. */
-export const inputBase = 'h-12 rounded-md';
+export const inputBase = 'h-11 rounded-md';
 
 /** Search bar — h44, r8, bg-secondary. */
 export const inputSearch = 'h-11 rounded-md bg-secondary';

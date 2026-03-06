@@ -21,6 +21,9 @@ const en: Translations = {
     unsavedChangesTitle: 'You have unsaved changes',
     unsavedChangesDescription: 'If you leave now, your input will be lost.',
     leave: 'Leave',
+    hideReading: 'Reading',
+    hideMeaning: 'Meaning',
+    sort: 'Sort',
   },
   nav: {
     words: 'Words',
@@ -143,6 +146,7 @@ const en: Translations = {
     subscribedWord: 'Subscribed',
     leech: 'Leech',
     leechDesc: 'This word has been forgotten many times and needs extra attention.',
+    noTags: 'No tags',
   },
   quiz: {
     title: 'Quiz',

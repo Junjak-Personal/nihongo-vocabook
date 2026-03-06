@@ -264,7 +264,7 @@ export function WordForm({
         <div className="space-y-2">
           <Label>{t.wordForm.tags}</Label>
           <div
-            className="border-input focus-within:border-ring focus-within:ring-ring/50 flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border px-3 py-1.5 focus-within:ring-[3px]"
+            className="border-input focus-within:border-ring focus-within:ring-ring/50 flex min-h-11 flex-wrap items-center gap-1.5 rounded-md border px-3 py-1.5 focus-within:ring-[3px]"
             onClick={() => tagInputRef.current?.focus()}
           >
             {tags.map((tag, i) => (

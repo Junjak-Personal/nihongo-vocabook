@@ -9,11 +9,13 @@ interface WordCardProps {
   word: Word;
   showReading: boolean;
   showMeaning: boolean;
+  /** Override the detail link path (default: /words/{id}) */
+  detailHref?: string;
   /** When provided, renders a clickable div instead of a Link */
   onClick?: () => void;
 }
 
-export function WordCard({ word, showReading, showMeaning, onClick }: WordCardProps) {
+export function WordCard({ word, showReading, showMeaning, detailHref, onClick }: WordCardProps) {
   const [revealed, setRevealed] = useState(false);
 
   const readingVisible = showReading || revealed;
@@ -22,31 +24,25 @@ export function WordCard({ word, showReading, showMeaning, onClick }: WordCardPr
   const Wrapper = onClick ? 'button' : Link;
   const wrapperProps = onClick
     ? { onClick, type: 'button' as const, className: 'min-w-0 flex-1 text-left', 'data-testid': 'word-card' }
-    : { href: `/words/${word.id}`, className: 'min-w-0 flex-1', 'data-testid': 'word-card' };
+    : { href: detailHref ?? `/words/${word.id}`, className: 'min-w-0 flex-1', 'data-testid': 'word-card' };
+
+  const priorityDotColor =
+    word.priority === 1
+      ? 'bg-destructive'
+      : word.priority === 2
+        ? 'bg-primary'
+        : 'bg-text-tertiary';
 
   return (
-    <div className="flex flex-col gap-[6px] rounded-xl border border-secondary bg-card p-4 transition-colors hover:bg-accent">
+    <div className="flex flex-col rounded-lg border border-secondary bg-card p-4 transition-colors hover:bg-accent">
       <div className="flex items-center justify-between gap-2">
         <Wrapper {...(wrapperProps as any)}>
           <div className="flex items-center gap-[10px]">
+            <span className={cn('size-[7px] shrink-0 rounded-full', priorityDotColor)} />
             <span className="text-section font-medium leading-tight">{word.term}</span>
           </div>
         </Wrapper>
         <div className="flex shrink-0 items-center gap-2">
-          {word.jlptLevel !== null && word.jlptLevel > 0 && (
-            <span className="rounded bg-secondary px-1.5 py-0.5 text-badge font-medium text-muted-foreground">
-              N{word.jlptLevel}
-            </span>
-          )}
-          {word.priority === 1 && (
-            <span className="size-2 shrink-0 rounded-full bg-[#F59E0B]" />
-          )}
-          {word.priority === 2 && (
-            <span className="size-2 shrink-0 rounded-full bg-[#F59E0B]/50" />
-          )}
-          {word.isLeech && (
-            <span className="size-2 shrink-0 rounded-full bg-orange-500" title="Leech" />
-          )}
           {(!showReading || !showMeaning) && (
             <button
               onClick={(e) => {
@@ -55,7 +51,7 @@ export function WordCard({ word, showReading, showMeaning, onClick }: WordCardPr
               }}
               className={cn(
                 'shrink-0',
-                revealed ? 'text-primary' : 'text-tertiary',
+                revealed ? 'text-primary' : 'text-text-tertiary',
               )}
               data-testid="word-card-reveal"
               aria-label={revealed ? 'Hide details' : 'Reveal details'}
@@ -73,11 +69,11 @@ export function WordCard({ word, showReading, showMeaning, onClick }: WordCardPr
         className={cn(
           'overflow-hidden transition-[max-height,opacity,transform] duration-300 ease-out',
           readingVisible || meaningVisible
-            ? 'max-h-16 translate-y-0 opacity-100'
+            ? 'mt-[6px] max-h-16 translate-y-0 opacity-100'
             : 'max-h-0 -translate-y-0.5 opacity-0',
         )}
       >
-        <div className="flex flex-col gap-0.5 pl-0">
+        <div className="flex flex-col gap-0.5 pl-[17px]">
           {readingVisible && (
             <div className="text-caption text-muted-foreground">{word.reading}</div>
           )}

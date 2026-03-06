@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { bottomBar, bottomSep } from '@/lib/styles';
 import { useRepository } from '@/lib/repository/provider';
 import { useTranslation } from '@/lib/i18n';
 import { invalidateListCache } from '@/lib/list-cache';
@@ -203,58 +204,62 @@ export default function ScanPage() {
           </Link>
         </div>
       ) : isInProgress ? (
-        <div className="flex min-h-0 flex-1 flex-col">
-          {/* Image thumbnails */}
-          {capturedImages.length > 0 && (
-            <div className="flex gap-2 overflow-x-auto px-4 pt-4">
-              {capturedImages.map((src, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src={src}
-                  alt={`Captured ${i + 1}`}
-                  className="h-20 w-20 shrink-0 rounded-lg border object-cover"
-                />
-              ))}
-            </div>
-          )}
-          {/* Centered status */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
-            <LoadingSpinner className="size-8" />
-            <div className="text-sm text-muted-foreground">
-              {isEnriching ? t.scan.enrichingWords : t.scan.extracting}
-            </div>
-            {isEnriching && enrichProgress.total > 1 && (
-              <div className="w-full max-w-xs space-y-2">
-                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
-                    style={{
-                      width: `${(enrichProgress.current / enrichProgress.total) * 100}%`,
-                    }}
-                  />
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="tabular-nums text-muted-foreground">
-                    {enrichProgress.current} / {enrichProgress.total}
-                  </span>
-                  <span className="tabular-nums font-medium text-foreground">
-                    {Math.round((enrichProgress.current / enrichProgress.total) * 100)}%
-                  </span>
-                </div>
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          {/* Reuse image grid layout */}
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-3">
+            {capturedImages.length > 0 && (
+              <div className="grid grid-cols-2 gap-2">
+                {capturedImages.map((src, i) => (
+                  <div key={i} className="relative overflow-hidden rounded-lg border">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt={`Captured ${i + 1}`}
+                      className="h-40 w-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
             )}
           </div>
-          {/* Bottom actions */}
-          <div className="sticky bottom-0 bg-background px-5 pb-6 pt-3">
-            <div className="mb-3 h-px bg-border" />
-            <div className="flex gap-2">
-              <Button className="flex-1" variant="outline" onClick={handleCancelExtract}>
-                {t.common.cancel}
-              </Button>
-              <Button className="flex-1" onClick={handleBackgroundExtract}>
-                {t.scan.continueInBackground}
-              </Button>
+          {/* Overlay spinner */}
+          <div className="absolute inset-0 z-10 flex flex-col bg-background/60 backdrop-blur-[1px]">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
+              <LoadingSpinner className="size-8" />
+              <div className="text-sm text-muted-foreground">
+                {isEnriching ? t.scan.enrichingWords : t.scan.extracting}
+              </div>
+              {isEnriching && enrichProgress.total > 1 && (
+                <div className="w-full max-w-xs space-y-2">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+                      style={{
+                        width: `${(enrichProgress.current / enrichProgress.total) * 100}%`,
+                      }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="tabular-nums text-muted-foreground">
+                      {enrichProgress.current} / {enrichProgress.total}
+                    </span>
+                    <span className="tabular-nums font-medium text-foreground">
+                      {Math.round((enrichProgress.current / enrichProgress.total) * 100)}%
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={bottomBar}>
+              <div className={bottomSep} />
+              <div className="flex gap-3">
+                <Button className="flex-1" variant="outline" onClick={handleCancelExtract}>
+                  {t.common.cancel}
+                </Button>
+                <Button className="flex-1" onClick={handleBackgroundExtract}>
+                  {t.scan.continueInBackground}
+                </Button>
+              </div>
             </div>
           </div>
         </div>

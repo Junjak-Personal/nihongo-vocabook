@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Check, SearchX } from '@/components/ui/icons';
 import { Button } from '@/components/ui/button';
-import { ButtonGroup } from '@/components/ui/button-group';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { cn } from '@/lib/utils';
 import { useTranslation } from '@/lib/i18n';
 import { bottomBar, bottomSep, emptyState, emptyIcon } from '@/lib/styles';
 import type { ExtractedWord } from '@/lib/ocr/llm-vision';
@@ -179,49 +179,52 @@ export function WordPreview({
           </div>
 
           {/* Selection actions */}
-          <ButtonGroup className="ml-auto">
-            <Button
+          <div className="flex gap-1">
+            <button
               type="button"
-              size="sm"
-              variant="outline"
-              className={`h-7 px-2 text-xs ${
-                selectionMode === 'all' ? 'bg-primary/10 text-primary' : 'text-muted-foreground'
-              }`}
+              className={cn(
+                'h-[30px] rounded-md border px-2.5 text-[11px] font-medium transition-colors',
+                selectionMode === 'all'
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border text-muted-foreground',
+              )}
               onClick={selectAll}
               data-testid="scan-select-all"
             >
               {t.scan.selectAll}
-            </Button>
+            </button>
             {userJlptLevel && (
-              <Button
+              <button
                 type="button"
-                size="sm"
-                variant="outline"
-                className={`h-7 px-2 text-xs ${
-                  selectionMode === 'level' ? 'bg-primary/10 text-primary' : 'text-muted-foreground'
-                }`}
+                className={cn(
+                  'h-[30px] rounded-md border px-2.5 text-[11px] font-medium transition-colors',
+                  selectionMode === 'level'
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border text-muted-foreground',
+                )}
                 onClick={filterByLevel}
                 data-testid="scan-filter-by-level"
               >
                 {t.scan.filterByLevel}
-              </Button>
+              </button>
             )}
-            <Button
+            <button
               type="button"
-              size="sm"
-              variant="outline"
-              className={`h-7 px-2 text-xs ${
-                selectionMode === 'none' ? 'bg-primary/10 text-primary' : 'text-muted-foreground'
-              }`}
+              className={cn(
+                'h-[30px] rounded-md border px-2.5 text-[11px] font-medium transition-colors',
+                selectionMode === 'none'
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border text-muted-foreground',
+              )}
               onClick={deselectAll}
               data-testid="scan-deselect-all"
             >
               {t.scan.deselectAll}
-            </Button>
-          </ButtonGroup>
+            </button>
+          </div>
         </div>
         {existingCount > 0 && (
-          <div className="px-5 pb-2 text-xs text-tertiary">
+          <div className="px-5 pb-2 text-xs text-text-tertiary">
             {t.scan.alreadyRegistered(existingCount)}
           </div>
         )}
@@ -263,20 +266,20 @@ export function WordPreview({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 font-bold">
-                    {word.term}
+                    <span className="shrink-0">{word.term}</span>
                     {word.reading ? (
-                      <span className="text-sm font-normal text-muted-foreground">
+                      <span className="shrink-0 text-sm font-normal text-muted-foreground">
                         {word.reading}
                       </span>
                     ) : null}
-                    {word.jlptLevel && (
-                      <span className="rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
-                        N{word.jlptLevel}
+                    {isExisting && (
+                      <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+                        {t.scan.alreadyAdded}
                       </span>
                     )}
-                    {isExisting && (
-                      <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
-                        {t.scan.alreadyAdded}
+                    {word.jlptLevel && (
+                      <span className="ml-auto shrink-0 rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
+                        N{word.jlptLevel}
                       </span>
                     )}
                   </div>
@@ -297,7 +300,7 @@ export function WordPreview({
         <div className="flex gap-2">
           {onEditAndAdd && (
             <Button
-              className="flex-1"
+              className="min-w-0 flex-1 basis-0"
               variant="outline"
               disabled={selectedCount === 0 || confirming}
               onClick={handleEditAndAdd}
@@ -307,7 +310,7 @@ export function WordPreview({
             </Button>
           )}
           <Button
-            className="flex-1"
+            className="min-w-0 flex-1 basis-0"
             disabled={selectedCount === 0 || confirming}
             onClick={handleConfirm}
             data-testid="scan-confirm-selected"

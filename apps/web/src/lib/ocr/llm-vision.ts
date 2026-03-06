@@ -7,7 +7,7 @@ export interface ExtractedWord {
   jlptLevel: number | null;
 }
 
-const LLM_FETCH_TIMEOUT_MS = 60_000;
+const LLM_FETCH_TIMEOUT_MS = 180_000;
 
 function createAbortError(): Error {
   return new DOMException('Aborted', 'AbortError');

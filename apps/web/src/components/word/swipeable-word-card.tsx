@@ -23,6 +23,8 @@ interface SwipeableWordCardProps {
   showReading: boolean;
   showMeaning: boolean;
   swipeColor: 'green' | 'orange';
+  /** Override the detail link path */
+  detailHref?: string;
   /** First action is used as the swipe action. */
   contextMenuActions: WordCardAction[];
 }
@@ -35,6 +37,7 @@ export function SwipeableWordCard({
   showReading,
   showMeaning,
   swipeColor,
+  detailHref,
   contextMenuActions,
 }: SwipeableWordCardProps) {
   const [offsetX, setOffsetX] = useState(0);
@@ -99,12 +102,12 @@ export function SwipeableWordCard({
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
-        <div className="relative overflow-hidden rounded-xl">
+        <div className="relative overflow-hidden rounded-lg">
           {/* Action panel behind the card — only visible during swipe */}
           {offsetX < 0 && (
             <div
               className={cn(
-                'absolute inset-0 flex items-center justify-end rounded-xl px-4 text-white',
+                'absolute inset-0 flex items-center justify-end rounded-lg px-4 text-white',
                 swipeBg,
               )}
             >
@@ -117,7 +120,7 @@ export function SwipeableWordCard({
 
           {/* Sliding card */}
           <div
-            className="relative rounded-xl bg-background"
+            className="relative rounded-lg bg-background"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -130,6 +133,7 @@ export function SwipeableWordCard({
               word={word}
               showReading={showReading}
               showMeaning={showMeaning}
+              detailHref={detailHref}
             />
           </div>
         </div>
