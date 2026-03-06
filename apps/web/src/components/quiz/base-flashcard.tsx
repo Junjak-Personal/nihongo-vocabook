@@ -101,8 +101,8 @@ export function BaseFlashcard({
           {revealed ? (
             <>
               <div className={isTermFirst
-                ? 'animate-reveal-up text-subtitle font-semibold text-primary'
-                : 'animate-reveal-up text-3xl font-bold text-primary md:text-4xl'
+                ? 'animate-reveal-up text-subtitle font-semibold text-primary dark:text-accent-muted'
+                : 'animate-reveal-up text-3xl font-bold text-primary dark:text-accent-muted md:text-4xl'
               }>
                 {backPrimary}
               </div>

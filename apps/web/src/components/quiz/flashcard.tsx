@@ -32,7 +32,7 @@ export function Flashcard({ word, onRate, onMaster, progress, isLoading = false,
             <Button variant="outline" disabled className="h-12 flex-1 rounded-lg border-destructive/40 text-sm font-medium text-destructive">{t.quiz.again}</Button>
             <Button disabled className="h-12 flex-1 rounded-lg bg-secondary text-sm font-medium text-muted-foreground">{t.quiz.hard}</Button>
             <Button disabled className="h-12 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground">{t.quiz.good}</Button>
-            <Button disabled className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary">{t.quiz.easy}</Button>
+            <Button disabled className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary dark:text-accent-muted">{t.quiz.easy}</Button>
           </div>
           <Button variant="outline" disabled className="h-12 w-full rounded-lg text-sm">
             <Crown className="size-4" />
@@ -67,7 +67,7 @@ export function Flashcard({ word, onRate, onMaster, progress, isLoading = false,
               {t.quiz.good}
             </Button>
             <Button
-              className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary hover:bg-accent/80"
+              className="h-12 flex-1 rounded-lg bg-accent text-sm font-semibold text-primary hover:bg-accent/80 dark:text-accent-muted"
               onClick={() => { onRate(5); onAdvance(); }}
               data-testid="flashcard-rate-5"
             >

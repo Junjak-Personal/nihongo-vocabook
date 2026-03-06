@@ -73,7 +73,7 @@ export function SessionReport({
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex flex-1 flex-col items-center justify-center px-6">
         <div className="animate-scale-in mb-6 flex flex-col items-center gap-2 text-center">
-          <FeedbackIcon className="size-8 text-primary" />
+          <FeedbackIcon className="size-8 text-primary dark:text-accent-muted" />
           <div className="text-3xl font-bold">{feedbackMessage}</div>
         </div>
 
@@ -83,7 +83,7 @@ export function SessionReport({
             style={{ '--stagger': stagger++ } as React.CSSProperties}
           >
             <div className="flex items-center gap-3">
-              <BookOpenCheck className="size-5 text-primary" />
+              <BookOpenCheck className="size-5 text-primary dark:text-accent-muted" />
               <span className="text-sm">{t.quiz.cardsReviewed}</span>
             </div>
             <span className="text-lg font-semibold">{totalReviewed}</span>

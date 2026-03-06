@@ -351,7 +351,7 @@ function QuizContent() {
       <>
         <Header title={t.quiz.title} showBack />
         <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-          <LogIn className="animate-scale-in size-10 text-primary" />
+          <LogIn className="animate-scale-in size-10 text-primary dark:text-accent-muted" />
           <div className="animate-slide-up mt-4 text-lg font-semibold" style={{ animationDelay: '100ms' }}>
             {t.quiz.loginRequired}
           </div>
@@ -414,7 +414,7 @@ function QuizContent() {
                   </span>
                 )}
                 {progressCount && (
-                  <span className="inline-flex h-7 items-center rounded-full bg-secondary px-3 text-xs font-semibold tabular-nums text-primary">
+                  <span className="inline-flex h-7 items-center rounded-full bg-secondary px-3 text-xs font-semibold tabular-nums text-primary dark:text-accent-muted">
                     {progressCount}
                   </span>
                 )}
@@ -425,7 +425,7 @@ function QuizContent() {
       />
       {!loading && dueWords.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <BookOpenCheck className="animate-scale-in size-10 text-primary" />
+          <BookOpenCheck className="animate-scale-in size-10 text-primary dark:text-accent-muted" />
           <div className="animate-slide-up mt-4 text-lg font-semibold" style={{ animationDelay: '100ms' }}>{t.quiz.allCaughtUp}</div>
           <div className="animate-slide-up mt-2 text-muted-foreground" style={{ animationDelay: '200ms' }}>
             {t.quiz.noWordsDue}

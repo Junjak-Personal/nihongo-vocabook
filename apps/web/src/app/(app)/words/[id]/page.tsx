@@ -407,7 +407,7 @@ export default function WordDetailPage({
               aria-label={`${t.words.showReading} / ${t.words.showMeaning}`}
             >
               {showWordInfo ? (
-                <EyeOff className="size-icon text-primary" />
+                <EyeOff className="size-icon text-primary dark:text-accent-muted" />
               ) : (
                 <Eye className="size-icon text-text-tertiary" />
               )}
@@ -431,7 +431,7 @@ export default function WordDetailPage({
               {/* Meaning */}
               <div
                 className={cn(
-                  'text-section font-medium text-primary transition-[opacity,filter] duration-300 ease-out',
+                  'text-section font-medium text-primary dark:text-accent-muted transition-[opacity,filter] duration-300 ease-out',
                   showWordInfo ? 'opacity-100 blur-0' : 'opacity-70 blur-[2px]',
                 )}
               >
@@ -477,7 +477,7 @@ export default function WordDetailPage({
                     className={cn(
                       'flex items-center gap-1 rounded-full border px-2 py-0.5 text-badge font-medium transition-colors',
                       word.priority === p.value
-                        ? 'border-primary bg-primary/10 text-primary'
+                        ? 'border-primary bg-primary/10 text-primary dark:border-accent-muted dark:bg-accent-muted/10 dark:text-accent-muted'
                         : 'border-border text-text-secondary hover:bg-accent',
                     )}
                   >
