@@ -11,14 +11,14 @@ jobs:
     environment: production
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup bun
         uses: oven-sh/setup-bun@v2
 
       - name: Cache bun dependencies
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -44,7 +44,7 @@ jobs:
         run: tar -cf build.tar -C apps/web .next/standalone .next/static public
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build
           path: build.tar
@@ -56,13 +56,13 @@ jobs:
     environment: production
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           sparse-checkout: |
             apps/web/Dockerfile
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build
 
@@ -85,6 +85,6 @@ jobs:
 
       - name: Delete build artifact
         if: always()
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
           name: build
