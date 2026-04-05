@@ -60,6 +60,7 @@ jobs:
         with:
           sparse-checkout: |
             apps/web/Dockerfile
+          sparse-checkout-cone-mode: false
 
       - name: Download build artifact
         uses: actions/download-artifact@v8
