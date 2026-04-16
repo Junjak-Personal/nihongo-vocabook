@@ -147,6 +147,7 @@ const ko: Translations = {
     leech: '거머리 단어',
     leechDesc: '여러 번 틀린 단어입니다. 집중 학습이 필요합니다.',
     noTags: '태그 없음',
+    examples: '예문',
   },
   quiz: {
     title: '퀴즈',

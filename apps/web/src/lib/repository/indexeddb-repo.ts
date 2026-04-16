@@ -4,6 +4,7 @@ import {
   type LocalUserWordState,
   type LocalStudyProgress,
   type LocalWordbook,
+  type LocalWordExample,
   type LocalDailyStats,
   type LocalQuizSettings,
   type LocalAchievement,
@@ -13,6 +14,7 @@ import { getLocalDateString } from '@/lib/quiz/date-utils';
 import { selectDueWords, shuffleArray } from '@/lib/quiz/word-scoring';
 import type {
   Word,
+  WordExample,
   CreateWordInput,
   UpdateWordInput,
   StudyProgress,
@@ -54,6 +56,18 @@ function localWordToWord(local: LocalWord & { id: number }, state?: LocalUserWor
     isOwned: true, // IndexedDB = guest mode, all words are owned
     createdAt: local.createdAt,
     updatedAt: local.updatedAt,
+  };
+}
+
+function localExampleToExample(local: LocalWordExample & { id: number }): WordExample {
+  return {
+    id: String(local.id),
+    wordId: String(local.wordId),
+    sentenceJa: local.sentenceJa,
+    sentenceReading: local.sentenceReading,
+    sentenceMeaning: local.sentenceMeaning,
+    source: local.source,
+    createdAt: local.createdAt,
   };
 }
 
@@ -371,6 +385,11 @@ class IndexedDBWordRepository implements WordRepository {
     if (!word) throw new Error('Word not found');
     const state = await getState(numId);
     return localWordToWord(word as LocalWord & { id: number }, state);
+  }
+
+  async getExamples(wordId: string): Promise<WordExample[]> {
+    const rows = await db.wordExamples.where('wordId').equals(Number(wordId)).toArray();
+    return rows.map((r) => localExampleToExample(r as LocalWordExample & { id: number }));
   }
 }
 

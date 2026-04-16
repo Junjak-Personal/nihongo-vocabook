@@ -4,6 +4,7 @@ import { getLocalDateString } from '@/lib/quiz/date-utils';
 import { selectDueWords, shuffleArray } from '@/lib/quiz/word-scoring';
 import type {
   Word,
+  WordExample,
   CreateWordInput,
   UpdateWordInput,
   StudyProgress,
@@ -89,6 +90,16 @@ interface DbWordbookItem {
   added_at: string;
 }
 
+interface DbWordExample {
+  id: string;
+  word_id: string;
+  sentence_ja: string;
+  sentence_reading: string | null;
+  sentence_meaning: string | null;
+  source: string;
+  created_at: string;
+}
+
 function dbWordToWord(row: DbWord, state?: DbUserWordState | null, currentUserId?: string): Word {
   return {
     id: row.id,
@@ -154,6 +165,18 @@ function dbWordbookToWordbook(row: DbWordbook): Wordbook {
     tags: row.tags ?? [],
     createdAt: new Date(row.created_at),
     updatedAt: new Date(row.updated_at),
+  };
+}
+
+function dbExampleToExample(row: DbWordExample): WordExample {
+  return {
+    id: row.id,
+    wordId: row.word_id,
+    sentenceJa: row.sentence_ja,
+    sentenceReading: row.sentence_reading,
+    sentenceMeaning: row.sentence_meaning,
+    source: row.source,
+    createdAt: new Date(row.created_at),
   };
 }
 
@@ -557,6 +580,16 @@ class SupabaseWordRepository implements WordRepository {
     if (error) throw error;
     const row = data as Record<string, unknown>;
     return dbWordToWord(row as unknown as DbWord, extractState(row), userId);
+  }
+
+  async getExamples(wordId: string): Promise<WordExample[]> {
+    const { data, error } = await this.supabase
+      .from('word_examples')
+      .select('*')
+      .eq('word_id', wordId)
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    return (data as DbWordExample[]).map(dbExampleToExample);
   }
 }
 

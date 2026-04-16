@@ -1,5 +1,6 @@
 import type {
   Word,
+  WordExample,
   CreateWordInput,
   UpdateWordInput,
   StudyProgress,
@@ -46,6 +47,7 @@ export interface WordRepository {
   setPriority(id: string, priority: number): Promise<void>;
   delete(id: string): Promise<void>;
   setMastered(id: string, mastered: boolean): Promise<Word>;
+  getExamples(wordId: string): Promise<WordExample[]>;
 }
 
 export interface StudyRepository {

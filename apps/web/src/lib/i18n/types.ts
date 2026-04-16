@@ -142,6 +142,7 @@ export interface Translations {
     leech: string;
     leechDesc: string;
     noTags: string;
+    examples: string;
   };
   quiz: {
     title: string;

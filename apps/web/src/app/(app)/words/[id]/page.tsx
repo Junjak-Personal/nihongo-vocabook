@@ -19,7 +19,7 @@ import { useTranslation } from '@/lib/i18n';
 import { getListCache, invalidateListCache } from '@/lib/list-cache';
 import { scrollArea, bottomBar, bottomSep, emptyState, sectionLabel } from '@/lib/styles';
 import type { WordSortOrder } from '@/lib/repository/types';
-import type { Word, StudyProgress } from '@/types/word';
+import type { Word, WordExample, StudyProgress } from '@/types/word';
 
 interface WordsCacheData {
   words: Word[];
@@ -43,6 +43,7 @@ export default function WordDetailPage({
   const { t, locale } = useTranslation();
   const [word, setWord] = useState<Word | null>(null);
   const [progress, setProgress] = useState<StudyProgress | null>(null);
+  const [examples, setExamples] = useState<WordExample[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [wordbookDialogOpen, setWordbookDialogOpen] = useState(false);
@@ -91,7 +92,8 @@ export default function WordDetailPage({
       repo.words.getById(id),
       repo.study.getProgress(id),
       orderedWordsPromise,
-    ]).then(([w, p, orderedWords]) => {
+      repo.words.getExamples(id),
+    ]).then(([w, p, orderedWords, ex]) => {
       const currentIndex = orderedWords.findIndex((item) => item.id === id);
       setPrevWordId(currentIndex > 0 ? orderedWords[currentIndex - 1]?.id ?? null : null);
       setNextWordId(
@@ -101,6 +103,7 @@ export default function WordDetailPage({
       );
       setWord(w);
       setProgress(p);
+      setExamples(ex);
       setLoading(false);
     });
   }, [repo, id, authLoading]);
@@ -543,6 +546,27 @@ export default function WordDetailPage({
               <div className={sectionLabel}>{t.wordDetail.notes}</div>
               <div className="rounded-lg bg-secondary p-3 text-body">{word.notes}</div>
             </div>
+          )}
+
+          {/* Examples */}
+          {examples.length > 0 && (
+            <>
+              <div className="h-px bg-secondary" />
+              <div className="flex flex-col gap-3">
+                <div className={sectionLabel}>{t.wordDetail.examples}</div>
+                {examples.map((ex) => (
+                  <div key={ex.id} className="flex flex-col gap-1 rounded-lg bg-secondary p-3">
+                    <div className="text-body font-medium">{ex.sentenceJa}</div>
+                    {ex.sentenceReading && (
+                      <div className="text-reading text-text-secondary">{ex.sentenceReading}</div>
+                    )}
+                    {ex.sentenceMeaning && (
+                      <div className="text-caption text-primary dark:text-accent-muted">{ex.sentenceMeaning}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>

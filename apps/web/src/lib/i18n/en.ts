@@ -147,6 +147,7 @@ const en: Translations = {
     leech: 'Leech',
     leechDesc: 'This word has been forgotten many times and needs extra attention.',
     noTags: 'No tags',
+    examples: 'Examples',
   },
   quiz: {
     title: 'Quiz',
